@@ -1,0 +1,10 @@
+# PHP
+vendor/
+
+# Unit tests
+coverage
+.phpunit.cache
+
+# Local
+*.local
+*.local.*
