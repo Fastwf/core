@@ -6,5 +6,6 @@ coverage
 .phpunit.cache
 
 # Local
+local
 *.local
 *.local.*

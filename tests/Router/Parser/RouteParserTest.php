@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 use PHPUnit\Framework\TestCase;
 
@@ -30,7 +30,7 @@ class RouteParserTest extends TestCase
 
         foreach ($pathList as $index => $path) {
             $parser = new RouteParser($path);
-            
+
             $segments = [];
             foreach ($parser as $_index => $segment) {
                 $segments[] = $segment;
@@ -62,7 +62,7 @@ class RouteParserTest extends TestCase
 
         foreach ($pathList as $index => $path) {
             $parser = new RouteParser($path);
-            
+
             $parser->rewind();
 
             $this->assertEquals($expected[$index], $parser->getNextPath());
