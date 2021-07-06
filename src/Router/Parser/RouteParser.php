@@ -4,7 +4,7 @@ namespace Fastwf\Core\Router\Parser;
 
 /**
  * The route parser is a tool that help to parse the REQUEST_URI.
- * 
+ *
  * The parser works like an iterator, when each methods are called directly use:
  *  rewind()
  *  valid()
@@ -15,14 +15,14 @@ namespace Fastwf\Core\Router\Parser;
  */
 class RouteParser implements \Iterator {
 
-    private $path;
+    protected $path;
 
     private $index = 0;
     private $length;
 
-    private $isValid = true; 
-    private $segment;
-    private $segmentIndex = -1;
+    private $isValid = true;
+    protected $segment;
+    protected $segmentIndex = -1;
 
     public function __construct($path) {
         $this->path = $path;
@@ -51,7 +51,7 @@ class RouteParser implements \Iterator {
         $this->index = 0;
 
         $this->isValid = $this->index < $this->length;
-        
+
         $this->segment = '';
         $this->segmentIndex = -1;
 
@@ -93,9 +93,9 @@ class RouteParser implements \Iterator {
      * @return string the path under the current() path excluding the leading '/'
      */
     public function getNextPath() {
-        $length = $this->length - $this->index;
+        $nextLength = $this->length - $this->index;
 
-        return $length >= 0 ? \substr($this->path, $this->index, $length) : '';
+        return $nextLength >= 0 ? \substr($this->path, $this->index, $nextLength) : '';
     }
 
 }
