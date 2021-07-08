@@ -14,6 +14,17 @@ class SegmentTest extends TestCase {
         $segment = new Segment('segment');
 
         $this->assertFalse($segment->isParameter());
+        $this->assertFalse($segment->isWildcard());
+    }
+
+    /**
+     * @covers Fastwf\Core\Router\Segment
+     */
+    public function testSegmentConstructorWildcard() {
+        $segment = new Segment('**');
+
+        $this->assertFalse($segment->isParameter());
+        $this->assertTrue($segment->isWildcard());
     }
 
     /**
@@ -23,6 +34,7 @@ class SegmentTest extends TestCase {
         $segment = new Segment('{segment}');
 
         $this->assertTrue($segment->isParameter());
+        $this->assertFalse($segment->isWildcard());
         $this->assertEquals("segment", $segment->getName());
     }
 
@@ -47,6 +59,16 @@ class SegmentTest extends TestCase {
             $this->assertTrue($segment->match('any'));
             $this->assertTrue($segment->match('other'));
         }
+    }
+
+    /**
+     * @covers Fastwf\Core\Router\Segment
+     */
+    public function testSegmentWildcardMatch() {
+        $segment = new Segment("**");
+
+        $this->assertTrue($segment->match('any'));
+        $this->assertTrue($segment->match('other'));
     }
 
     /**

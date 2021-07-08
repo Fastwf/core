@@ -29,11 +29,15 @@ class Segment {
 
     private $parameter;
 
+    private $wildcard = false;
+
     public function __construct($segment) {
         $this->segment = $segment;
 
         // Analyse the segment to determine if it's a simple string to match or a parameter.
-        if ($this->segment[0] === "{" && $this->segment[-1] === "}") {
+        if ($segment === '**') {
+            $this->wildcard = true;
+        } else if ($this->segment[0] === "{" && $this->segment[-1] === "}") {
             // is a parameter to control when match
             $this->isParameter = true;
 
@@ -119,7 +123,9 @@ class Segment {
      * @return bool true when the segment match
      */
     public function match($segment) {
-        if ($this->isParameter) {
+        if ($this->wildcard) {
+            return true;
+        } else if ($this->isParameter) {
             return $this->matchParameter($segment);
         } else {
             return $this->segment === $segment;
@@ -137,6 +143,15 @@ class Segment {
 
     public function isParameter() {
         return $this->isParameter;
+    }
+
+    /**
+     * Help to identify if the segment is a wildcard segment.
+     *
+     * @return bool true when segment is wildcard, false otherwise
+     */
+    public function isWildcard() {
+        return $this->wildcard;
     }
 
     /**
