@@ -16,5 +16,5 @@ interface OutPipe {
      * @param mixed $response the http response
      * @return mixed the response transformed or the response in parameter
      */
-    public function in($context, $request, $response);
+    public function out($context, $request, $response);
 }
