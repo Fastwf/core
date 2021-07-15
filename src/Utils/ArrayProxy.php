@@ -149,6 +149,15 @@ class ArrayProxy {
         unset($this->array[$key]);
     }
 
+    /**
+     * Call the array_map method when the $array parameter is not null.
+     * 
+     * It can be considered as safe_array_map function.
+     *
+     * @param callable $callback
+     * @param array|null $array the array to map
+     * @return array|null the array transformed
+     */
     private static function arrayMap($callback, $array) {
         if ($array !== null) {
             return \array_map($callback, $array);
