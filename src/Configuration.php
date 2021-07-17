@@ -7,7 +7,9 @@ use Fastwf\Core\Exceptions\ValueError;
 use Fastwf\Core\Utils\ArrayProxy;
 
 /**
- * The configuration class allows to read ini configuration file by respecting the following loading logic:
+ * Configuration class that allows to load application configuration from ini file.
+ * 
+ * The configuration class help to read ini configuration file by respecting the following loading logic:
  *  - Load the given ini file path else throw IOException
  *  - Load the ini file path suffixed with '.local' (before extension) to override the initial configuration
  *  - Finally, environment variable override all loaded info (environment variables not matching a loaded

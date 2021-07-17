@@ -5,6 +5,10 @@ vendor/
 coverage
 .phpunit.cache
 
+# Documentation
+.phpdoc/
+api-doc/
+
 # Local
 local
 *.local
