@@ -1,5 +1,7 @@
 <?php
 
+namespace Fastwf\Core\Settings;
+
 /**
  * Engine extension setting that allows to define global input pipes.
  */
