@@ -1,13 +1,14 @@
 # PHP
 vendor/
 
+# Build
+/build/
+
 # Unit tests
-coverage
 .phpunit.cache
 
 # Documentation
 .phpdoc/
-api-doc/
 
 # Local
 local

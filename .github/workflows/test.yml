@@ -1,0 +1,23 @@
+name: "Unit tests"
+
+on: [push]
+
+jobs:
+  tests:
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        php: ['7.3', '7.4', '8.0']
+    steps:
+    - uses: actions/checkout@${{ github.sha }}
+    - name: Setup php version ${{ matrix.php }}
+      with:
+        php-version: ${{ matrix.php }}
+        coverage: xdebug
+        tools: composer:v2
+    - name: Install dependencies
+      run: |
+        composer install
+    - name: Run tests
+      run: |
+        php vendor/bin/phpunit tests --coverage-php build/cov/coverage-${{ matrix.php }}.cov
