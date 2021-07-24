@@ -3,7 +3,9 @@
 namespace Fastwf\Core\Http\Frame;
 
 use Fastwf\Core\Utils\ArrayProxy;
+use Fastwf\Core\Http\Frame\Headers;
 use Fastwf\Core\Utils\Files\UploadedFile;
+use Fastwf\Core\Exceptions\AttributeError;
 
 /**
  * The object representation of the http request.
@@ -64,7 +66,7 @@ class HttpRequest {
             case 'cookie':
                 return $this->{"_$name"};
             default:
-                throw new AttributeError();
+                throw new AttributeError($name);
         }
     }
 
