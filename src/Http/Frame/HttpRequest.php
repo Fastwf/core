@@ -8,6 +8,8 @@ use Fastwf\Core\Utils\Files\UploadedFile;
 /**
  * The object representation of the http request.
  * 
+ * @property-read string $path The path corresponding to the REQUEST_URI.
+ * @property-read string $method The request method corresponding to the REQUEST_METHOD.
  * @property-read Fastwf\Core\Utils\ArrayProxy $query the array of query parameters ($_GET)
  * @property-read Fastwf\Core\Utils\ArrayProxy $form the array that contains the parsed form data ($_POST).
  * @property-read string $body the sequence read from body request.
@@ -22,13 +24,19 @@ class HttpRequest {
 
     private $_files = null;
     
+    protected $_path;
+    protected $_method;
+
     protected $_headers;
     protected $_cookie;
 
     protected $get;
     protected $post;
 
-    public function __construct() {
+    public function __construct($path, $method) {
+        $this->_path = $path;
+        $this->_method = $method;
+
         $this->_headers = new Headers(\apache_request_headers());
 
         $this->get = new ArrayProxy($_GET, true);
@@ -50,6 +58,8 @@ class HttpRequest {
                 return $this->getJson();
             case 'files':
                 return $this->getFiles();
+            case 'path':
+            case 'method':
             case 'headers':
             case 'cookie':
                 return $this->{"_$name"};
