@@ -2,6 +2,7 @@
 
 namespace Fastwf\Core\Router;
 
+use Fastwf\Core\Utils\AsyncProperty;
 use Fastwf\Core\Router\Parser\RouteParser;
 use Fastwf\Core\Router\Parser\SpecificationRouteParser;
 
@@ -11,17 +12,13 @@ use Fastwf\Core\Router\Parser\SpecificationRouteParser;
  */
 class Mount extends BaseRoute {
 
-    protected $routes = null;
-    protected $asyncRoutes = null;
+    protected $routes;
 
-    public function __construct($path, $routes, $namespace) {
-        parent::__construct($path, $namespace);
+    public function __construct($path, $routes, $inputInterceptors = [], $guards = [], $inputPipes = [], $outputPipes = [],
+                                $outputInterceptors = [], $namespace = null) {
+        parent::__construct($path, $inputInterceptors, $guards, $inputPipes, $outputPipes, $outputInterceptors, $namespace);
 
-        if (is_callable($routes)) {
-            $this->asyncRoutes = &$routes;
-        } else {
-            $this->routes = $routes;
-        }
+        $this->routes = new AsyncProperty($routes);
     }
 
     // Implementation
@@ -65,7 +62,7 @@ class Mount extends BaseRoute {
         //  delegate the match method to child routes
         $nextPath = $pathParser->getNextPath();
 
-        foreach ($this->getRoutes() as $route) {
+        foreach ($this->routes->get() as $route) {
             $result = $route->match($nextPath, $method);
 
             // If the result !== null -> it's a match, return it
@@ -77,16 +74,6 @@ class Mount extends BaseRoute {
 
         // Sub routes never match the current route -> return null
         return null;
-    }
-
-    /// Private methods
-
-    private function getRoutes() {
-        if ($this->routes === null) {
-            $this->routes = \call_user_func($this->asyncRoutes);
-        }
-
-        return $this->routes;
     }
 
 }

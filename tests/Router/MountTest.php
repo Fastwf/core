@@ -14,13 +14,19 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Router\Segment
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers Fastwf\Core\Utils\AsyncProperty
      */
     public function testSynchronousRoutes() {
         $mount = new Mount(
             'mount',
             [
-                new Route('**', ['GET'], 'wildcard')
+                new Route('**', ['GET'], null, [], [], [], [], [], 'wildcard')
             ],
+            [],
+            [],
+            [],
+            [],
+            [], 
             'mountPoint'
         );
 
@@ -34,13 +40,19 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Router\Segment
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers Fastwf\Core\Utils\AsyncProperty
      */
     public function testAsynchronousRoutes() {
         $mount = new Mount(
             'mount',
             fn() => [
-                new Route('**', ['GET'], 'wildcard')
+                new Route('**', ['GET'], null, [], [], [], [], [], 'wildcard')
             ],
+            [],
+            [],
+            [],
+            [],
+            [], 
             'mountPoint'
         );
 
@@ -54,13 +66,19 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Router\Segment
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers Fastwf\Core\Utils\AsyncProperty
      */
     public function testNoRouteMatch() {
         $mount = new Mount(
             'mount',
             fn() => [
-                new Route('user', ['GET'], 'getUsers')
+                new Route('user', ['GET'], null, [], [], [], [], [], 'getUsers')
             ],
+            [],
+            [],
+            [],
+            [],
+            [],
             'mountPoint'
         );
 
@@ -74,13 +92,19 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Router\Segment
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers Fastwf\Core\Utils\AsyncProperty
      */
     public function testMountNotMatch() {
         $mount = new Mount(
             'mount',
             [
-                new Route('user', ['GET'], 'getUsers')
+                new Route('user', ['GET'], null, [], [], [], [], [], 'getUsers')
             ],
+            [],
+            [],
+            [],
+            [],
+            [],
             'mountPoint'
         );
 
@@ -94,13 +118,19 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Router\Segment
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers Fastwf\Core\Utils\AsyncProperty
      */
     public function testMountMatchWildcard() {
         $mount = new Mount(
             'mount/**/',
             [
-                new Route('user', ['GET'], 'getUsers')
+                new Route('user', ['GET'], null, [], [], [], [], [], 'getUsers')
             ],
+            [],
+            [],
+            [],
+            [],
+            [], 
             'mountPoint'
         );
 
@@ -114,13 +144,19 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Router\Segment
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers Fastwf\Core\Utils\AsyncProperty
      */
     public function testMountMatchParameters() {
         $mount = new Mount(
             'group/{id}/',
             [
-                new Route('user/{int:id}', ['GET'], 'getUsers')
+                new Route('user/{int:id}', ['GET'], null, [], [], [], [], [], 'getUsers')
             ],
+            [],
+            [],
+            [],
+            [],
+            [],
             'group'
         );
 

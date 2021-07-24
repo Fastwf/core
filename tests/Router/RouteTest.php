@@ -14,7 +14,7 @@ class RouteTest extends TestCase {
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      */
     public function testMethod() {
-        $route = new Route('hello/world', ['get'], 'test');
+        $route = new Route('hello/world', ['get'], null, [], [], [], [], [], 'test');
 
         $this->assertNotNull($route->match('hello/world', 'GET'));
         $this->assertNull($route->match('hello/world', 'POST'));
@@ -28,7 +28,7 @@ class RouteTest extends TestCase {
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      */
     public function testNotMatch() {
-        $route = new Route('hello/world', ['get'], 'test');
+        $route = new Route('hello/world', ['get'], null, [], [], [], [], [], 'test');
 
         $this->assertNull($route->match('hello/rejected', 'GET'));
     }
@@ -41,7 +41,7 @@ class RouteTest extends TestCase {
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      */
     public function testMatchWildcard() {
-        $route = new Route('**', ['get'], 'test');
+        $route = new Route('**', ['get'], null, [], [], [], [], [], 'test');
 
         $this->assertNotNull($route->match('hello/accepted', 'GET'));
     }
@@ -54,7 +54,7 @@ class RouteTest extends TestCase {
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      */
     public function testMatchParameter() {
-        $route = new Route('user/{int:id}', ['get'], 'test');
+        $route = new Route('user/{int:id}', ['get'], null, [], [], [], [], [], 'test');
 
         $this->assertEquals(['test/id' => 10], $route->match('user/10', 'GET'));
     }

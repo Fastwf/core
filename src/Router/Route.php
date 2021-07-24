@@ -12,22 +12,25 @@ use Fastwf\Core\Router\Parser\SpecificationRouteParser;
 class Route extends BaseRoute {
 
     protected $methods;
+    protected $handler;
 
     /**
      * Route constructor
      *
-     * @param string $path the path to match
+     * {@inheritDoc}
      * @param array $methods the array of authorized methods
-     * @param string $methods the name of the route
+     * @param Fastwf\Core\Components\RequestHandler the request handler attached to the route
      */
-    public function __construct($path, $methods, $name) {
-        parent::__construct($path, $name);
-        
+    public function __construct($path, $methods, $handler, $inputInterceptors = [], $guards = [], $inputPipes = [], $outputPipes = [],
+                                $outputInterceptors = [], $name = null) {
+        parent::__construct($path, $inputInterceptors, $guards, $inputPipes, $outputPipes, $outputInterceptors, $name);
+
         // transform the methods
         $this->methods = [];
         foreach ($methods as $method) {
             $this->methods[] = \strtoupper($method);
         }
+        $this->handler = $handler;
     }
 
     public function match($path, $method) {
