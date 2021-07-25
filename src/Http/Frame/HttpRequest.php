@@ -35,9 +35,12 @@ class HttpRequest {
     protected $get;
     protected $post;
 
-    public function __construct($path, $method) {
+    private $input;
+
+    public function __construct($path, $method, $bodyFilename = "php://input") {
         $this->_path = $path;
         $this->_method = $method;
+        $this->input = $bodyFilename;
 
         $this->_headers = new Headers(\apache_request_headers());
 
@@ -76,7 +79,7 @@ class HttpRequest {
      * @return resource The resource bound to the request body stream.
      */
     protected function getStream() {
-        return \fopen('php://input', 'r');
+        return \fopen($this->input, 'r');
     }
 
     /**
