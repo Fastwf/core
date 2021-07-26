@@ -3,6 +3,7 @@
 namespace Fastwf\Core\Http\Frame;
 
 use Fastwf\Core\Utils\ArrayProxy;
+use Fastwf\Core\Exceptions\IOException;
 use Fastwf\Core\Exceptions\AttributeError;
 
 /**
@@ -14,7 +15,7 @@ use Fastwf\Core\Exceptions\AttributeError;
  * @property-read int $status the response status.
  * @property-read Fastwf\Core\Utils\ArrayProxy $headers the http response headers to send to the client.
  */
-abstract class HttpStreamResponse {
+class HttpStreamResponse {
 
     /**
      * The http response code
@@ -103,7 +104,7 @@ abstract class HttpStreamResponse {
      */
     protected function writeChunk($resource, $chunk) {
         if (\fwrite($resource, $chunk) === false) {
-            throw new \ErrorException("Failed to write into resource");
+            throw new IOException("Failed to write into resource");
         }
     }
 
