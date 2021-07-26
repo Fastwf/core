@@ -166,4 +166,26 @@ class MountTest extends TestCase {
         );
     }
 
+    /**
+     * @covers Fastwf\Core\Router\BaseRoute
+     * @covers Fastwf\Core\Router\Route
+     * @covers Fastwf\Core\Router\Mount
+     * @covers Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Router\Parser\RouteParser
+     * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers Fastwf\Core\Utils\AsyncProperty
+     */
+    public function testMountOnEmpty() {
+        $mount = new Mount(
+            '',
+            [
+                new Route('', ['GET'], null, [], [], [], [], [], 'getUsers')
+            ],
+        );
+
+        $this->assertNull(
+            $mount->match('users/', 'GET')
+        );
+    }
+
 }

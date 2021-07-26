@@ -28,33 +28,35 @@ class Mount extends BaseRoute {
         
         $mountParser = new SpecificationRouteParser($this->path);
         $pathParser = new RouteParser($path);
-
-        $mountParser->rewind();
-        $pathParser->rewind();
-
-        $mountIsValid = $mountParser->valid();
-        while ($mountIsValid && $pathParser->valid()) {
-            $segment = $mountParser->current();
-
-            if (!$segment->match($pathParser->current())) {
-                // The mount point don't match the current path -> return null
-                return null;
-            }
-
-            if ($segment->isWildcard()) {
-                // When the segment is wildcard, the next path is full match
-                return $segment;
-            } else if ($segment->isParameter()) {
-                $parameters["{$this->name}/{$segment->getName()}"] = $segment->getParameter();
-            }
-
-            // To next segment
-            $mountParser->next();
+    
+        if ($this->path !== '') {
+            $mountParser->rewind();
+            $pathParser->rewind();
+    
             $mountIsValid = $mountParser->valid();
-            // Prevent to go to the next segment if the mount parser is invalid
-            //  otherwise the nextPath become invalid
-            if ($mountIsValid) {
-                $pathParser->next();
+            while ($mountIsValid && $pathParser->valid()) {
+                $segment = $mountParser->current();
+    
+                if (!$segment->match($pathParser->current())) {
+                    // The mount point don't match the current path -> return null
+                    return null;
+                }
+    
+                if ($segment->isWildcard()) {
+                    // When the segment is wildcard, the next path is full match
+                    return $segment;
+                } else if ($segment->isParameter()) {
+                    $parameters["{$this->name}/{$segment->getName()}"] = $segment->getParameter();
+                }
+    
+                // To next segment
+                $mountParser->next();
+                $mountIsValid = $mountParser->valid();
+                // Prevent to go to the next segment if the mount parser is invalid
+                //  otherwise the nextPath become invalid
+                if ($mountIsValid) {
+                    $pathParser->next();
+                }
             }
         }
 
