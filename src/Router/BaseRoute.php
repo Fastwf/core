@@ -2,6 +2,8 @@
 
 namespace Fastwf\Core\Router;
 
+use Fastwf\Core\Utils\ArrayUtil;
+
 abstract class BaseRoute {
 
     protected $name;
@@ -16,24 +18,26 @@ abstract class BaseRoute {
     /**
      * Constructor.
      *
-     * @param string $path the path associated to the route (must not start with '/')
-     * @param array $inputInterceptors the array of input interceptors attached to the route
-     * @param array $guards the array of guards attached to the route
-     * @param array $inputPipes the array of input pipes attached to the route
-     * @param array $outputPipes the array of output pipes attached to the route
-     * @param array $outputInterceptors the array of output interceptors attached to the route
-     * @param string|null $name
+     * Parameters:
+     * - "path": [required] The path of the route
+     * - "inputInterceptors": [optional]  The list of inputInterceptors to apply
+     * - "guards": [optional] The list of guards to apply
+     * - "inputPipes": [optional] The list of inputPipes to apply
+     * - "outputPipes": [optional] The list of outputPipes to apply
+     * - "outputInterceptors": [optional] The list of outputInterceptors to apply
+     * - "name": [optional] The name of the route
+     * 
+     * @param array $params An array containing the constructor parameters.
      */
-    public function __construct($path, $inputInterceptors = [], $guards = [], $inputPipes = [], $outputPipes = [],
-                                $outputInterceptors = [], $name = null) {
-        $this->path = $path;
-        $this->name = $name;
+    public function __construct($params) {
+        $this->path = ArrayUtil::get($params, "path");
+        $this->name = ArrayUtil::getSafe($params, "name");
 
-        $this->inputInterceptors = $inputInterceptors;
-        $this->guards = $guards;
-        $this->inputPipes = $inputPipes;
-        $this->outputPipes = $outputPipes;
-        $this->outputInterceptors = $outputInterceptors;
+        $this->inputInterceptors = ArrayUtil::getSafe($params, "inputInterceptors", []);
+        $this->guards = ArrayUtil::getSafe($params, "guards", []);
+        $this->inputPipes = ArrayUtil::getSafe($params, "inputPipes", []);
+        $this->outputPipes = ArrayUtil::getSafe($params, "outputPipes", []);
+        $this->outputInterceptors = ArrayUtil::getSafe($params, "outputInterceptors", []);
     }
 
     /**
@@ -41,7 +45,7 @@ abstract class BaseRoute {
      *
      * @param string $path the request path
      * @param string $method the request method
-     * @return array|null null when match failed or an array of extracted parameters when full match
+     * @return array|null null when match failed or an array of extracted parameters and BaseRoute list when full match
      */
     public abstract function match($path, $method);
 

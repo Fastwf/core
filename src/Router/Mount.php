@@ -2,7 +2,9 @@
 
 namespace Fastwf\Core\Router;
 
+use Fastwf\Core\Utils\ArrayUtil;
 use Fastwf\Core\Utils\AsyncProperty;
+use Fastwf\Core\Router\BaseRoute;
 use Fastwf\Core\Router\Parser\RouteParser;
 use Fastwf\Core\Router\Parser\SpecificationRouteParser;
 
@@ -14,11 +16,18 @@ class Mount extends BaseRoute {
 
     protected $routes;
 
-    public function __construct($path, $routes, $inputInterceptors = [], $guards = [], $inputPipes = [], $outputPipes = [],
-                                $outputInterceptors = [], $namespace = null) {
-        parent::__construct($path, $inputInterceptors, $guards, $inputPipes, $outputPipes, $outputInterceptors, $namespace);
+    /**
+     * Mount constructor.
+     * 
+     * {@inheritDoc}
+     *
+     * Parameters:
+     * - "routes": [required] the list of route/mount to expose behind this mount point
+     */
+    public function __construct($params) {
+        parent::__construct($params);
 
-        $this->routes = new AsyncProperty($routes);
+        $this->routes = new AsyncProperty(ArrayUtil::get($params, "routes"));
     }
 
     // Implementation
@@ -70,7 +79,10 @@ class Mount extends BaseRoute {
             // If the result !== null -> it's a match, return it
             if ($result !== null) {
                 // Merge the parameter with sub route parameters and return it
-                return \array_replace($parameters, $result);
+                return [
+                    "matchers" => \array_merge([$this], $result["matchers"]),
+                    "parameters" => \array_replace($parameters, $result["parameters"]),
+                ];
             }
         }
 

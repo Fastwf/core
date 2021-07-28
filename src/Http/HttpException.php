@@ -16,7 +16,7 @@ class HttpException extends \Exception {
     public function __construct($message, $args) {
         parent::__construct($message);
 
-        if (\key_exists('response', $args)) {
+        if (\array_key_exists('response', $args)) {
             $response = $args['response'];
         } else {
             $response = new HttpResponse(

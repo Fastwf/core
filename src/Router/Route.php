@@ -2,6 +2,7 @@
 
 namespace Fastwf\Core\Router;
 
+use Fastwf\Core\Utils\ArrayUtil;
 use Fastwf\Core\Router\BaseRoute;
 use Fastwf\Core\Router\Parser\RouteParser;
 use Fastwf\Core\Router\Parser\SpecificationRouteParser;
@@ -18,19 +19,20 @@ class Route extends BaseRoute {
      * Route constructor
      *
      * {@inheritDoc}
-     * @param array $methods the array of authorized methods
-     * @param Fastwf\Core\Components\RequestHandler the request handler attached to the route
+     * 
+     * Parameters:
+     * - "methods": [required] the array of authorized methods
+     * - "handler": [required] the request handler attached to the route
      */
-    public function __construct($path, $methods, $handler, $inputInterceptors = [], $guards = [], $inputPipes = [], $outputPipes = [],
-                                $outputInterceptors = [], $name = null) {
-        parent::__construct($path, $inputInterceptors, $guards, $inputPipes, $outputPipes, $outputInterceptors, $name);
+    public function __construct($params) {
+        parent::__construct($params);
 
+        $this->handler = ArrayUtil::get($params, "handler");
         // transform the methods
         $this->methods = [];
-        foreach ($methods as $method) {
+        foreach (ArrayUtil::get($params, "methods") as $method) {
             $this->methods[] = \strtoupper($method);
         }
-        $this->handler = $handler;
     }
 
     public function match($path, $method) {
@@ -56,7 +58,7 @@ class Route extends BaseRoute {
             
             if ($segment->isWildcard()) {
                 // Full match the next part -> return extracted parameters
-                return $parameters;
+                return ["matchers" => [$this], "parameters" => $parameters];
             } else if ($segment->isParameter()) {
                 // Collect parameter using the $this->name as parameter namespace
                 $parameters["{$this->name}/{$segment->getName()}"] = $segment->getParameter();
@@ -68,7 +70,9 @@ class Route extends BaseRoute {
 
         // When the both parser are invalid, the route specification and the path match
         //  return parameters else null
-        return !$routeParser->valid() && !$pathParser->valid() ? $parameters : null;
+        return !$routeParser->valid() && !$pathParser->valid()
+            ? ["matchers" => [$this], "parameters" => $parameters]
+            : null;
     }
 
 }
