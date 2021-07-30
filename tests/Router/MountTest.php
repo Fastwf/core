@@ -38,9 +38,9 @@ class MountTest extends TestCase {
     public function testAsynchronousRoutes() {
         $mount = new Mount(
             'mount',
-            fn() => [
-                new Route('**', ['GET'], 'wildcard')
-            ],
+            function () {
+                return [new Route('**', ['GET'], 'wildcard')];
+            },
             'mountPoint'
         );
 
@@ -58,9 +58,9 @@ class MountTest extends TestCase {
     public function testNoRouteMatch() {
         $mount = new Mount(
             'mount',
-            fn() => [
-                new Route('user', ['GET'], 'getUsers')
-            ],
+            function () {
+                return [new Route('user', ['GET'], 'getUsers')];
+            },
             'mountPoint'
         );
 
