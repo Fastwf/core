@@ -4,6 +4,7 @@ on: [push]
 
 jobs:
   tests:
+    name: "Tests on PHP currently supported versions"
     runs-on: ubuntu-18.04
     strategy:
       matrix:
@@ -21,4 +22,36 @@ jobs:
         composer install
     - name: Run tests
       run: |
-        php vendor/bin/phpunit tests
+        php vendor/bin/phpunit tests --coverage-php build/cov/coverage-${{ matrix.php }}.cov
+    - name: Save all coverage reports
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage-${{ matrix.php }}.cov
+        path: build/cov/coverage-${{ matrix.php }}.cov
+        retention-days: 1
+  post-tests:
+    name: "Post tests"
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup php version
+      uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          coverage: xdebug2
+          tools: composer:v2
+    - name: Install dependencies
+      run: |
+        composer install
+    - name: Restore all coverage reports
+      uses: actions/download-artifact@v2
+        path: build/cov/
+    - name: Merge coverage reports
+      run: |
+        php vendor/bin/phpcov merge --clover build/logs/clover.xml build/cov/*
+    - name: Upload coverage results to Coveralls
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+      run: |
+        php vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
