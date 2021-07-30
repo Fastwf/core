@@ -46,6 +46,7 @@ jobs:
         composer install
     - name: Restore all coverage reports
       uses: actions/download-artifact@v2
+      with:
         path: build/cov/
     - name: Merge coverage reports
       run: |
