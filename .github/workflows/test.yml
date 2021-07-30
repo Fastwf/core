@@ -20,4 +20,4 @@ jobs:
         composer install
     - name: Run tests
       run: |
-        php vendor/bin/phpunit tests --coverage-php build/cov/coverage-${{ matrix.php }}.cov
+        php vendor/bin/phpunit tests
