@@ -217,7 +217,7 @@ class UploadedFile {
             }
         }
 
-        return \array_map(fn($file) => new UploadedFile($file), $files);
+        return \array_map(function ($file) { return new UploadedFile($file); }, $files);
     }
 
     /**

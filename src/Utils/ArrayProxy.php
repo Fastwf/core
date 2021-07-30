@@ -102,7 +102,7 @@ class ArrayProxy {
      */
     public function getInt($key, $default = null, $array = false) {
         if ($array) {
-            return self::arrayMap(fn($item) => \intval($item), $this->get($key, null, true));
+            return self::arrayMap(function ($item) { return \intval($item); }, $this->get($key, null, true));
         } else {
             return \intval($this->get($key, $default));
         }
@@ -118,7 +118,7 @@ class ArrayProxy {
      */
     public function getFloat($key, $default = null, $array = false) {
         if ($array) {
-            return self::arrayMap(fn($item) => \floatval($item), $this->get($key, null, true));
+            return self::arrayMap(function ($item) { return \floatval($item); }, $this->get($key, null, true));
         } else {
             return \floatval($this->get($key, $default));
         }
@@ -134,7 +134,7 @@ class ArrayProxy {
      */
     public function getBoolean($key, $default = null, $array = false) {
         if ($array) {
-            return self::arrayMap(fn($item) => \boolval($item), $this->get($key, null, true));
+            return self::arrayMap(function ($item) { return \boolval($item); }, $this->get($key, null, true));
         } else {
             return \boolval($this->get($key, $default));
         }
