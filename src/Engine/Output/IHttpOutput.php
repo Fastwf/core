@@ -1,6 +1,6 @@
 <?php
 
-namespace Fastwf\Core\Http;
+namespace Fastwf\Core\Engine\Output;
 
 /**
  * HttpOutput interface help to define behaviour to write HTTP responses.

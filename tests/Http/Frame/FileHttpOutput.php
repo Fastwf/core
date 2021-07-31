@@ -2,7 +2,7 @@
 
 namespace Fastwf\Tests\Http\Frame;
 
-use Fastwf\Core\Http\IHttpOutput;
+use Fastwf\Core\Engine\Output\IHttpOutput;
 
 class FileHttpOutput implements IHttpOutput {
 

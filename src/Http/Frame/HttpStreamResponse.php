@@ -59,7 +59,7 @@ class HttpStreamResponse {
     /**
      * Allows to send the response to the client.
      *
-     * @param \Fastwf\Core\Http\IHttpOutput $httpOutput the resource where write the response.
+     * @param \Fastwf\Core\Engine\Output\IHttpOutput $httpOutput the resource where write the response.
      */
     public function send($httpOutput) {
         // Set the http response code
@@ -75,7 +75,7 @@ class HttpStreamResponse {
     /**
      * Write all headers from the array proxy containing headers.
      * 
-     * @param \Fastwf\Core\Http\IHttpOutput $httpOutput the resource where write the response.
+     * @param \Fastwf\Core\Engine\Output\IHttpOutput $httpOutput the resource where write the response.
      */
     protected function sendHeaders($httpOutput) {
         foreach ($this->_headers->keys() as $header) {
