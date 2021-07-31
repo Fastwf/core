@@ -2,10 +2,11 @@
 
 namespace Fastwf\Core\Router;
 
-use Fastwf\Core\Utils\ArrayUtil;
 use Fastwf\Core\Router\BaseRoute;
 use Fastwf\Core\Router\Parser\RouteParser;
 use Fastwf\Core\Router\Parser\SpecificationRouteParser;
+use Fastwf\Core\Utils\ArrayUtil;
+use Fastwf\Core\Utils\AsyncProperty;
 
 /**
  * Class that help to perform route match and parameter extraction.
@@ -27,7 +28,7 @@ class Route extends BaseRoute {
     public function __construct($params) {
         parent::__construct($params);
 
-        $this->handler = ArrayUtil::get($params, "handler");
+        $this->handler = new AsyncProperty(ArrayUtil::get($params, "handler"));
         // transform the methods
         $this->methods = [];
         foreach (ArrayUtil::get($params, "methods") as $method) {
@@ -73,6 +74,16 @@ class Route extends BaseRoute {
         return !$routeParser->valid() && !$pathParser->valid()
             ? ["matchers" => [$this], "parameters" => $parameters]
             : null;
+    }
+
+    /**
+     * Get the handler associated to the route.
+     *
+     * @param Fastwf\Core\Engine\Context $context the engine context
+     * @return \Fastwf\Core\Components\RequestHandler the request handler
+     */
+    public function getHandler($context) {
+        return $this->handler->get($context);
     }
 
 }

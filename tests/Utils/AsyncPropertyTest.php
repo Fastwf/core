@@ -44,4 +44,13 @@ class AsyncPropertyTest extends TestCase {
         $this->assertEquals("async", $prop->get());
     }
 
+    /**
+     * @covers Fastwf\Core\Utils\AsyncProperty
+     */
+    public function testValueFactoryWithParameters() {
+        $prop = new AsyncProperty(fn($value) => $value);
+
+        $this->assertEquals("async", $prop->get("async"));
+    }
+
 }

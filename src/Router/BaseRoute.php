@@ -3,8 +3,10 @@
 namespace Fastwf\Core\Router;
 
 use Fastwf\Core\Utils\ArrayUtil;
+use Fastwf\Core\Utils\AsyncProperty;
+use Fastwf\Core\Engine\Run\IMatcher;
 
-abstract class BaseRoute {
+abstract class BaseRoute implements IMatcher {
 
     protected $name;
     protected $path;
@@ -33,11 +35,11 @@ abstract class BaseRoute {
         $this->path = ArrayUtil::get($params, "path");
         $this->name = ArrayUtil::getSafe($params, "name");
 
-        $this->inputInterceptors = ArrayUtil::getSafe($params, "inputInterceptors", []);
-        $this->guards = ArrayUtil::getSafe($params, "guards", []);
-        $this->inputPipes = ArrayUtil::getSafe($params, "inputPipes", []);
-        $this->outputPipes = ArrayUtil::getSafe($params, "outputPipes", []);
-        $this->outputInterceptors = ArrayUtil::getSafe($params, "outputInterceptors", []);
+        $this->inputInterceptors = new AsyncProperty(ArrayUtil::getSafe($params, "inputInterceptors", []));
+        $this->guards = new AsyncProperty(ArrayUtil::getSafe($params, "guards", []));
+        $this->inputPipes = new AsyncProperty(ArrayUtil::getSafe($params, "inputPipes", []));
+        $this->outputPipes = new AsyncProperty(ArrayUtil::getSafe($params, "outputPipes", []));
+        $this->outputInterceptors = new AsyncProperty(ArrayUtil::getSafe($params, "outputInterceptors", []));
     }
 
     /**
@@ -48,5 +50,42 @@ abstract class BaseRoute {
      * @return array|null null when match failed or an array of extracted parameters and BaseRoute list when full match
      */
     public abstract function match($path, $method);
+
+    /// Implementation
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getInputInterceptors() {
+        return $this->inputInterceptors->get();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getGuards() {
+        return $this->guards->get();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getInputPipes() {
+        return $this->inputPipes->get();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOutputPipes() {
+        return $this->outputPipes->get();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOutputInterceptors() {
+        return $this->outputInterceptors->get();
+    }
 
 }
