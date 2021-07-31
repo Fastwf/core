@@ -1,5 +1,7 @@
 <?php
 
+namespace Fastwf\Tests;
+
 use Fastwf\Core\Configuration;
 
 use PHPUnit\Framework\TestCase;

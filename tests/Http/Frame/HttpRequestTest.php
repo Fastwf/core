@@ -1,14 +1,15 @@
 <?php
 
+function apache_request_headers() {
+    return [];
+}
+
+namespace Fastwf\Tests\Http\Frame;
+
 use PHPUnit\Framework\TestCase;
 
 use Fastwf\Core\Http\Frame\HttpRequest;
 use Fastwf\Core\Exceptions\AttributeError;
-
-
-function apache_request_headers() {
-    return [];
-}
 
 
 class HttpRequestTest extends TestCase {

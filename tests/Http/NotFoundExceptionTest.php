@@ -1,5 +1,7 @@
 <?php
 
+namespace Fastwf\Tests\Http;
+
 use PHPUnit\Framework\TestCase;
 use Fastwf\Core\Http\HttpException;
 use Fastwf\Core\Http\NotFoundException;

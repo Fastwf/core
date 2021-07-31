@@ -1,5 +1,7 @@
 <?php
 
+namespace Fastwf\Tests\Http\Frame;
+
 use PHPUnit\Framework\TestCase;
 
 use Fastwf\Core\Http\Frame\Headers;

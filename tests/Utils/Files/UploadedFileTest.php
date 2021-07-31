@@ -1,5 +1,7 @@
 <?php
 
+namespace Fastwf\Tests\Utils\Files;
+
 use PHPUnit\Framework\TestCase;
 
 use Fastwf\Core\Utils\Files\UploadedFile;

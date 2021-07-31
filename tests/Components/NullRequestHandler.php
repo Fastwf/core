@@ -1,5 +1,7 @@
 <?php
 
+namespace Fastwf\Tests\Components;
+
 use Fastwf\Core\Components\RequestHandler;
 
 /**

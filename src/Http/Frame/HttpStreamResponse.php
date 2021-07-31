@@ -59,27 +59,29 @@ class HttpStreamResponse {
     /**
      * Allows to send the response to the client.
      *
-     * @param resource $resource the resource where write the response.
+     * @param \Fastwf\Core\Http\IHttpOutput $httpOutput the resource where write the response.
      */
-    public function send($resource) {
+    public function send($httpOutput) {
         // Set the http response code
-        \http_response_code($this->_status);
+        $httpOutput->sendStatus($this->_status);
 
         // Write all headers
-        $this->sendHeaders();
+        $this->sendHeaders($httpOutput);
 
         // Write the body when it's possible
-        $this->write($resource);
+        $this->write($httpOutput->getResponseStream());
     }
 
     /**
      * Write all headers from the array proxy containing headers.
+     * 
+     * @param \Fastwf\Core\Http\IHttpOutput $httpOutput the resource where write the response.
      */
-    protected function sendHeaders() {
+    protected function sendHeaders($httpOutput) {
         foreach ($this->_headers->keys() as $header) {
             $value = $this->_headers->get($header);
 
-            \header("$header: $value");
+            $httpOutput->sendHeader("$header: $value");
         }
     }
 
@@ -91,7 +93,7 @@ class HttpStreamResponse {
     protected function write($resource) {
         if ($this->outIterator !== null) {
             foreach ($this->outIterator as $chunk) {
-                $this->writeChunk($chunk);
+                $this->writeChunk($resource, $chunk);
             }
         }
     }

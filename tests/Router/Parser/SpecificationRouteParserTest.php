@@ -1,5 +1,7 @@
 <?php
 
+namespace Fastwf\Tests\Router\Parser;
+
 use PHPUnit\Framework\TestCase;
 
 use Fastwf\Core\Router\Parser\SpecificationRouteParser;
