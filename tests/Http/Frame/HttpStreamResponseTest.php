@@ -70,6 +70,8 @@ class HttpStreamResponseTest extends TestCase {
      * @covers Fastwf\Core\Exceptions\AttributeError
      */
     public function testSendIoException() {
+        error_reporting(0);
+
         $this->expectException(IOException::class);
 
         $output = new FileHttpOutput(self::OUT_PATH);
@@ -90,6 +92,8 @@ class HttpStreamResponseTest extends TestCase {
         if (\file_exists(self::OUT_PATH)) {
             \unlink(self::OUT_PATH);
         }
+
+        error_reporting(E_ALL);
     }
 
 }
