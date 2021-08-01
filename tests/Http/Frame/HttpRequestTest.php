@@ -1,9 +1,5 @@
 <?php
 
-function apache_request_headers() {
-    return [];
-}
-
 namespace Fastwf\Tests\Http\Frame;
 
 use PHPUnit\Framework\TestCase;
