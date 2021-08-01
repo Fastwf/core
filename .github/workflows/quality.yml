@@ -28,6 +28,11 @@ jobs:
       run: |
         php vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -vvv
       continue-on-error: true
+    - name: Debug coveralls artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: coveralls-upload.json
+        path: build/logs/coveralls-upload.json
     - name: Fix code coverage paths for SonarCloud Scan
       run: |
         sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' build/logs/clover.xml build/logs/execution.xml
