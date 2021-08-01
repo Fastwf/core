@@ -1,5 +1,7 @@
 <?php
 
+namespace Fastwf\Tests\Utils;
+
 use PHPUnit\Framework\TestCase;
 
 use Fastwf\Core\Utils\StringUtil;

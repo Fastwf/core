@@ -22,13 +22,13 @@ class AsyncProperty {
         }
     }
 
-    public function __invoke() {
-        return $this->get();
+    public function __invoke(...$args) {
+        return $this->get(...$args);
     }
 
-    public function get() {
+    public function get(...$args) {
         if (!$this->set) {
-            $this->value = \call_user_func($this->asyncValue);
+            $this->value = \call_user_func($this->asyncValue, ...$args);
             $this->set = true;
         }
 

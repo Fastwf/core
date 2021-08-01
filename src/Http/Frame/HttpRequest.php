@@ -3,11 +3,15 @@
 namespace Fastwf\Core\Http\Frame;
 
 use Fastwf\Core\Utils\ArrayProxy;
+use Fastwf\Core\Http\Frame\Headers;
 use Fastwf\Core\Utils\Files\UploadedFile;
+use Fastwf\Core\Exceptions\AttributeError;
 
 /**
  * The object representation of the http request.
  * 
+ * @property-read string $path The path corresponding to the REQUEST_URI.
+ * @property-read string $method The request method corresponding to the REQUEST_METHOD.
  * @property-read Fastwf\Core\Utils\ArrayProxy $query the array of query parameters ($_GET)
  * @property-read Fastwf\Core\Utils\ArrayProxy $form the array that contains the parsed form data ($_POST).
  * @property-read string $body the sequence read from body request.
@@ -22,13 +26,22 @@ class HttpRequest {
 
     private $_files = null;
     
+    protected $_path;
+    protected $_method;
+
     protected $_headers;
     protected $_cookie;
 
     protected $get;
     protected $post;
 
-    public function __construct() {
+    private $input;
+
+    public function __construct($path, $method, $bodyFilename = "php://input") {
+        $this->_path = $path;
+        $this->_method = $method;
+        $this->input = $bodyFilename;
+
         $this->_headers = new Headers(\apache_request_headers());
 
         $this->get = new ArrayProxy($_GET, true);
@@ -50,11 +63,13 @@ class HttpRequest {
                 return $this->getJson();
             case 'files':
                 return $this->getFiles();
+            case 'path':
+            case 'method':
             case 'headers':
             case 'cookie':
                 return $this->{"_$name"};
             default:
-                throw new AttributeError();
+                throw new AttributeError($name);
         }
     }
 
@@ -64,7 +79,7 @@ class HttpRequest {
      * @return resource The resource bound to the request body stream.
      */
     protected function getStream() {
-        return \fopen('php://input', 'r');
+        return \fopen($this->input, 'r');
     }
 
     /**

@@ -3,40 +3,53 @@
 namespace Fastwf\Core\Engine;
 
 use Fastwf\Core\Configuration;
+use Fastwf\Core\Router\Mount;
 use Fastwf\Core\Utils\ArrayProxy;
+use Fastwf\Core\Engine\Output\ApacheHttpOutput;
+use Fastwf\Core\Engine\Run\IRunnerEngine;
+use Fastwf\Core\Engine\Run\Runner;
+use Fastwf\Core\Http\HttpException;
+use Fastwf\Core\Http\NotFoundException;
+use Fastwf\Core\Http\Frame\HttpRequest;
+use Fastwf\Core\Http\Frame\HttpResponse;
 use Fastwf\Core\Settings\ConfigurationSettings;
 use Fastwf\Core\Settings\GuardSettings;
-use Fastwf\Core\Settings\InputSettings;
 use Fastwf\Core\Settings\InputPipeSettings;
-use Fastwf\Core\Settings\RouteSettings;
-use Fastwf\Core\Settings\OutputSettings;
+use Fastwf\Core\Settings\InputSettings;
 use Fastwf\Core\Settings\OutputPipeSettings;
+use Fastwf\Core\Settings\OutputSettings;
+use Fastwf\Core\Settings\RouteSettings;
 
 /**
  * The base class that allows to create and run a Fastwf application
  */
-abstract class Engine implements Context {
+abstract class Engine implements Context, IRunnerEngine {
 
     private $configurationPath;
 
     private $settings;
     
+    protected $server;
     protected $config;
 
     protected $metadata;
 
-    protected $inputInterceptors;
-    protected $routes;
-    protected $guards;
-    protected $inputPipes;
-    protected $outPipes;
-    protected $outputInterceptors;
+    protected $inputInterceptors = [];
+    protected $routes = [];
+    protected $guards = [];
+    protected $inputPipes = [];
+    protected $outPipes = [];
+    protected $outputInterceptors = [];
+
+    protected $httpRequest = null;
 
     public function __construct($configurationPath = null) {
         // By default the application is loaded from /public/ folder and the configuration is set at root of the project
         //  When $configurationPath is not set, the configuration file is auto resolved
+        $this->server = new ArrayProxy($_SERVER, true);
+
         if ($configurationPath === null) {
-            $this->configurationPath = dirname($_SERVER['SCRIPT_FILENAME']) . '/../configuration.ini';
+            $this->configurationPath = dirname($this->server->get('SCRIPT_FILENAME')) . '/../configuration.ini';
         } else {
             $this->configurationPath = $configurationPath;
         }
@@ -76,10 +89,12 @@ abstract class Engine implements Context {
     private function load($class, $method, $property) {
         foreach ($this->settings as $setting) {
             if ($setting instanceof $class) {
-                $this->{$property} = \array_merge($this->$property, $setting->{$method}($this));
+                $this->{$property} = \array_merge($this->{$property}, $setting->{$method}($this));
             }
         }
     }
+
+    /// Private methods
 
     /**
      * Allows to setup the engine by loading the configuration and call extension to update the engine.
@@ -102,10 +117,101 @@ abstract class Engine implements Context {
         $this->load(OutputPipeSettings::class, 'getOutputPipes', 'outputPipes');
         // Register global outInterceptors
         $this->load(OutputSettings::class, 'getOutputInterceptors', 'outputInterceptors');
+    }
 
-        // TODO: Create the request
-        // TODO: Match the path with loaded routes
-        // TODO: Start the request life cycle
+    /**
+     * Create the request, perform preprocessing, create the response and post process the response.
+     *
+     * @return \Fastwf\Core\Http\Frame\HttpStreamResponse the response generated from incomming request.
+     */
+    private function handleRequest() {
+        // Match the path with loaded routes
+        try {
+            $path = $this->server->get('REQUEST_URI');
+            $method = \strtoupper($this->server->get('REQUEST_METHOD'));
+
+            // Start the request life cycle on found route
+            
+            $match = $this->findRoute($path, $method);
+
+            // Factory the http request and produce the http response
+            $httpResponse = (new Runner($this))->run(
+                new HttpRequest($path, $method),
+                $match
+            );
+        } catch (HttpException $httpException) {
+            $httpResponse = $httpException->getResponse();
+        } catch (\Exception $e) {
+            // Execution error
+            // TODO: Update this method to prevent traces in production
+            $httpResponse = new HttpResponse(
+                500,
+                ['Content-Type' => 'text/plain'],
+                "{$e->getMessage()}\n{$e->getTraceAsString()}",
+            );
+        }
+
+        return $httpResponse;
+    }
+
+    /**
+     * This methods help to find the route that correspond to the path and the methods of the http request.
+     *
+     * @param string $path the path of the request from the  '/'.
+     * @param string $methods the http method requested.
+     * @return array an array containing the list of Mount and Route for key 'matchers' and the list of extracted parameters for the key 'parameters'.
+     */
+    private function findRoute($path, $methods) {
+        $mount = new Mount([
+            'path' => $this->config->get('server.baseUrl', ''),
+            'routes' => $this->routes,
+            'name' => 'FastwfRoot',
+        ]);
+        
+        $match = $mount->match(
+            \substr($path, 1, \strlen($path) - 1),
+            $methods,
+        );
+
+        if ($match === null) {
+            // The route is not found, must return 404 response
+            throw new NotFoundException("No match for '$path'");
+        }
+
+        return $match;
+    }
+
+    /// Protected methods
+
+    /**
+     * Send the response to the client
+     *
+     * @param Fastwf\Core\Http\Frame\HttpStreamResponse $response the http response.
+     */
+    protected function sendResponse($response) {
+        // Open the stream to write http response
+        $outputStream = \fopen(
+            $this->config->get('server.output', 'php://output'),
+            'w'
+        );
+
+        // Create the HttpOutput class to send the response to the client
+        $response->send(
+            $this->getHttpOutput($outputStream),
+        );
+
+        // Close the resource
+        \fclose($outputStream);
+    }
+
+    /**
+     * Create an http output instance to write the http response.
+     *
+     * @param resource $resource the stream where write the body
+     * @return Fastwf\Core\Engine\Output\ApacheHttpOutput The HttpOutput implementation
+     */
+    protected function getHttpOutput($resource) {
+        return new ApacheHttpOutput($resource);
     }
 
     /// Public interface
@@ -116,16 +222,62 @@ abstract class Engine implements Context {
 
         // Setup the engine
         $this->setup();
+
+        // Create the response and send it to the client
+        $this->sendResponse(
+            $this->handleRequest()
+        );
     }
 
     /// Implementation
 
+    /**
+     * {@inheritDoc}
+     */
     public function getConfiguration() {
         return $this->config;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getMetadata() {
         return $this->metadata;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getInputInterceptors() {
+        return $this->inputInterceptors;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getGuards() {
+        return $this->guards;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getInputPipes() {
+        return $this->inputPipes;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOutputPipes() {
+        return $this->outPipes;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOutputInterceptors() {
+        return $this->outputInterceptors;
     }
 
 }
