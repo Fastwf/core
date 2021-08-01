@@ -72,12 +72,18 @@ class HttpStreamResponseTest extends TestCase {
     public function testSendIoException() {
         error_reporting(0);
 
+        if (preg_match("/^7\\.3.*/", \phpversion()) === 1) {
+            $this->markTestSkipped("Test skipped for PHP 7.3");
+            return;
+        }
+
         $this->expectException(IOException::class);
 
         $output = new FileHttpOutput(self::OUT_PATH);
         
-        // Close the stream to force fwrite to fail.
+        // Open the stream in read mode to cause error when fwrite
         \fclose($output->getResponseStream());
+        $output->resource = \fopen(self::OUT_PATH, 'r');
 
         function genFail() {
             yield 'no write';
