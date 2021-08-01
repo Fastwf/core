@@ -76,9 +76,8 @@ class HttpStreamResponseTest extends TestCase {
 
         $output = new FileHttpOutput(self::OUT_PATH);
         
-        // Change write rights
+        // Close the stream to force fwrite to fail.
         \fclose($output->getResponseStream());
-        $output->resource = \fopen(self::OUT_PATH, 'r');
 
         function genFail() {
             yield 'no write';
