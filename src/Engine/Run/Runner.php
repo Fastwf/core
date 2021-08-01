@@ -64,7 +64,10 @@ class Runner {
             ),
         );
 
-        $result = null;
+        // By default return the last argument:
+        //  input: request
+        //  output: response
+        $result = \end($args);
         foreach ($components as $component) {
             $result = $component->{$method}(...$args);
         }
