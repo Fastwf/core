@@ -52,25 +52,34 @@ class HttpRequest {
     public function __get($name) {
         switch ($name) {
             case 'query':
-                return $this->get;
+                $value = $this->get;
+                break;
             case 'form':
-                return $this->post;
+                $value = $this->post;
+                break;
             case 'stream':
-                return $this->getStream();
+                $value = $this->getStream();
+                break;
             case 'body':
-                return $this->getBody();
+                $value = $this->getBody();
+                break;
             case 'json':
-                return $this->getJson();
+                $value = $this->getJson();
+                break;
             case 'files':
-                return $this->getFiles();
+                $value = $this->getFiles();
+                break;
             case 'path':
             case 'method':
             case 'headers':
             case 'cookie':
-                return $this->{"_$name"};
+                $value = $this->{"_$name"};
+                break;
             default:
                 throw new AttributeError($name);
         }
+
+        return $value;
     }
 
     /**

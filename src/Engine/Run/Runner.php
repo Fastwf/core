@@ -52,7 +52,7 @@ class Runner {
         $response = $this->runStep($match, 'getOutputPipes', 'out', [$this->engine, $request, $response]);
 
         // Extract out interceptors and delegate post response processing
-        return $this->runStep($match, 'getOutputInterceptors', 'end', [$this->engine, $request, $response]);;
+        return $this->runStep($match, 'getOutputInterceptors', 'end', [$this->engine, $request, $response]);
     }
 
     private function runStep($match, $matcherMethod, $method, $args) {
