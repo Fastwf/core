@@ -4,7 +4,10 @@ namespace Fastwf\Tests\Engine;
 
 use PHPUnit\Framework\TestCase;
 
+use Fastwf\Core\Engine\Service;
+
 use Fastwf\Tests\Engine\SimpleEngine;
+use Fastwf\Tests\Engine\Services\SimpleService;
 
 class EngineTest extends TestCase {
 
@@ -243,6 +246,37 @@ class EngineTest extends TestCase {
 
         $engine = new SimpleEngine(self::TEST_CONF);
         $engine->run();
+    }
+
+    /**
+     * @covers \Fastwf\Core\Engine\Engine
+     * @covers \Fastwf\Core\Engine\Service
+     * @covers \Fastwf\Core\Utils\ArrayProxy
+     */
+    public function testGetService() {
+        $engine = new SimpleEngine(self::TEST_CONF);
+
+        $service = $engine->getService(SimpleService::class);
+
+        // Check is service and the service is a singleton
+        $this->assertTrue(\is_subclass_of($service, Service::class));
+        $this->assertEquals($service, $engine->getService(SimpleService::class));
+    }
+
+    /**
+     * @covers \Fastwf\Core\Engine\Engine
+     * @covers \Fastwf\Core\Engine\Service
+     * @covers \Fastwf\Core\Utils\ArrayProxy
+     */
+    public function testRegisterService() {
+        $engine = new SimpleEngine(self::TEST_CONF);
+
+        $service = new SimpleService($engine);
+
+        $engine->registerService(SimpleService::class, $service);
+
+        // Check the service is the registered service
+        $this->assertEquals($service, $engine->getService(SimpleService::class));
     }
 
 }

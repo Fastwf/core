@@ -40,4 +40,12 @@ class SimpleEngine implements IRunnerEngine {
         return [new SimpleOutInterceptor()];
     }
 
+    public function getService($class) {
+        return null;
+    }
+
+    public function registerService($class, $instance) {
+        // ignore
+    }
+
 }

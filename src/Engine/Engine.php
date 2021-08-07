@@ -41,6 +41,8 @@ abstract class Engine implements Context, IRunnerEngine {
     protected $outPipes = [];
     protected $outputInterceptors = [];
 
+    protected $services = [];
+
     protected $httpRequest = null;
 
     public function __construct($configurationPath = null) {
@@ -243,6 +245,26 @@ abstract class Engine implements Context, IRunnerEngine {
      */
     public function getMetadata() {
         return $this->metadata;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getService($class) {
+        if (!\array_key_exists($class, $this->services)) {
+            // Create the instance of the service using Service class constructor
+            $this->services[$class] = new $class($this);
+        }
+
+        return $this->services[$class];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function registerService($class, $instance) {
+        // The previous class is overriden by the new $instance parameter
+        $this->services[$class] = $instance;
     }
 
     /**
