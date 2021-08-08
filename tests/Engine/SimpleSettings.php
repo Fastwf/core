@@ -8,6 +8,7 @@ use Fastwf\Core\Settings\RouteSettings;
 
 use Fastwf\Tests\Components\SimpleGuard;
 use Fastwf\Tests\Engine\ErrorRequestHandler;
+use Fastwf\Tests\Engine\OldErrorRequestHandler;
 
 class SimpleSettings implements GuardSettings, RouteSettings {
 
@@ -21,6 +22,11 @@ class SimpleSettings implements GuardSettings, RouteSettings {
                 'path' => 'fail',
                 'methods' => ['GET'],
                 'handler' => function ($context) { return new ErrorRequestHandler($context); }
+            ]),
+            new Route([
+                'path' => 'fail-old-style',
+                'methods' => ['GET'],
+                'handler' => function ($context) { return new OldErrorRequestHandler($context); }
             ]),
             new Route([
                 'path' => 'success',

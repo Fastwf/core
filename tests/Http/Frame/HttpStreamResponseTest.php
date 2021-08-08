@@ -71,6 +71,10 @@ class HttpStreamResponseTest extends TestCase {
      */
     public function testSendIoException() {
         error_reporting(0);
+        
+        \set_error_handler(function () {
+            // ignore
+        });
 
         if (preg_match("/^7\\.3.*/", \phpversion()) === 1) {
             $this->markTestSkipped("Test skipped for PHP 7.3");

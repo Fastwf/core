@@ -279,4 +279,39 @@ class EngineTest extends TestCase {
         $this->assertEquals($service, $engine->getService(SimpleService::class));
     }
 
+
+    /**
+     * Test 500 internal error with old error style
+     * 
+     * @covers \Fastwf\Core\Engine\Engine
+     * @covers \Fastwf\Core\Configuration
+     * @covers \Fastwf\Core\Http\Frame\HttpResponse
+     * @covers \Fastwf\Core\Http\Frame\HttpStreamResponse
+     * @covers \Fastwf\Core\Http\HttpException
+     * @covers \Fastwf\Core\Http\NotFoundException
+     * @covers \Fastwf\Core\Router\BaseRoute
+     * @covers \Fastwf\Core\Router\Mount
+     * @covers \Fastwf\Core\Router\Route
+     * @covers \Fastwf\Core\Router\Parser\RouteParser
+     * @covers \Fastwf\Core\Utils\ArrayProxy
+     * @covers \Fastwf\Core\Utils\ArrayUtil
+     * @covers \Fastwf\Core\Utils\AsyncProperty
+     * @covers \Fastwf\Core\Components\RequestHandler
+     * @covers \Fastwf\Core\Engine\Run\Runner
+     * @covers \Fastwf\Core\Http\Frame\Headers
+     * @covers \Fastwf\Core\Http\Frame\HttpRequest
+     * @covers \Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers \Fastwf\Core\Router\Segment
+     * @covers \Fastwf\Core\Engine\Output\ApacheHttpOutput
+     */
+    public function testExceptionHandler() {
+        $_SERVER['REQUEST_URI'] = '/fail-old-style';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        $this->expectOutputRegex('/^Old error style/');
+
+        $engine = new SimpleEngine(self::TEST_CONF);
+        $engine->run();
+    }
+
 }

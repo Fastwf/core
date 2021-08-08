@@ -106,6 +106,9 @@ abstract class Engine implements Context, IRunnerEngine {
         $this->config = new Configuration($this->configurationPath);
         $this->onConfigurationLoaded();
 
+        // Register the error handler
+        $this->setErrorHandler();
+
         // Load the routes from settings
         $this->load(RouteSettings::class, 'getRoutes', 'routes');
 
@@ -185,6 +188,10 @@ abstract class Engine implements Context, IRunnerEngine {
 
     /// Protected methods
 
+    protected function setErrorHandler() {
+        \set_error_handler([$this, 'onError']);
+    }
+
     /**
      * Send the response to the client
      *
@@ -217,6 +224,10 @@ abstract class Engine implements Context, IRunnerEngine {
     }
 
     /// Public interface
+
+    public function onError($severity, $errMessage, $errFile = null, $errLine = null, $errContext = null) {
+        throw new \ErrorException($errMessage, 0, $severity, $errFile, $errLine);
+    }
 
     public function run() {
         // Load settings
