@@ -39,8 +39,18 @@ class Route extends BaseRoute {
     public function match($path, $method) {
         if (!\in_array($method, $this->methods)) {
             return null;
+        } else {
+            return $this->matchPath($path);
         }
+    }
 
+    /**
+     * Verify that the path match this route and return null or matching infos.
+     *
+     * @param string $path the path of the request.
+     * @return array|null the matching information.
+     */
+    public function matchPath($path) {
         $parameters = [];
         
         $routeParser = new SpecificationRouteParser($this->path);
