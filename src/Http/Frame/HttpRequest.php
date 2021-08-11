@@ -37,6 +37,19 @@ class HttpRequest {
 
     private $input;
 
+    /**
+     * Parameters extracted from the route and mount points
+     *
+     * @var array
+     */
+    public $parameters;
+    /**
+     * The name of the route that match the client request
+     *
+     * @var string|null
+     */
+    public $name;
+
     public function __construct($path, $method, $bodyFilename = "php://input") {
         $this->_path = $path;
         $this->_method = $method;

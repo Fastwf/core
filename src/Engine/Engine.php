@@ -140,8 +140,12 @@ abstract class Engine implements Context, IRunnerEngine {
             $match = $this->findRoute($path, $method);
 
             // Factory the http request and produce the http response
+            $request = new HttpRequest($path, $method);
+            $request->name = end($match['matchers'])->getName();
+            $request->parameters = $match['parameters'];
+
             $httpResponse = (new Runner($this))->run(
-                new HttpRequest($path, $method),
+                $request,
                 $match
             );
         } catch (HttpException $httpException) {

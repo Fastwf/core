@@ -96,6 +96,21 @@ class HttpRequestTest extends TestCase {
      * @covers Fastwf\Core\Utils\ArrayProxy
      * @covers Fastwf\Core\Http\Frame\Headers
      * @covers Fastwf\Core\Http\Frame\HttpRequest
+     */
+    public function testParametersAndName() {        
+        $req = new HttpRequest("/", "GET");
+        
+        $req->name = 'get_user';
+        $req->parameters = ['id' => 10];
+
+        $this->assertEquals(['id' => 10], $req->parameters);
+        $this->assertEquals('get_user', $req->name);
+    }
+
+    /**
+     * @covers Fastwf\Core\Utils\ArrayProxy
+     * @covers Fastwf\Core\Http\Frame\Headers
+     * @covers Fastwf\Core\Http\Frame\HttpRequest
      * @covers Fastwf\Core\Exceptions\AttributeError
      */
     public function testNoAttribute() {

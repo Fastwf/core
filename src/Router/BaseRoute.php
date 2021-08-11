@@ -51,6 +51,15 @@ abstract class BaseRoute implements IMatcher {
      */
     public abstract function match($path, $method);
 
+    /**
+     * Get the name of the route when it's set
+     *
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
+    }
+
     /// Implementation
 
     /**
