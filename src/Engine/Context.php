@@ -18,10 +18,13 @@ interface Context extends IEngine {
     /**
      * Register a service for $class using the $instance object.
      * 
+     * It's preferable to use factory function instead of instance to allows to create the instance only
+     * when it's required by the application.
+     * 
      * This can be usefull when the service must be instanciated in a specific way instead of default.
      *
      * @param string $class the class name associated to the instance
-     * @param mixed $instance the instance to save as service
+     * @param mixed $instance the service factory or the service istance to save.
      */
     public function registerService($class, $instance);
 

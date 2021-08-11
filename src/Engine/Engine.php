@@ -3,8 +3,6 @@
 namespace Fastwf\Core\Engine;
 
 use Fastwf\Core\Configuration;
-use Fastwf\Core\Router\Mount;
-use Fastwf\Core\Utils\ArrayProxy;
 use Fastwf\Core\Engine\Output\ApacheHttpOutput;
 use Fastwf\Core\Engine\Run\IRunnerEngine;
 use Fastwf\Core\Engine\Run\Runner;
@@ -12,13 +10,16 @@ use Fastwf\Core\Http\HttpException;
 use Fastwf\Core\Http\NotFoundException;
 use Fastwf\Core\Http\Frame\HttpRequest;
 use Fastwf\Core\Http\Frame\HttpResponse;
-use Fastwf\Core\Settings\ConfigurationSettings;
+use Fastwf\Core\Router\Mount;
 use Fastwf\Core\Settings\GuardSettings;
 use Fastwf\Core\Settings\InputPipeSettings;
 use Fastwf\Core\Settings\InputSettings;
+use Fastwf\Core\Settings\RouteSettings;
 use Fastwf\Core\Settings\OutputPipeSettings;
 use Fastwf\Core\Settings\OutputSettings;
-use Fastwf\Core\Settings\RouteSettings;
+use Fastwf\Core\Settings\ConfigurationSettings;
+use Fastwf\Core\Utils\ArrayProxy;
+use Fastwf\Core\Utils\AsyncProperty;
 
 /**
  * The base class that allows to create and run a Fastwf application
@@ -266,10 +267,10 @@ abstract class Engine implements Context, IRunnerEngine {
     public function getService($class) {
         if (!\array_key_exists($class, $this->services)) {
             // Create the instance of the service using Service class constructor
-            $this->services[$class] = new $class($this);
+            $this->services[$class] = new AsyncProperty(new $class($this));
         }
 
-        return $this->services[$class];
+        return $this->services[$class]->get();
     }
 
     /**
@@ -277,7 +278,7 @@ abstract class Engine implements Context, IRunnerEngine {
      */
     public function registerService($class, $instance) {
         // The previous class is overriden by the new $instance parameter
-        $this->services[$class] = $instance;
+        $this->services[$class] = new AsyncProperty($instance);
     }
 
     /**

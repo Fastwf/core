@@ -252,6 +252,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Engine\Engine
      * @covers \Fastwf\Core\Engine\Service
      * @covers \Fastwf\Core\Utils\ArrayProxy
+     * @covers \Fastwf\Core\Utils\AsyncProperty
      */
     public function testGetService() {
         $engine = new SimpleEngine(self::TEST_CONF);
@@ -267,6 +268,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Engine\Engine
      * @covers \Fastwf\Core\Engine\Service
      * @covers \Fastwf\Core\Utils\ArrayProxy
+     * @covers \Fastwf\Core\Utils\AsyncProperty
      */
     public function testRegisterService() {
         $engine = new SimpleEngine(self::TEST_CONF);
@@ -279,6 +281,30 @@ class EngineTest extends TestCase {
         $this->assertEquals($service, $engine->getService(SimpleService::class));
     }
 
+    /**
+     * @covers \Fastwf\Core\Engine\Engine
+     * @covers \Fastwf\Core\Engine\Service
+     * @covers \Fastwf\Core\Utils\ArrayProxy
+     * @covers \Fastwf\Core\Utils\AsyncProperty
+     */
+    public function testRegisterServiceFactory() {
+        $engine = new SimpleEngine(self::TEST_CONF);
+
+        $service = null;
+
+        $engine->registerService(
+            SimpleService::class,
+            function () use ($engine, &$service) {
+                $service = new SimpleService($engine);
+
+                return $service;
+            }
+        );
+
+        // Check the service is the registered service
+        $this->assertNotNull($engine->getService(SimpleService::class));
+        $this->assertEquals($service, $engine->getService(SimpleService::class));
+    }
 
     /**
      * Test 500 internal error with old error style
