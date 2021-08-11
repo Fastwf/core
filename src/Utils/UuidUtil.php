@@ -38,13 +38,9 @@ class UuidUtil {
                     $expected = $sizes[$sizeIndex];
                     $count = 0;
                 }
+            } else if (!self::isLowerAlphaNum($char)) {
+                return false;
             } else {
-                // Control that char is in '0' to '9' and 'a' to 'f'
-                $ord = ord($char);
-                if (($ord < 48 || 57 < $ord) && ($ord < 97 || 102 < $ord)) {
-                    return false;
-                }
-
                 $count++;
             }
 
@@ -53,6 +49,18 @@ class UuidUtil {
 
         // Count the final number of chars
         return $count === $expected && $sizeIndex === 4;
+    }
+
+    /**
+     * Verify the char is in '0' to '9' and 'a' to 'f'
+     *
+     * @param string $char
+     * @return boolean
+     */
+    private static function isLowerAlphaNum($char) {
+        $ord = ord($char);
+
+        return (48 <= $ord && $ord <= 57) || (97 <= $ord && $ord <= 102);
     }
 
 }

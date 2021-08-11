@@ -99,7 +99,7 @@ class SegmentTest extends TestCase {
 
     /**
      * @covers Fastwf\Core\Router\Segment
-     * @covers Fastwf\Core\Utils\UuidUtil::isUuid
+     * @covers Fastwf\Core\Utils\UuidUtil
      */
     public function testSegmentParameterUuidMatch() {
         $segment = new Segment('{uuid:name}');
