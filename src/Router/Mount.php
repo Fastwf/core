@@ -30,6 +30,53 @@ class Mount extends BaseRoute {
         $this->routes = new AsyncProperty(ArrayUtil::get($params, "routes"));
     }
 
+    /**
+     * Verify that the path match the start of the mount path specification.
+     *
+     * @param Fastwf\Core\Router\Parser\SpecificationRouteParser $mountParser the segment specification
+     * @param Fastwf\Core\Router\Parser\RouteParser $pathParser the route parser
+     * @param array $parameters the array that contains the parameters
+     * @param boolean $stop the boolean to set when the result must return before
+     * @return array|null null or match
+     */
+    private function matchPath($mountParser, $pathParser, &$parameters, &$stop) {
+        $mountParser->rewind();
+        $pathParser->rewind();
+
+        $mountIsValid = $mountParser->valid();
+        while ($mountIsValid && $pathParser->valid()) {
+            $segment = $mountParser->current();
+
+            if (!$segment->match($pathParser->current())) {
+                // The mount point don't match the current path -> return null
+                $stop = true;
+
+                return null;
+            }
+
+            if ($segment->isWildcard()) {
+                // When the segment is wildcard, the next path is full match
+                $stop = true;
+
+                // TODO: change this logic (a wildcard not allows to match the routes)
+                return $segment;
+            } else if ($segment->isParameter()) {
+                $parameters["{$this->name}/{$segment->getName()}"] = $segment->getParameter();
+            }
+
+            // To next segment
+            $mountParser->next();
+            $mountIsValid = $mountParser->valid();
+            // Prevent to go to the next segment if the mount parser is invalid
+            //  otherwise the nextPath become invalid
+            if ($mountIsValid) {
+                $pathParser->next();
+            }
+        }
+
+        return null;
+    }
+
     // Implementation
 
     public function match($path, $method) {
@@ -39,33 +86,11 @@ class Mount extends BaseRoute {
         $pathParser = new RouteParser($path);
     
         if ($this->path !== '') {
-            $mountParser->rewind();
-            $pathParser->rewind();
-    
-            $mountIsValid = $mountParser->valid();
-            while ($mountIsValid && $pathParser->valid()) {
-                $segment = $mountParser->current();
-    
-                if (!$segment->match($pathParser->current())) {
-                    // The mount point don't match the current path -> return null
-                    return null;
-                }
-    
-                if ($segment->isWildcard()) {
-                    // When the segment is wildcard, the next path is full match
-                    return $segment;
-                } else if ($segment->isParameter()) {
-                    $parameters["{$this->name}/{$segment->getName()}"] = $segment->getParameter();
-                }
-    
-                // To next segment
-                $mountParser->next();
-                $mountIsValid = $mountParser->valid();
-                // Prevent to go to the next segment if the mount parser is invalid
-                //  otherwise the nextPath become invalid
-                if ($mountIsValid) {
-                    $pathParser->next();
-                }
+            $stop = false;
+            $result = $this->matchPath($mountParser, $pathParser, $parameters, $stop);
+
+            if ($stop) {
+                return $result;
             }
         }
 
