@@ -141,8 +141,6 @@ abstract class Engine implements Context, IRunnerEngine {
 
             // Factory the http request and produce the http response
             $request = new HttpRequest($path, $method);
-            $request->name = end($match['matchers'])->getName();
-            $request->parameters = $match['parameters'];
 
             $httpResponse = (new Runner($this))->run(
                 $request,

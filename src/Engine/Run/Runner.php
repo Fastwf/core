@@ -45,6 +45,10 @@ class Runner {
 
         // Generate the reqest handler and handle the request to generate the http response
         $route = end($match['matchers']);
+        // Add name and parameters from matching route
+        $request->name = $route->getName();
+        $request->parameters = $match['parameters'];
+
         $response = $route->getHandler($this->engine)
             ->handle($request);
 
