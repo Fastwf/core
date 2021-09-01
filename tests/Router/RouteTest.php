@@ -69,4 +69,34 @@ class RouteTest extends TestCase {
         $this->assertEquals(['test/id' => 10], $route->match('user/10', 'GET')['parameters']);
     }
 
+    /**
+     * @covers Fastwf\Core\Router\BaseRoute
+     * @covers Fastwf\Core\Router\Route
+     * @covers Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Router\Parser\RouteParser
+     * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers Fastwf\Core\Utils\ArrayUtil
+     * @covers Fastwf\Core\Utils\AsyncProperty
+     */
+    public function testMatchParameterNoRouteName() {
+        $route = new Route(['path' => 'user/{int:id}', 'methods' => ['get'], 'handler' => null]);
+
+        $this->assertEquals(['id' => 10], $route->match('user/10', 'GET')['parameters']);
+    }
+
+    /**
+     * @covers Fastwf\Core\Router\BaseRoute
+     * @covers Fastwf\Core\Router\Route
+     * @covers Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Router\Parser\RouteParser
+     * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers Fastwf\Core\Utils\ArrayUtil
+     * @covers Fastwf\Core\Utils\AsyncProperty
+     */
+    public function testMatchParameterRouteNameEmpty() {
+        $route = new Route(['path' => 'user/{int:id}', 'methods' => ['get'], 'name' => '  ', 'handler' => null]);
+
+        $this->assertEquals(['id' => 10], $route->match('user/10', 'GET')['parameters']);
+    }
+
 }

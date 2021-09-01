@@ -97,4 +97,19 @@ abstract class BaseRoute implements IMatcher {
         return $this->outputInterceptors->get();
     }
 
+    /**
+     * Generate the parameter name sequence according to the route name and parameter name.
+     *
+     * @param string|null $routeName the name of the route or mount point
+     * @param string $parameterName the name of the segment's parameter.
+     * @return string the qualified parameter name ($parameterName or "$routeName/$parameterName";)
+     */
+    protected static function getParameterName($routeName, $parameterName) {
+        if ($routeName === null || trim($routeName) === "") {
+            return $parameterName;
+        } else {
+            return "$routeName/$parameterName";
+        }
+    }
+
 }

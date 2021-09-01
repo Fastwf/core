@@ -72,7 +72,7 @@ class Route extends BaseRoute {
                 return ["matchers" => [$this], "parameters" => $parameters];
             } else if ($segment->isParameter()) {
                 // Collect parameter using the $this->name as parameter namespace
-                $parameters["{$this->name}/{$segment->getName()}"] = $segment->getParameter();
+                $parameters[self::getParameterName($this->name, $segment->getName())] = $segment->getParameter();
             }
 
             $routeParser->next();

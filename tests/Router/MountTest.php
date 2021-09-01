@@ -181,6 +181,35 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Utils\ArrayUtil
      */
+    public function testMountMatchParametersNoMountName() {
+        $mount = new Mount([
+            'path' => 'group/{id}/',
+            'routes' => [
+                new Route([
+                    'path' => 'user/{int:id}',
+                    'methods' => ['GET'],
+                    'handler' => null,
+                    'name' => 'getUsers',
+                ]),
+            ],
+        ]);
+
+        $this->assertEquals(
+            ["id" => 'fastwf-team', 'getUsers/id' => 10],
+            $mount->match('group/fastwf-team/user/10', 'GET')['parameters']
+        );
+    }
+
+    /**
+     * @covers Fastwf\Core\Router\BaseRoute
+     * @covers Fastwf\Core\Router\Route
+     * @covers Fastwf\Core\Router\Mount
+     * @covers Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Router\Parser\RouteParser
+     * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers Fastwf\Core\Utils\AsyncProperty
+     * @covers Fastwf\Core\Utils\ArrayUtil
+     */
     public function testMountOnEmpty() {
         $mount = new Mount([
             'path' => '',

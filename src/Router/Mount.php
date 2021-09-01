@@ -61,7 +61,7 @@ class Mount extends BaseRoute {
                 // TODO: change this logic (a wildcard not allows to match the routes)
                 return $segment;
             } else if ($segment->isParameter()) {
-                $parameters["{$this->name}/{$segment->getName()}"] = $segment->getParameter();
+                $parameters[self::getParameterName($this->name, $segment->getName())] = $segment->getParameter();
             }
 
             // To next segment
