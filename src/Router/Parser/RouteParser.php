@@ -17,10 +17,10 @@ class RouteParser implements \Iterator {
 
     protected $path;
 
-    private $index = 0;
-    private $length;
+    protected $index = 0;
+    protected $length;
 
-    private $isValid = true;
+    protected $isValid = true;
     protected $segment;
     protected $segmentIndex = -1;
 
@@ -69,7 +69,7 @@ class RouteParser implements \Iterator {
      *
      * @return string the next segment in the path
      */
-    private function nextSegment() {
+    protected function nextSegment() {
         $this->segment = '';
 
         // while the end is not reached and the current char is not a '/'

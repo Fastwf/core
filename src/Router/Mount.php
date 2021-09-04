@@ -5,6 +5,7 @@ namespace Fastwf\Core\Router;
 use Fastwf\Core\Utils\ArrayUtil;
 use Fastwf\Core\Utils\AsyncProperty;
 use Fastwf\Core\Router\BaseRoute;
+use Fastwf\Core\Router\MountException;
 use Fastwf\Core\Router\Parser\RouteParser;
 use Fastwf\Core\Router\Parser\SpecificationRouteParser;
 
@@ -54,12 +55,10 @@ class Mount extends BaseRoute {
                 return null;
             }
 
-            if ($segment->isWildcard()) {
-                // When the segment is wildcard, the next path is full match
-                $stop = true;
-
-                // TODO: change this logic (a wildcard not allows to match the routes)
-                return $segment;
+            if ($segment->isWildcard() || $segment->isPath()) {
+                // When the segment is wildcard or path, the next path is full match
+                //  Because it's not possible to check the end of the path, path and wildcard are not allowed
+                throw new MountException("Wildcard '**' or path '{path:parameterName}' are not allowed for mount path specification");
             } else if ($segment->isParameter()) {
                 $parameters[self::getParameterName($this->name, $segment->getName())] = $segment->getParameter();
             }

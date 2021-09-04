@@ -6,6 +6,8 @@ use PHPUnit\Framework\TestCase;
 
 use Fastwf\Core\Router\Mount;
 use Fastwf\Core\Router\Route;
+use Fastwf\Core\Router\MountException;
+
 
 class MountTest extends TestCase {
 
@@ -124,10 +126,42 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Utils\ArrayUtil
+     * @covers Fastwf\Core\Router\MountException
      */
-    public function testMountMatchWildcard() {
+    public function testMountWildcardFailed() {
+        $this->expectException(MountException::class);
+
         $mount = new Mount([
             'path' => 'mount/**/',
+            'routes' => [
+                new Route([
+                    'path' => 'user',
+                    'methods' => ['GET'],
+                    'handler' => null,
+                    'name' => 'getUsers',
+                ]),
+            ],
+        ]);
+
+        $this->assertNotNull($mount->match('mount/path/user', 'GET'));
+    }
+
+    /**
+     * @covers Fastwf\Core\Router\BaseRoute
+     * @covers Fastwf\Core\Router\Route
+     * @covers Fastwf\Core\Router\Mount
+     * @covers Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Router\Parser\RouteParser
+     * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers Fastwf\Core\Utils\AsyncProperty
+     * @covers Fastwf\Core\Utils\ArrayUtil
+     * @covers Fastwf\Core\Router\MountException
+     */
+    public function testMountPathFailed() {
+        $this->expectException(MountException::class);
+
+        $mount = new Mount([
+            'path' => 'mount/{path:fileName}/',
             'routes' => [
                 new Route([
                     'path' => 'user',

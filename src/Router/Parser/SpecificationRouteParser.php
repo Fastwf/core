@@ -9,8 +9,26 @@ use Fastwf\Core\Router\Segment;
  */
 class SpecificationRouteParser extends RouteParser {
 
+    protected $specificationSegment = null;
+
+    protected function nextSegment() {
+        parent::nextSegment();
+
+	if ($this->segment) {
+            $this->specificationSegment = new Segment($this->segment);
+	}
+    }
+
+    public function next() {
+        // Stop the iteration when a path segment is discovered
+        //  That allows to return the same segment to accumulate the path as parameter
+        if ($this->specificationSegment === null || !$this->specificationSegment->isPath()) {
+            parent::next();
+        }
+    }
+
     public function current() {
-        return new Segment($this->segment);
+        return $this->specificationSegment;
     }
 
 }

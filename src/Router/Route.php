@@ -81,7 +81,7 @@ class Route extends BaseRoute {
 
         // When the both parser are invalid, the route specification and the path match
         //  return parameters else null
-        return !$routeParser->valid() && !$pathParser->valid()
+        return (!$routeParser->valid() || $routeParser->current()->isPath()) && !$pathParser->valid()
             ? ["matchers" => [$this], "parameters" => $parameters]
             : null;
     }

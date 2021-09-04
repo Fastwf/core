@@ -99,4 +99,19 @@ class RouteTest extends TestCase {
         $this->assertEquals(['id' => 10], $route->match('user/10', 'GET')['parameters']);
     }
 
+    /**
+     * @covers Fastwf\Core\Router\BaseRoute
+     * @covers Fastwf\Core\Router\Route
+     * @covers Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Router\Parser\RouteParser
+     * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers Fastwf\Core\Utils\ArrayUtil
+     * @covers Fastwf\Core\Utils\AsyncProperty
+     */
+    public function testMatchPath() {
+        $route = new Route(['path' => '{path:fileName}', 'methods' => ['get'], 'handler' => null]);
+
+        $this->assertNotNull($route->match('hello/accepted', 'GET'));
+    }
+
 }

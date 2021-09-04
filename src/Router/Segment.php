@@ -22,12 +22,13 @@ class Segment {
      *  - float
      *  - string
      *  - uuid
+     *  - path
      *
      * @var string
      */
     private $type;
 
-    private $parameter;
+    private $parameter = null;
 
     private $wildcard = false;
 
@@ -105,6 +106,9 @@ class Segment {
                         return false;
                     }
                     break;
+                case 'path':
+                    $this->parameter = $this->gluePath($segment);
+                    break;
                 default:
                     throw new ParameterTypeException("Invalid route parameter type '{$this->type}'");
             }
@@ -112,6 +116,20 @@ class Segment {
         } catch (ParameterConversionException $e) {
             return false;
         }
+    }
+
+    /**
+     * Concat the new segment to the existing parameter sequence.
+     * 
+     * To use for 'path' type
+     *
+     * @param string $segment the segment extracted from the route.
+     * @return string the joined path accumulated
+     */
+    private function gluePath($segment) {
+        return $this->parameter === null
+                ? $segment
+                : "{$this->parameter}/$segment";
     }
 
     // Public methods
@@ -152,6 +170,15 @@ class Segment {
      */
     public function isWildcard() {
         return $this->wildcard;
+    }
+
+    /**
+     * Identify when the parameter is a 'path' type
+     *
+     * @return boolean true when is a path
+     */
+    public function isPath() {
+        return $this->type == "path";
     }
 
     /**
