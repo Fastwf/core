@@ -174,7 +174,7 @@ class EngineTest extends TestCase {
         $_SERVER['REQUEST_URI'] = '/fail';
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
-        $this->expectOutputRegex('/^Error Processing Request/');
+        $this->expectOutputRegex('/^$/');
 
         $engine = new SimpleEngine(self::TEST_CONF);
         $engine->run();
@@ -334,7 +334,7 @@ class EngineTest extends TestCase {
         $_SERVER['REQUEST_URI'] = '/fail-old-style';
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
-        $this->expectOutputRegex('/^Old error style/');
+        $this->expectOutputRegex('/^$/');
 
         $engine = new SimpleEngine(self::TEST_CONF);
         $engine->run();

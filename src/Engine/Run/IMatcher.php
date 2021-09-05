@@ -8,38 +8,45 @@ namespace Fastwf\Core\Engine\Run;
 interface IMatcher {
 
     /**
-     * Access to engine input interceptors.
+     * Access to matcher input interceptors.
      *
      * @return array the list of input interceptors.
      */
     public function getInputInterceptors();
 
     /**
-     * Access to engine guards.
+     * Access to matcher guards.
      *
      * @return array the list of guards.
      */
     public function getGuards();
 
     /**
-     * Access to engine input pipes.
+     * Access to matcher input pipes.
      *
      * @return array the list of input pipes.
      */
     public function getInputPipes();
 
     /**
-     * Access to engine output pipes.
+     * Access to matcher output pipes.
      *
      * @return array the list of output pipes.
      */
     public function getOutputPipes();
 
     /**
-     * Access to engine output interceptors.
+     * Access to matcher output interceptors.
      *
      * @return array the list of output interceptors.
      */
     public function getOutputInterceptors();
+
+    /**
+     * Access to matcher exception handlers.
+     *
+     * @return array the list of exception handlers.
+     */
+    public function getExceptionHandlers();
 
 }

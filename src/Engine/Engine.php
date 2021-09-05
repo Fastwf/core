@@ -41,10 +41,9 @@ abstract class Engine implements Context, IRunnerEngine {
     protected $inputPipes = [];
     protected $outPipes = [];
     protected $outputInterceptors = [];
+    protected $exceptionHandlers = [];
 
     protected $services = [];
-
-    protected $httpRequest = null;
 
     public function __construct($configurationPath = null) {
         // By default the application is loaded from /public/ folder and the configuration is set at root of the project
@@ -123,6 +122,8 @@ abstract class Engine implements Context, IRunnerEngine {
         $this->load(OutputPipeSettings::class, 'getOutputPipes', 'outputPipes');
         // Register global outInterceptors
         $this->load(OutputSettings::class, 'getOutputInterceptors', 'outputInterceptors');
+        // Register global exception handlers
+        $this->load(ExceptionSettings::class, 'getExceptionHandlers', 'exceptionHandlers');
     }
 
     /**
@@ -148,15 +149,12 @@ abstract class Engine implements Context, IRunnerEngine {
                 $match
             );
         } catch (HttpException $httpException) {
+            // Http exception create the associated response and send it to client
             $httpResponse = $httpException->getResponse();
         } catch (\Exception $e) {
-            // Execution error
-            // TODO: Update this method to prevent traces in production
-            $httpResponse = new HttpResponse(
-                500,
-                ['Content-Type' => 'text/plain'],
-                "{$e->getMessage()}\n{$e->getTraceAsString()}",
-            );
+            // Execution error, return 500 internal error response with empty body
+            // TODO: Use logger system to log the exception ["{$e->getMessage()}\n{$e->getTraceAsString()}"]
+            $httpResponse = new HttpResponse(500, ['Content-Type' => 'text/plain'], "");
         }
 
         return $httpResponse;
@@ -314,6 +312,13 @@ abstract class Engine implements Context, IRunnerEngine {
      */
     public function getOutputInterceptors() {
         return $this->outputInterceptors;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getExceptionHandlers() {
+        return $this->exceptionHandlers;
     }
 
 }

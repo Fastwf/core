@@ -16,6 +16,7 @@ abstract class BaseRoute implements IMatcher {
     protected $inputPipes;
     protected $outputPipes;
     protected $outputInterceptors;
+    protected $exceptionHandlers;
 
     /**
      * Constructor.
@@ -40,6 +41,7 @@ abstract class BaseRoute implements IMatcher {
         $this->inputPipes = new AsyncProperty(ArrayUtil::getSafe($params, "inputPipes", []));
         $this->outputPipes = new AsyncProperty(ArrayUtil::getSafe($params, "outputPipes", []));
         $this->outputInterceptors = new AsyncProperty(ArrayUtil::getSafe($params, "outputInterceptors", []));
+        $this->exceptionHandlers = new AsyncProperty(ArrayUtil::getSafe($params, "exceptionHandlers", []));
     }
 
     /**
@@ -95,6 +97,13 @@ abstract class BaseRoute implements IMatcher {
      */
     public function getOutputInterceptors() {
         return $this->outputInterceptors->get();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getExceptionHandlers() {
+        return $this->exceptionHandlers->get();
     }
 
     /**

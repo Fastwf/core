@@ -34,29 +34,39 @@ class Runner {
      * @return Fastwf\Core\Http\Frame\HttpStreamResponse the response produced by request handler.
      */
     public function run($request, $match) {
-        // Extract input interceptors and delegate input processing
-        $request = $this->runStep($match, 'getInputInterceptors', 'start', [$this->engine, $request]);
+        $response = null;
+        try
+        {
+            // Extract input interceptors and delegate input processing
+            $request = $this->runStep($match, 'getInputInterceptors', 'start', [$this->engine, $request]);
 
-        // Extract guards and control the request
-        $this->runStep($match, 'getGuards', 'control', [$this->engine, $request]);
+            // Extract guards and control the request
+            $this->runStep($match, 'getGuards', 'control', [$this->engine, $request]);
 
-        // Extract input pipes and delegate request transformation
-        $request = $this->runStep($match, 'getInputPipes', 'in', [$this->engine, $request]);
+            // Extract input pipes and delegate request transformation
+            $request = $this->runStep($match, 'getInputPipes', 'in', [$this->engine, $request]);
 
-        // Generate the reqest handler and handle the request to generate the http response
-        $route = end($match['matchers']);
-        // Add name and parameters from matching route
-        $request->name = $route->getName();
-        $request->parameters = $match['parameters'];
+            // Generate the reqest handler and handle the request to generate the http response
+            $route = end($match['matchers']);
+            // Add name and parameters from matching route
+            $request->name = $route->getName();
+            $request->parameters = $match['parameters'];
 
-        $response = $route->getHandler($this->engine)
-            ->handle($request);
+            $response = $route->getHandler($this->engine)
+                ->handle($request);
 
-        // Extract out pipes and delegate post response transformation
-        $response = $this->runStep($match, 'getOutputPipes', 'out', [$this->engine, $request, $response]);
+            // Extract out pipes and delegate post response transformation
+            $response = $this->runStep($match, 'getOutputPipes', 'out', [$this->engine, $request, $response]);
 
-        // Extract out interceptors and delegate post response processing
-        return $this->runStep($match, 'getOutputInterceptors', 'end', [$this->engine, $request, $response]);
+            // Extract out interceptors and delegate post response processing
+            $response = $this->runStep($match, 'getOutputInterceptors', 'end', [$this->engine, $request, $response]);
+        }
+        catch (\Exception $e)
+        {
+            $response = $this->handleException($e, $match, $request, $response);
+        }
+        
+        return $response;
     }
 
     private function runStep($match, $matcherMethod, $method, $args) {
@@ -77,6 +87,50 @@ class Runner {
         }
 
         return $result;
+    }
+
+    /**
+     * Handle the exception caught during request processing.
+     *
+     * @param \Exception $exception
+     * @param array $match the match array
+     * @param Fastwf\Core\Http\Frame\HttpRequest $request the incomming request
+     * @param Fastwf\Core\Http\Frame\HttpStreamResponse $response the response generated during request processing
+     * @return Fastwf\Core\Http\Frame\HttpStreamResponse the response in replacement
+     * @throws \Exception when exception handlers cannot treat the exception
+     */
+    private function handleException($exception, $match, $request, $response)
+    {
+        // Load exception handlers in the reverse order, but preserve the order in matcher definition
+        $components = \array_merge(
+            ...\array_reverse([
+                $this->engine->getExceptionHandlers(),
+                ...\array_map(
+                    function ($item) { return $item->getExceptionHandlers(); },
+                    $match['matchers'],
+                )
+            ])
+        );
+
+        // Try to handle the exception using registered exception handlers
+        $exceptionResponse = null;
+        foreach ($components as $component) {
+            $exceptionResponse = $component->catch($exception, $request, $response);
+
+            // Continue while the response is null because the exception is not handled
+            if ($exceptionResponse !== null)
+            {
+                break;
+            }
+        }
+
+        // When the exception is not handled, throw the exception to delegate to the engine
+        if ($exceptionResponse === null)
+        {
+            throw $exception;            
+        }
+
+        return $exceptionResponse;
     }
 
 }

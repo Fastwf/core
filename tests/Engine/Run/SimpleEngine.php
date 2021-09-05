@@ -2,13 +2,14 @@
 
 namespace Fastwf\Tests\Engine\Run;
 
-use Fastwf\Core\Engine\Run\IRunnerEngine;
-
 use Fastwf\Tests\Components\SimpleGuard;
-use Fastwf\Tests\Components\SimpleInInterceptor;
+
+use Fastwf\Core\Engine\Run\IRunnerEngine;
 use Fastwf\Tests\Components\SimpleInPipe;
-use Fastwf\Tests\Components\SimpleOutInterceptor;
 use Fastwf\Tests\Components\SimpleOutPipe;
+use Fastwf\Tests\Components\SimpleInInterceptor;
+use Fastwf\Tests\Components\SimpleOutInterceptor;
+use Fastwf\Tests\Components\SimpleExceptionHandler;
 
 class SimpleEngine implements IRunnerEngine {
 
@@ -38,6 +39,10 @@ class SimpleEngine implements IRunnerEngine {
 
     public function getOutputInterceptors() {
         return [new SimpleOutInterceptor()];
+    }
+
+    public function getExceptionHandlers() {
+        return [new SimpleExceptionHandler()];
     }
 
     public function getService($class) {
