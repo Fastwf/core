@@ -103,13 +103,15 @@ class Runner {
     {
         // Load exception handlers in the reverse order, but preserve the order in matcher definition
         $components = \array_merge(
-            ...\array_reverse([
-                $this->engine->getExceptionHandlers(),
-                ...\array_map(
-                    function ($item) { return $item->getExceptionHandlers(); },
-                    $match['matchers'],
+            ...\array_reverse(
+                \array_merge(
+                    [$this->engine->getExceptionHandlers()],
+                    ...\array_map(
+                        function ($item) { return $item->getExceptionHandlers(); },
+                        $match['matchers'],
+                    )
                 )
-            ])
+            )
         );
 
         // Try to handle the exception using registered exception handlers
