@@ -7,7 +7,7 @@
 >
     <title>Fast Web Framework</title>
     <paths>
-        <output>api-doc</output>
+        <output>build/api-doc</output>
     </paths>
     <version number="0.1.0">
         <folder>latest</folder>

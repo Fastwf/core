@@ -8,6 +8,18 @@ use Fastwf\Core\Router\Exception\ParameterConversionException;
 
 /**
  * Segment specification of declared route.
+ * 
+ * It's possible declare a segment using the following format:
+ *  - 'SEGMENT' to match SEGMENT
+ *  - '{PARAMETER_SPEC}' to declare a parameter segment
+ *  - '**' to match any path
+ * 
+ * A parameter segment allows to catch the segment value and convert it according to the PARAMETER_SPEC:
+ *  - '{parameter}' or '{string:parameter}' will match any string and produce a string
+ *  - '{int:parameter}' will match any int and produce an integer
+ *  - '{float:parameter}' will match any float and produce a float
+ *  - '{uuid:parameter}' will match UUID 4 format and produce a string
+ *  - '{path:parameter}' will match any path and produce a string
  */
 class Segment {
 
