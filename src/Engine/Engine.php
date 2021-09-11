@@ -255,6 +255,13 @@ abstract class Engine implements Context, IRunnerEngine {
     /**
      * {@inheritDoc}
      */
+    public function getServer() {
+        return $this->server;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getMetadata() {
         return $this->metadata;
     }
