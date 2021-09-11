@@ -61,7 +61,7 @@ class Runner {
             // Extract out interceptors and delegate post response processing
             $response = $this->runStep($match, 'getOutputInterceptors', 'end', [$this->engine, $request, $response]);
         }
-        catch (\Exception $e)
+        catch (\Throwable $e)
         {
             $response = $this->handleException($e, $match, $request, $response);
         }
@@ -92,12 +92,12 @@ class Runner {
     /**
      * Handle the exception caught during request processing.
      *
-     * @param \Exception $exception
+     * @param \Throwable $exception
      * @param array $match the match array
      * @param Fastwf\Core\Http\Frame\HttpRequest $request the incomming request
      * @param Fastwf\Core\Http\Frame\HttpStreamResponse $response the response generated during request processing
      * @return Fastwf\Core\Http\Frame\HttpStreamResponse the response in replacement
-     * @throws \Exception when exception handlers cannot treat the exception
+     * @throws \Throwable when exception handlers cannot treat the exception
      */
     private function handleException($exception, $match, $request, $response)
     {

@@ -11,6 +11,7 @@ use Fastwf\Core\Http\NotFoundException;
 use Fastwf\Core\Http\Frame\HttpRequest;
 use Fastwf\Core\Http\Frame\HttpResponse;
 use Fastwf\Core\Router\Mount;
+use Fastwf\Core\Settings\ExceptionSettings;
 use Fastwf\Core\Settings\GuardSettings;
 use Fastwf\Core\Settings\InputPipeSettings;
 use Fastwf\Core\Settings\InputSettings;
