@@ -21,6 +21,10 @@ class SimpleEngine implements IRunnerEngine {
         return [];
     }
 
+    public function getServer() {
+        return null;
+    }
+
     public function getInputInterceptors() {
         return [new SimpleInInterceptor()];
     }
