@@ -15,6 +15,8 @@ class StringUtilTest extends TestCase {
         $this->assertTrue(StringUtil::endsWith("hello world", "world"));
         $this->assertFalse(StringUtil::endsWith("hello world", "hello"));
         $this->assertFalse(StringUtil::endsWith("orld", "world"));
+        $this->assertTrue(StringUtil::endsWith("public/", "/"));
+        $this->assertFalse(StringUtil::endsWith("public", "/"));
     }
 
 }

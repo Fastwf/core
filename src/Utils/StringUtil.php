@@ -15,7 +15,7 @@ class StringUtil {
         $seqIndex = \strlen($seq) - 1;
         $endIndex = \strlen($end) - 1;
 
-        while ($seqIndex > 0 && $endIndex > 0) {
+        while ($seqIndex >= 0 && $endIndex >= 0) {
             if ($seq[$seqIndex] !== $end[$endIndex]) {
                 return false;
             }
@@ -24,7 +24,7 @@ class StringUtil {
             $endIndex--;
         }
 
-        return $endIndex === 0;
+        return $endIndex === -1;
     }
 
 }
