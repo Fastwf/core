@@ -21,6 +21,7 @@ use Fastwf\Core\Settings\OutputSettings;
 use Fastwf\Core\Settings\ConfigurationSettings;
 use Fastwf\Core\Utils\ArrayProxy;
 use Fastwf\Core\Utils\AsyncProperty;
+use Fastwf\Core\Utils\Logging\DefaultLogger;
 
 /**
  * The base class that allows to create and run a Fastwf application
@@ -105,6 +106,12 @@ abstract class Engine implements Context, IRunnerEngine {
     private function setup() {
         // Load the configuration
         $this->config = new Configuration($this->configurationPath);
+
+        // Register the default root logger
+        $this->registerService('Logger', new DefaultLogger(
+            $this->config->get('server.logFile', 'php://stderr')
+        ));
+
         $this->onConfigurationLoaded();
 
         // Register the error handler
@@ -154,7 +161,8 @@ abstract class Engine implements Context, IRunnerEngine {
             $httpResponse = $httpException->getResponse();
         } catch (\Exception $e) {
             // Execution error, return 500 internal error response with empty body
-            // TODO: Use logger system to log the exception ["{$e->getMessage()}\n{$e->getTraceAsString()}"]
+            $this->getService('Logger')->critical($e->getMessage(), ['exception' => $e]);
+
             $httpResponse = new HttpResponse(500, ['Content-Type' => 'text/plain'], "");
         }
 

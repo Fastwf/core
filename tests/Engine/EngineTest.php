@@ -33,6 +33,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Http\Frame\HttpRequest
      * @covers \Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers \Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Utils\Logging\DefaultLogger
      */
     public function testConfiguration() {
         $engine = $this->getMockBuilder(SimpleEngine::class)
@@ -65,6 +66,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Http\Frame\HttpRequest
      * @covers \Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers \Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Utils\Logging\DefaultLogger
      */
     public function testServer() {
         $engine = $this->getMockBuilder(SimpleEngine::class)
@@ -97,6 +99,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Http\Frame\HttpRequest
      * @covers \Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers \Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Utils\Logging\DefaultLogger
      */
     public function testConfigurationAuto() {
         $_SERVER['SCRIPT_FILENAME'] = __FILE__;
@@ -132,6 +135,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Http\Frame\HttpRequest
      * @covers \Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers \Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Utils\Logging\DefaultLogger
      */
     public function testOnConfigurationLoaded() {
         $engine = $this->getMockBuilder(SimpleEngine::class)
@@ -166,6 +170,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Http\Frame\HttpRequest
      * @covers \Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers \Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Utils\Logging\DefaultLogger
      */
     public function testSettingLoadingSystem() {
         $engine = $this->getMockBuilder(SimpleEngine::class)
@@ -201,6 +206,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers \Fastwf\Core\Router\Segment
      * @covers \Fastwf\Core\Engine\Output\ApacheHttpOutput
+     * @covers Fastwf\Core\Utils\Logging\DefaultLogger
      */
     public function testInternalError() {
         $_SERVER['REQUEST_URI'] = '/fail';
@@ -235,6 +241,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers \Fastwf\Core\Router\Segment
      * @covers \Fastwf\Core\Engine\Output\ApacheHttpOutput
+     * @covers Fastwf\Core\Utils\Logging\DefaultLogger
      */
     public function testSuccessResponse() {
         $_SERVER['REQUEST_URI'] = '/success';
@@ -269,6 +276,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers \Fastwf\Core\Router\Segment
      * @covers \Fastwf\Core\Engine\Output\ApacheHttpOutput
+     * @covers Fastwf\Core\Utils\Logging\DefaultLogger
      */
     public function testNotFoundResponse() {
         $_SERVER['REQUEST_URI'] = '/not-found';
@@ -361,6 +369,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers \Fastwf\Core\Router\Segment
      * @covers \Fastwf\Core\Engine\Output\ApacheHttpOutput
+     * @covers Fastwf\Core\Utils\Logging\DefaultLogger
      */
     public function testExceptionHandler() {
         $_SERVER['REQUEST_URI'] = '/fail-old-style';
