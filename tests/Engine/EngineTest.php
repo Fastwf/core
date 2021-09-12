@@ -66,6 +66,38 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers \Fastwf\Core\Router\Segment
      */
+    public function testServer() {
+        $engine = $this->getMockBuilder(SimpleEngine::class)
+            ->setConstructorArgs([self::TEST_CONF])
+            ->onlyMethods(['handleRequest', 'sendResponse'])
+            ->getMock();
+
+        $engine->run();
+
+        $this->assertNotNull($engine->getServer());
+    }
+
+    /**
+     * @covers \Fastwf\Core\Engine\Engine
+     * @covers \Fastwf\Core\Configuration
+     * @covers \Fastwf\Core\Http\Frame\HttpResponse
+     * @covers \Fastwf\Core\Http\Frame\HttpStreamResponse
+     * @covers \Fastwf\Core\Http\HttpException
+     * @covers \Fastwf\Core\Http\NotFoundException
+     * @covers \Fastwf\Core\Router\BaseRoute
+     * @covers \Fastwf\Core\Router\Mount
+     * @covers \Fastwf\Core\Router\Route
+     * @covers \Fastwf\Core\Router\Parser\RouteParser
+     * @covers \Fastwf\Core\Utils\ArrayProxy
+     * @covers \Fastwf\Core\Utils\ArrayUtil
+     * @covers \Fastwf\Core\Utils\AsyncProperty
+     * @covers \Fastwf\Core\Components\RequestHandler
+     * @covers \Fastwf\Core\Engine\Run\Runner
+     * @covers \Fastwf\Core\Http\Frame\Headers
+     * @covers \Fastwf\Core\Http\Frame\HttpRequest
+     * @covers \Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers \Fastwf\Core\Router\Segment
+     */
     public function testConfigurationAuto() {
         $_SERVER['SCRIPT_FILENAME'] = __FILE__;
 
