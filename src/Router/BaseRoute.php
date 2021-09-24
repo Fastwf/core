@@ -113,7 +113,7 @@ abstract class BaseRoute implements IMatcher {
      * @param string $parameterName the name of the segment's parameter.
      * @return string the qualified parameter name ($parameterName or "$routeName/$parameterName";)
      */
-    protected static function getParameterName($routeName, $parameterName) {
+    public static function getParameterName($routeName, $parameterName) {
         if ($routeName === null || trim($routeName) === "") {
             return $parameterName;
         } else {
