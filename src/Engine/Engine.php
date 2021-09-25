@@ -11,6 +11,7 @@ use Fastwf\Core\Http\NotFoundException;
 use Fastwf\Core\Http\Frame\HttpRequest;
 use Fastwf\Core\Http\Frame\HttpResponse;
 use Fastwf\Core\Router\Mount;
+use Fastwf\Core\Router\RouterService;
 use Fastwf\Core\Settings\ExceptionSettings;
 use Fastwf\Core\Settings\GuardSettings;
 use Fastwf\Core\Settings\InputPipeSettings;
@@ -146,6 +147,13 @@ abstract class Engine implements Context, IRunnerEngine {
         $this->registerService('Logger', new DefaultLogger(
             $this->config->get('server.logFile', 'php://stderr')
         ));
+        // Register the RouterService
+        $this->registerService(
+            RouterService::class,
+            function () {
+                return new RouterService($this, $this->routes, $this->config->get('server.baseUrl', ''));
+            }
+        );
 
         $this->onConfigurationLoaded();
 
@@ -181,8 +189,7 @@ abstract class Engine implements Context, IRunnerEngine {
             $method = \strtoupper($this->server->get('REQUEST_METHOD'));
 
             // Start the request life cycle on found route
-            
-            $match = $this->findRoute($path, $method);
+            $match = $this->getService(RouterService::class)->findRoute($path, $method);
 
             // Factory the http request and produce the http response
             $request = new HttpRequest($path, $method);
@@ -202,33 +209,6 @@ abstract class Engine implements Context, IRunnerEngine {
         }
 
         return $httpResponse;
-    }
-
-    /**
-     * This methods help to find the route that correspond to the path and the methods of the http request.
-     *
-     * @param string $path the path of the request from the  '/'.
-     * @param string $methods the http method requested.
-     * @return array an array containing the list of Mount and Route for key 'matchers' and the list of extracted parameters for the key 'parameters'.
-     */
-    private function findRoute($path, $methods) {
-        $mount = new Mount([
-            'path' => $this->config->get('server.baseUrl', ''),
-            'routes' => $this->routes,
-            'name' => 'FastwfRoot',
-        ]);
-        
-        $match = $mount->match(
-            \substr($path, 1, \strlen($path) - 1),
-            $methods,
-        );
-
-        if ($match === null) {
-            // The route is not found, must return 404 response
-            throw new NotFoundException("No match for '$path'");
-        }
-
-        return $match;
     }
 
     /// Protected methods
