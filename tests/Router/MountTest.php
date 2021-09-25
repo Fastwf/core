@@ -261,4 +261,31 @@ class MountTest extends TestCase {
         );
     }
 
+    /**
+     * @covers Fastwf\Core\Router\BaseRoute
+     * @covers Fastwf\Core\Router\Route
+     * @covers Fastwf\Core\Router\Mount
+     * @covers Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Router\Parser\RouteParser
+     * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers Fastwf\Core\Utils\AsyncProperty
+     * @covers Fastwf\Core\Utils\ArrayUtil
+     */
+    public function testMatchWithMountPath() {
+        $mount = new Mount([
+            'path' => 'prefix',
+            'routes' => [
+                new Route([
+                    'path' => '',
+                    'methods' => ['GET'],
+                    'handler' => null,
+                ]),
+            ],
+        ]);
+
+        $this->assertNull(
+            $mount->match('', 'GET')
+        );
+    }
+
 }

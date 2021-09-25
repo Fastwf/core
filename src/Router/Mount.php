@@ -44,6 +44,9 @@ class Mount extends BaseRoute {
         $mountParser->rewind();
         $pathParser->rewind();
 
+        // In case of path equals to ''
+        $stop = !$pathParser->valid();
+
         $mountIsValid = $mountParser->valid();
         while ($mountIsValid && $pathParser->valid()) {
             $segment = $mountParser->current();
