@@ -25,6 +25,18 @@ class SimpleEngine implements IRunnerEngine {
         return null;
     }
 
+    public function getRootPath() {
+        return null;
+    }
+
+    public function getVarPath(){
+        return null;
+    }
+
+    public function getCachePath($namespace){
+        return null;
+    }
+
     public function getInputInterceptors() {
         return [new SimpleInInterceptor()];
     }

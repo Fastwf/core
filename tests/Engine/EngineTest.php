@@ -102,7 +102,7 @@ class EngineTest extends TestCase {
      * @covers Fastwf\Core\Utils\Logging\DefaultLogger
      */
     public function testConfigurationAuto() {
-        $_SERVER['SCRIPT_FILENAME'] = __FILE__;
+        $_SERVER['DOCUMENT_ROOT'] = __DIR__;
 
         $engine = $this->getMockBuilder(SimpleEngine::class)
             ->onlyMethods(['handleRequest', 'sendResponse'])
@@ -379,6 +379,137 @@ class EngineTest extends TestCase {
 
         $engine = new SimpleEngine(self::TEST_CONF);
         $engine->run();
+    }
+
+    /**
+     * @covers \Fastwf\Core\Engine\Engine
+     * @covers \Fastwf\Core\Configuration
+     * @covers \Fastwf\Core\Http\Frame\HttpResponse
+     * @covers \Fastwf\Core\Http\Frame\HttpStreamResponse
+     * @covers \Fastwf\Core\Http\HttpException
+     * @covers \Fastwf\Core\Http\NotFoundException
+     * @covers \Fastwf\Core\Router\BaseRoute
+     * @covers \Fastwf\Core\Router\Mount
+     * @covers \Fastwf\Core\Router\Route
+     * @covers \Fastwf\Core\Router\Parser\RouteParser
+     * @covers \Fastwf\Core\Utils\ArrayProxy
+     * @covers \Fastwf\Core\Utils\ArrayUtil
+     * @covers \Fastwf\Core\Utils\AsyncProperty
+     * @covers \Fastwf\Core\Components\RequestHandler
+     * @covers \Fastwf\Core\Engine\Run\Runner
+     * @covers \Fastwf\Core\Http\Frame\Headers
+     * @covers \Fastwf\Core\Http\Frame\HttpRequest
+     * @covers \Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers \Fastwf\Core\Router\Segment
+     * @covers \Fastwf\Core\Utils\Logging\DefaultLogger
+     */
+    public function testEngineSpecialVarsNoConfiguration() {
+        // Set the document root in 'tests' folder
+        $_SERVER['DOCUMENT_ROOT'] = __DIR__ . '/..';
+
+        $engine = $this->getMockBuilder(SimpleEngine::class)
+            ->setConstructorArgs([self::TEST_CONF])
+            ->onlyMethods(['handleRequest', 'sendResponse'])
+            ->getMock();
+        $engine->run();
+
+        $this->assertEquals(
+            \realpath(__DIR__ . '/../..'),
+            \realpath($engine->getRootPath())
+        );
+
+        $varPath = __DIR__ . '/../../var';
+        if (!\file_exists($varPath)) {
+            \mkdir($varPath);
+        }
+        $this->assertEquals(
+            \realpath($varPath),
+            \realpath($engine->getVarPath())
+        );
+
+        // The cache path will be created
+        $cachePath = $engine->getCachePath('fastwf.core');
+        $this->assertEquals(
+            \realpath(__DIR__ . '/../../var/cache/fastwf.core'),
+            \realpath($cachePath)
+        );
+    }
+
+    /**
+     * @covers \Fastwf\Core\Engine\Engine
+     * @covers \Fastwf\Core\Configuration
+     * @covers \Fastwf\Core\Http\Frame\HttpResponse
+     * @covers \Fastwf\Core\Http\Frame\HttpStreamResponse
+     * @covers \Fastwf\Core\Http\HttpException
+     * @covers \Fastwf\Core\Http\NotFoundException
+     * @covers \Fastwf\Core\Router\BaseRoute
+     * @covers \Fastwf\Core\Router\Mount
+     * @covers \Fastwf\Core\Router\Route
+     * @covers \Fastwf\Core\Router\Parser\RouteParser
+     * @covers \Fastwf\Core\Utils\ArrayProxy
+     * @covers \Fastwf\Core\Utils\ArrayUtil
+     * @covers \Fastwf\Core\Utils\AsyncProperty
+     * @covers \Fastwf\Core\Components\RequestHandler
+     * @covers \Fastwf\Core\Engine\Run\Runner
+     * @covers \Fastwf\Core\Http\Frame\Headers
+     * @covers \Fastwf\Core\Http\Frame\HttpRequest
+     * @covers \Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers \Fastwf\Core\Router\Segment
+     * @covers \Fastwf\Core\Utils\Logging\DefaultLogger
+     */
+    public function testEngineSpecialVarsWithConfiguration() {
+        $_ENV['SERVER_ROOTPATH'] = __DIR__ . '/.root';
+        $_ENV['SERVER_VARPATH'] = __DIR__ . '/.var';
+        $_ENV['SERVER_CACHEPATH'] = __DIR__ . '/.cache';
+        // Create files to allows \realpath to return a valid path
+        foreach (['SERVER_ROOTPATH', 'SERVER_VARPATH', 'SERVER_CACHEPATH'] as $key) {
+            if (!\file_exists($_ENV[$key])) {
+                \mkdir($_ENV[$key]);
+            }
+        }
+
+        $engine = $this->getMockBuilder(SimpleEngine::class)
+            ->setConstructorArgs([__DIR__ . '/../configuration.test.ini'])
+            ->onlyMethods(['handleRequest', 'sendResponse'])
+            ->getMock();
+        $engine->run();
+
+        $this->assertEquals(
+            \realpath($_ENV['SERVER_ROOTPATH']),
+            \realpath($engine->getRootPath())
+        );
+        $this->assertEquals(
+            \realpath($_ENV['SERVER_VARPATH']),
+            \realpath($engine->getVarPath())
+        );
+
+        // The cache path will be created
+        $cachePath = $engine->getCachePath('fastwf.core');
+        
+        $this->assertEquals(
+            \realpath($_ENV['SERVER_CACHEPATH'] . '/fastwf.core'),
+            \realpath($cachePath)
+        );
+    }
+
+    protected function tearDown(): void
+    {
+        // Remove temporary files
+        $paths = [
+            __DIR__ . '/../../var/cache/fastwf.core',
+            __DIR__ . '/../../var/cache',
+            __DIR__ . '/../../var',
+            __DIR__ . '/.root',
+            __DIR__ . '/.var',
+            __DIR__ . '/.cache/fastwf.core',
+            __DIR__ . '/.cache',
+        ];
+
+        foreach ($paths as $path) {
+            if (\file_exists($path)) {
+                \rmdir($path);
+            }            
+        }
     }
 
 }

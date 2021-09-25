@@ -34,6 +34,9 @@ abstract class Engine implements Context, IRunnerEngine {
     
     protected $server;
     protected $config;
+    protected $rootPath;
+    protected $varPath;
+    protected $cachePath;
 
     protected $metadata;
 
@@ -53,12 +56,44 @@ abstract class Engine implements Context, IRunnerEngine {
         $this->server = new ArrayProxy($_SERVER, true);
 
         if ($configurationPath === null) {
-            $this->configurationPath = dirname($this->server->get('SCRIPT_FILENAME')) . '/../configuration.ini';
+            $this->configurationPath = $this->server->get('DOCUMENT_ROOT') . '/../configuration.ini';
         } else {
             $this->configurationPath = $configurationPath;
         }
 
         $this->metadata = new ArrayProxy();
+
+        // Prepare the property to be cached
+        $this->rootPath = new AsyncProperty(function () {
+            $path = $this->config->get("server.rootPath");
+
+            if ($path === null) {
+                // Compute the value from the DOCUMENT_ROOT
+                $path = $this->server->get("DOCUMENT_ROOT") . "/..";
+            }
+    
+            return $path;
+        });
+        $this->varPath = new AsyncProperty(function () {
+            $path = $this->config->get("server.varPath");
+
+            if ($path === null) {
+                // Compute the value from the rootPath
+                $path = $this->getRootPath() . "/var";
+            }
+    
+            return $path;
+        });
+        $this->cachePath = new AsyncProperty(function () {
+            $path = $this->config->get("server.cachePath");
+
+            if ($path === null) {
+                // Compute the value from the varPath
+                $path = $this->getVarPath() . "/cache";
+            }
+
+            return $path;
+        });
     }
 
     /// Abstraction layer
@@ -273,6 +308,34 @@ abstract class Engine implements Context, IRunnerEngine {
      */
     public function getMetadata() {
         return $this->metadata;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRootPath() {
+        return $this->rootPath->get();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getVarPath() {
+        return $this->varPath->get();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCachePath($namespace) {
+        $path = $this->cachePath->get().'/'.$namespace;
+
+        if (!\file_exists($path)) {
+            // When the cache path not exists, it must be created
+            \mkdir($path, 0777 ^ \umask(), true);
+        }
+
+        return $path;
     }
 
     /**
