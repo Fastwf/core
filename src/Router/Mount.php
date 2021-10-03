@@ -5,7 +5,7 @@ namespace Fastwf\Core\Router;
 use Fastwf\Core\Utils\ArrayUtil;
 use Fastwf\Core\Utils\AsyncProperty;
 use Fastwf\Core\Router\BaseRoute;
-use Fastwf\Core\Router\MountException;
+use Fastwf\Core\Router\Exception\MountException;
 use Fastwf\Core\Router\Parser\RouteParser;
 use Fastwf\Core\Router\Parser\SpecificationRouteParser;
 
@@ -77,6 +77,15 @@ class Mount extends BaseRoute {
         }
 
         return null;
+    }
+
+    /**
+     * Access to the registered routes.
+     *
+     * @return 
+     */
+    public function getRouteIterator() {
+        return new \ArrayIterator($this->routes->get());
     }
 
     // Implementation

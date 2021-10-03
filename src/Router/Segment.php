@@ -202,6 +202,15 @@ class Segment {
         return $this->parameter;
     }
 
+    /**
+     * Allows to return the segment as string sequence.
+     *
+     * @return string
+     */
+    public function getSegment() {
+        return $this->segment;
+    }
+
     // Static methods
 
     /**

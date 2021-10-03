@@ -15,6 +15,7 @@ class SegmentTest extends TestCase {
     public function testSegmentConstructorBasic() {
         $segment = new Segment('segment');
 
+        $this->assertEquals('segment', $segment->getSegment());
         $this->assertFalse($segment->isParameter());
         $this->assertFalse($segment->isWildcard());
     }

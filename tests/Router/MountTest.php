@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 use Fastwf\Core\Router\Mount;
 use Fastwf\Core\Router\Route;
-use Fastwf\Core\Router\MountException;
+use Fastwf\Core\Router\Exception\MountException;
 
 
 class MountTest extends TestCase {
@@ -126,7 +126,7 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Router\MountException
+     * @covers Fastwf\Core\Router\Exception\MountException
      */
     public function testMountWildcardFailed() {
         $this->expectException(MountException::class);
@@ -155,7 +155,7 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Router\MountException
+     * @covers Fastwf\Core\Router\Exception\MountException
      */
     public function testMountPathFailed() {
         $this->expectException(MountException::class);
@@ -285,6 +285,34 @@ class MountTest extends TestCase {
 
         $this->assertNull(
             $mount->match('', 'GET')
+        );
+    }
+
+    /**
+     * @covers Fastwf\Core\Router\BaseRoute
+     * @covers Fastwf\Core\Router\Route
+     * @covers Fastwf\Core\Router\Mount
+     * @covers Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Router\Parser\RouteParser
+     * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers Fastwf\Core\Utils\AsyncProperty
+     * @covers Fastwf\Core\Utils\ArrayUtil
+     */
+    public function testGetRouteIterator() {
+        $mount = new Mount([
+            "path" => "mount",
+            "routes" => [
+                new Route([
+                    'path' => 'route',
+                    'methods' => ['GET'],
+                    'handler' => null,
+                ]),
+            ]
+        ]);
+
+        $this->assertEquals(
+            ['route'],
+            \array_map(function ($route) { return $route->getPath(); }, \iterator_to_array($mount->getRouteIterator())),
         );
     }
 

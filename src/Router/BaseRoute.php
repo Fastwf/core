@@ -62,6 +62,15 @@ abstract class BaseRoute implements IMatcher {
         return $this->name;
     }
 
+    /**
+     * Get the path associated to this route.
+     *
+     * @return string
+     */
+    public function getPath() {
+        return $this->path;
+    }
+
     /// Implementation
 
     /**
