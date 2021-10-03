@@ -71,15 +71,15 @@ class PartialPathFormatter
      */
     private function formatSegmentParameter($segment, $parameters, &$isPath)
     {
-        $name = BaseRoute::getParameterName($this->name, $segment->getName());
+        $parameterName = BaseRoute::getParameterName($this->name, $segment->getName());
 
         // Verify that the parameter is provided else throw KeyError
-        if (!\array_key_exists($name, $parameters))
+        if (!\array_key_exists($parameterName, $parameters))
         {
-            throw new KeyError("Parameter name '$name' was not found in the provided parameter array.");
+            throw new KeyError("Parameter name '$parameterName' was not found in the provided parameter array.");
         }
 
-        $parameter = $parameters[$name];
+        $parameter = $parameters[$parameterName];
 
         // Convert the parameter to string
         $sequence = \is_string($parameter) ? $parameter : \strval($parameter);
@@ -111,9 +111,9 @@ class PartialPathFormatter
 
         // Do not use foreach to prevent to inject '/' to the first segment
         if ($parser->valid()) {
-            $formattedPath = $this->formatSegment($parser->current(), $parameters, $ignore);
-
             $isPath = false;
+            $formattedPath = $this->formatSegment($parser->current(), $parameters, $isPath);
+
             $parser->next();
             while ($parser->valid() && !$isPath) {
                 // Glue the segment value to the formatted path

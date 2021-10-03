@@ -62,6 +62,50 @@ class RouteGenerator
     }
 
     /**
+     * Handle the current item of the route iterator and try to find the path formatter.
+     *
+     * @param string $name the route name
+     * @param Fastwf\Core\Router\Formatter\PathFormatter $pathFormatter the out path formatter
+     * @return void
+     */
+    private function handleCurrentItem($name, &$pathFormatter)
+    {
+        $searching = true;
+
+        $item = $this->routeIterator->current();
+        $this->routeIterator->next();
+
+        if ($item instanceof Route && $item->getName() !== null)
+        {
+            // The route can be compared and cached
+            array_push($this->baseRoutes, new PartialPathFormatter($item));
+
+            $formatter = new PathFormatter($this->baseRoutes);
+            if ($item->getName() === $name)
+            {
+                $searching = false;
+                // Save the copy of the baseRoutes property to return it
+                $pathFormatter = $formatter;
+            }
+
+            // Cache the baseRoutes items for the $name to accelerate the url generation
+            $this->cachePathFormatter($item->getName(), $formatter);
+            array_pop($this->baseRoutes);
+        }
+        else if ($item instanceof Mount)
+        {
+            // Stack the current iterator and iterate on discovered Mount point
+            array_push($this->stack, $this->routeIterator);
+            array_push($this->baseRoutes, new PartialPathFormatter($item));
+
+            $this->routeIterator = $item->getRouteIterator();
+            $this->routeIterator->rewind();
+        }
+
+        return $searching;
+    }
+
+    /**
      * Allows to search and return the path formatter associated to the given route name.
      *
      * @param string $name the route name (must be unique)
@@ -81,35 +125,7 @@ class RouteGenerator
         {
             if ($this->routeIterator->valid())
             {
-                $item = $this->routeIterator->current();
-                $this->routeIterator->next();
-        
-                if ($item instanceof Route && $item->getName() !== null)
-                {
-                    // The route can be compared and cached
-                    array_push($this->baseRoutes, new PartialPathFormatter($item));
-
-                    $formatter = new PathFormatter($this->baseRoutes);
-                    if ($item->getName() === $name)
-                    {
-                        $searching = false;
-                        // Save the copy of the baseRoutes property to return it
-                        $pathFormatter = $formatter;
-                    }
-
-                    // Cache the baseRoutes items for the $name to accelerate the url generation
-                    $this->cachePathFormatter($item->getName(), $formatter);
-                    array_pop($this->baseRoutes);
-                }
-                else if ($item instanceof Mount)
-                {
-                    // Stack the current iterator and iterate on discovered Mount point
-                    array_push($this->stack, $this->routeIterator);
-                    array_push($this->baseRoutes, new PartialPathFormatter($item));
-        
-                    $this->routeIterator = $item->getRouteIterator();
-                    $this->routeIterator->rewind();
-                }
+                $searching = $this->handleCurrentItem($name, $pathFormatter);
             }
             else if (!empty($this->stack))
             {
