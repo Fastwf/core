@@ -12,6 +12,7 @@ use Fastwf\Core\Http\Frame\HttpRequest;
 use Fastwf\Core\Http\Frame\HttpResponse;
 use Fastwf\Core\Router\Mount;
 use Fastwf\Core\Router\RouterService;
+use Fastwf\Core\Router\Components\RouterShutdown;
 use Fastwf\Core\Settings\ExceptionSettings;
 use Fastwf\Core\Settings\GuardSettings;
 use Fastwf\Core\Settings\InputPipeSettings;
@@ -139,21 +140,11 @@ abstract class Engine implements Context, IRunnerEngine {
     /**
      * Allows to setup the engine by loading the configuration and call extension to update the engine.
      */
-    private function setup() {
+    protected function setup() {
         // Load the configuration
         $this->config = new Configuration($this->configurationPath);
 
-        // Register the default root logger
-        $this->registerService('Logger', new DefaultLogger(
-            $this->config->get('server.logFile', 'php://stderr')
-        ));
-        // Register the RouterService
-        $this->registerService(
-            RouterService::class,
-            function () {
-                return new RouterService($this, $this->routes, $this->config->get('server.baseUrl', ''));
-            }
-        );
+        $this->registerEngineServices();
 
         $this->onConfigurationLoaded();
 
@@ -175,6 +166,37 @@ abstract class Engine implements Context, IRunnerEngine {
         $this->load(OutputSettings::class, 'getOutputInterceptors', 'outputInterceptors');
         // Register global exception handlers
         $this->load(ExceptionSettings::class, 'getExceptionHandlers', 'exceptionHandlers');
+
+        $this->registerEngineComponents();
+    }
+
+    /**
+     * Register the engine services required for any applications.
+     *
+     * @return void
+     */
+    private function registerEngineServices() {
+        // Register the default root logger
+        $this->registerService('Logger', new DefaultLogger(
+            $this->config->get('server.logFile', 'php://stderr')
+        ));
+        // Register the RouterService
+        $this->registerService(
+            RouterService::class,
+            function () {
+                return new RouterService($this, $this->routes, $this->config->get('server.baseUrl', ''));
+            }
+        );
+    }
+
+    /**
+     * When all components are loaded, the engine register components required for any applications.
+     *
+     * @return void
+     */
+    private function registerEngineComponents() {
+        // Engine output interceptors
+        \array_unshift($this->outputInterceptors, new RouterShutdown());
     }
 
     /**

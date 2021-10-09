@@ -30,16 +30,47 @@ class RouteGenerator
 
     private $generators = [];
 
-    public function __construct($router)
+    public function __construct($router, $state = null)
     {
         $this->router = $router;
     
         $this->routeIterator = $router->getRouteIterator(); 
         $this->routeIterator->rewind();
 
-        $this->hasNext = true;
         $this->stack = [];
-        $this->baseRoutes = [new PartialPathFormatter($router)];
+        if ($state === null)
+        {
+            $this->hasNext = true;
+            $this->baseRoutes = [new PartialPathFormatter($router)];
+        }
+        else
+        {
+            // Restore from the state in parameter
+            $this->hasNext = $state['hasNext'];
+            $this->baseRoutes = $state['baseRoutes'];
+            $this->generators = $state['generators'];
+
+            // Rebuild the stack
+            foreach ($state['stackOffsets'] as $offset)
+            {
+                // Seek $offset - 1 to stack the item before calling next and restore the state for the parent iterator
+                //  According to the algorithm, $offset - 1 >= 0
+                $this->routeIterator->seek($offset - 1);
+
+                $iterator = $this->routeIterator
+                    ->current()
+                    ->getRouteIterator();
+                $iterator->rewind();
+
+                \array_push($this->stack, $iterator);
+
+                $this->routeIterator->next();
+                $this->routeIterator = $iterator;
+            }
+
+            // Finalize by setting the offset using 'routeIteratorOffset' key
+            $this->routeIterator->seek($state['routeIteratorOffset']);
+        }
     }
 
     /**
@@ -178,6 +209,28 @@ class RouteGenerator
         }
 
         return $fullPath;
+    }
+
+    /**
+     * Generate a serializable state of the route generator usable in constructor.
+     *
+     * @return array the key containing data to use to restore the state.
+     */
+    public function dumpState()
+    {
+        # Generate the stack offsets
+        $stackOffsets = \array_map(
+            function ($item) { return $item->key(); },
+            $this->stack,
+        );
+
+        return [
+            'hasNext' => $this->hasNext,
+            'baseRoutes' => $this->baseRoutes,
+            'generators' => $this->generators,
+            'stackOffsets' => $stackOffsets,
+            'routeIteratorOffset' => $this->routeIterator->valid() ? $this->routeIterator->key() : null, 
+        ];
     }
 
 }

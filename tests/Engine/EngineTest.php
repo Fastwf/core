@@ -35,6 +35,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Segment
      * @covers \Fastwf\Core\Utils\Logging\DefaultLogger
      * @covers \Fastwf\Core\Router\RouterService
+     * @covers \Fastwf\Core\Router\Components\RouterShutdown
      */
     public function testConfiguration() {
         $engine = $this->getMockBuilder(SimpleEngine::class)
@@ -69,6 +70,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Segment
      * @covers \Fastwf\Core\Utils\Logging\DefaultLogger
      * @covers \Fastwf\Core\Router\RouterService
+     * @covers \Fastwf\Core\Router\Components\RouterShutdown
      */
     public function testServer() {
         $engine = $this->getMockBuilder(SimpleEngine::class)
@@ -140,6 +142,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Segment
      * @covers \Fastwf\Core\Utils\Logging\DefaultLogger
      * @covers \Fastwf\Core\Router\RouterService
+     * @covers \Fastwf\Core\Router\Components\RouterShutdown
      */
     public function testOnConfigurationLoaded() {
         $engine = $this->getMockBuilder(SimpleEngine::class)
@@ -249,6 +252,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Engine\Output\ApacheHttpOutput
      * @covers \Fastwf\Core\Utils\Logging\DefaultLogger
      * @covers \Fastwf\Core\Router\RouterService
+     * @covers \Fastwf\Core\Router\Components\RouterShutdown
      */
     public function testSuccessResponse() {
         $_SERVER['REQUEST_URI'] = '/success';
@@ -412,6 +416,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Segment
      * @covers \Fastwf\Core\Utils\Logging\DefaultLogger
      * @covers \Fastwf\Core\Router\RouterService
+     * @covers \Fastwf\Core\Router\Components\RouterShutdown
      */
     public function testEngineSpecialVarsNoConfiguration() {
         // Set the document root in 'tests' folder
@@ -467,6 +472,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Segment
      * @covers \Fastwf\Core\Utils\Logging\DefaultLogger
      * @covers \Fastwf\Core\Router\RouterService
+     * @covers \Fastwf\Core\Router\Components\RouterShutdown
      */
     public function testEngineSpecialVarsWithConfiguration() {
         $_ENV['SERVER_ROOTPATH'] = __DIR__ . '/.root';

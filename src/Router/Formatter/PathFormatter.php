@@ -42,7 +42,7 @@ class PathFormatter
             }
         }
 
-        return $fullPath;
+        return $fullPath === '' ? '/' : $fullPath;
     }
 
 }

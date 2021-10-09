@@ -5,8 +5,10 @@ namespace Fastwf\Tests\Router\Formatter;
 use Fastwf\Core\Router\Mount;
 use PHPUnit\Framework\TestCase;
 use Fastwf\Core\Exceptions\KeyError;
+use Fastwf\Core\Router\Formatter\PathFormatter;
 use Fastwf\Core\Router\Formatter\RouteGenerator;
 use Fastwf\Core\Router\Exception\FormatException;
+use Fastwf\Core\Router\Formatter\PartialPathFormatter;
 use Fastwf\Tests\Router\Formatter\PartialPathFormatterTest;
 
 class RouteGeneratorTest extends TestCase
@@ -113,6 +115,35 @@ class RouteGeneratorTest extends TestCase
      * @covers Fastwf\Core\Utils\StringUtil
      * @covers Fastwf\Core\Router\Formatter\RouteGenerator
      */
+    public function testGenerateIndex()
+    {
+        $generator = new RouteGenerator(new Mount([
+            'path' => '',
+            'routes' => [
+                PartialPathFormatterTest::createBaseRouteWith('', 'index'),
+            ],
+        ]));
+
+        $this->assertEquals(
+            '/',
+            $generator->generate('index')
+        );
+    }
+
+    /**
+     * @covers Fastwf\Core\Router\BaseRoute
+     * @covers Fastwf\Core\Router\Route
+     * @covers Fastwf\Core\Router\Mount
+     * @covers Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Router\Parser\RouteParser
+     * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
+     * @covers Fastwf\Core\Router\Formatter\PathFormatter
+     * @covers Fastwf\Core\Utils\ArrayUtil
+     * @covers Fastwf\Core\Utils\AsyncProperty
+     * @covers Fastwf\Core\Utils\StringUtil
+     * @covers Fastwf\Core\Router\Formatter\RouteGenerator
+     */
     public function testGenerateRouteUsingCache()
     {
         $generator = new RouteGenerator($this->router);
@@ -177,6 +208,115 @@ class RouteGeneratorTest extends TestCase
             ]
         ]));
         $generator->generate('adminDashboard', []);
+    }
+
+    /**
+     * @covers Fastwf\Core\Router\BaseRoute
+     * @covers Fastwf\Core\Router\Route
+     * @covers Fastwf\Core\Router\Mount
+     * @covers Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Router\Parser\RouteParser
+     * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
+     * @covers Fastwf\Core\Router\Formatter\PathFormatter
+     * @covers Fastwf\Core\Utils\ArrayUtil
+     * @covers Fastwf\Core\Utils\AsyncProperty
+     * @covers Fastwf\Core\Utils\StringUtil
+     * @covers Fastwf\Core\Router\Formatter\RouteGenerator
+     */
+    public function testDumpState()
+    {
+        $generator = new RouteGenerator(new Mount([
+            'path' => '',
+            'routes' => [
+                new Mount([
+                    'path' => 'admin',
+                    'routes' => [
+                        PartialPathFormatterTest::createBaseRouteWith('dashboard', 'adminDashboard'),
+                        PartialPathFormatterTest::createBaseRouteWith('other', 'adminOther'),
+                    ],
+                ]),
+                PartialPathFormatterTest::createBaseRouteWith('test', 'second'),
+            ],
+        ]));
+        $generator->generate('adminDashboard', []);
+
+        $baseMount = new PartialPathFormatter(PartialPathFormatterTest::createBaseRouteWith('', null));
+        $adminMount = new PartialPathFormatter(PartialPathFormatterTest::createBaseRouteWith('admin', null));
+
+        $this->assertEquals(
+            [
+                'hasNext' => true,
+                'baseRoutes' => [$baseMount, $adminMount],
+                'generators' => [
+                    'adminDashboard' => new PathFormatter([
+                        $baseMount,
+                        $adminMount,
+                        new PartialPathFormatter(PartialPathFormatterTest::createBaseRouteWith('dashboard', 'adminDashboard')),
+                    ]),
+                ],
+                'stackOffsets' => [1],
+                'routeIteratorOffset' => 1,
+            ],
+            $generator->dumpState()
+        );
+    }
+
+    /**
+     * @covers Fastwf\Core\Router\BaseRoute
+     * @covers Fastwf\Core\Router\Route
+     * @covers Fastwf\Core\Router\Mount
+     * @covers Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Router\Parser\RouteParser
+     * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
+     * @covers Fastwf\Core\Router\Formatter\PathFormatter
+     * @covers Fastwf\Core\Utils\ArrayUtil
+     * @covers Fastwf\Core\Utils\AsyncProperty
+     * @covers Fastwf\Core\Utils\StringUtil
+     * @covers Fastwf\Core\Router\Formatter\RouteGenerator
+     */
+    public function testConstructorUsingState()
+    {
+        // Create the state
+        $baseMount = new PartialPathFormatter(PartialPathFormatterTest::createBaseRouteWith('', null));
+        $adminMount = new PartialPathFormatter(PartialPathFormatterTest::createBaseRouteWith('admin', null));
+
+        $state = [
+            'hasNext' => true,
+            'baseRoutes' => [$baseMount, $adminMount],
+            'generators' => [
+                'adminDashboard' => new PathFormatter([
+                    $baseMount,
+                    $adminMount,
+                    new PartialPathFormatter(PartialPathFormatterTest::createBaseRouteWith('dashboard', 'adminDashboard')),
+                ]),
+            ],
+            'stackOffsets' => [1],
+            'routeIteratorOffset' => 1,
+        ];
+
+        $generator = new RouteGenerator(
+            new Mount([
+                'path' => '',
+                'routes' => [
+                    new Mount([
+                        'path' => 'admin',
+                        'routes' => [
+                            PartialPathFormatterTest::createBaseRouteWith('dashboard', 'adminDashboard'),
+                            PartialPathFormatterTest::createBaseRouteWith('other', 'adminOther'),
+                        ],
+                    ]),
+                    PartialPathFormatterTest::createBaseRouteWith('test', 'second'),
+                ],
+            ]),
+            $state
+        );
+
+        $this->assertEquals(
+            $state,
+            $generator->dumpState()
+        );
     }
 
 }

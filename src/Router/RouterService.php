@@ -13,6 +13,8 @@ use Fastwf\Core\Utils\AsyncProperty;
  */
 class RouterService extends Service {
 
+    public const ROUTE_STATE_NAME = "router-service.route-generator-state";
+
     private $generator;
     private $router;
 
@@ -26,9 +28,24 @@ class RouterService extends Service {
             'name' => 'FastwfRoot',
         ]);
         $this->generator = new AsyncProperty(function () {
-            return new RouteGenerator($this->router);
+            return $this->restoreRouteGenerator();
         });
     }
+
+    /// PRIVATE METHODS
+
+    /**
+     * Generate and return the path to the route generator state file
+     *
+     * @return string the path to the file.
+     */
+    private function getRouteGeneratorPath() {
+        return $this->context->getCachePath('fastwf.core')
+            . DIRECTORY_SEPARATOR
+            . self::ROUTE_STATE_NAME;
+    }
+
+    /// PUBLIC METHODS
 
     /**
      * This methods help to find the route that correspond to the path and the methods of the http request.
@@ -66,9 +83,66 @@ class RouterService extends Service {
      */
     public function urlFor($name, $parameters = null, $query = null, $fragment = null)
     {
-        // TODO: reload the RouteGenerator from a serialized cache for production mode
         return $this->generator->get()
             ->generate($name, $parameters, $query, $fragment);
+    }
+
+    /**
+     * Serialize the route generator when the engine run in production mode and the cache directory is accessible.
+     *
+     * In production mode, the application routes are not updated, so it's not required for RouteGenerator class to restart from it's
+     * initial state.
+     * By caching it's state, performances of generate method call are improved.
+     * 
+     * @return void
+     */
+    public function dumpRouteGenerator()
+    {
+        $configuration = $this->context->getConfiguration();
+
+        if ($configuration->get('server.modeProduction', false))
+        {
+            \file_put_contents(
+                $this->getRouteGeneratorPath(),
+                \serialize($this->generator->get()->dumpState())
+            );
+        }
+    }
+
+    /**
+     * Try to find the cache file of RouteGenerator state and try to recreate the instance from this state.
+     * 
+     * Warning: when production mode is disabled, the method return always null. 
+     *
+     * @return Fastwf\Core\Router\Formatter\RouteGenerator|null the route generator when it's possible to restore the state.
+     */
+    public function restoreRouteGenerator()
+    {
+        // Load the route generator state and re create the instance if it's required
+        $configuration = $this->context->getConfiguration();
+
+        $path = $this->getRouteGeneratorPath();
+        if ($configuration->get('server.modeProduction', false) 
+            && \file_exists($path)
+            && \is_file($path)
+            && \is_readable($path))
+        {
+            try
+            {
+                $state = \unserialize(
+                    \file_get_contents($path)
+                );
+            }
+            catch (\ErrorException $e)
+            {
+                // The unserialization failed
+                $state = null;
+            }
+
+            return new RouteGenerator($this->router, $state);
+        }
+
+        return new RouteGenerator($this->router);
     }
 
 }
