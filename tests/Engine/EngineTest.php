@@ -36,6 +36,9 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Utils\Logging\DefaultLogger
      * @covers \Fastwf\Core\Router\RouterService
      * @covers \Fastwf\Core\Router\Components\RouterShutdown
+     * @covers \Fastwf\Core\Router\Formatter\RouteGenerator
+     * @covers \Fastwf\Core\Router\Formatter\PathFormatter
+     * @covers \Fastwf\Core\Router\Formatter\PartialPathFormatter
      */
     public function testConfiguration() {
         $engine = $this->getMockBuilder(SimpleEngine::class)
@@ -71,6 +74,9 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Utils\Logging\DefaultLogger
      * @covers \Fastwf\Core\Router\RouterService
      * @covers \Fastwf\Core\Router\Components\RouterShutdown
+     * @covers \Fastwf\Core\Router\Formatter\RouteGenerator
+     * @covers \Fastwf\Core\Router\Formatter\PathFormatter
+     * @covers \Fastwf\Core\Router\Formatter\PartialPathFormatter
      */
     public function testServer() {
         $engine = $this->getMockBuilder(SimpleEngine::class)
@@ -96,6 +102,10 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Parser\RouteParser
      * @covers \Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers \Fastwf\Core\Router\RouterService
+     * @covers \Fastwf\Core\Router\Components\RouterShutdown
+     * @covers \Fastwf\Core\Router\Formatter\RouteGenerator
+     * @covers \Fastwf\Core\Router\Formatter\PathFormatter
+     * @covers \Fastwf\Core\Router\Formatter\PartialPathFormatter
      * @covers \Fastwf\Core\Router\Segment
      * @covers \Fastwf\Core\Utils\ArrayProxy
      * @covers \Fastwf\Core\Utils\ArrayUtil
@@ -143,6 +153,9 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Utils\Logging\DefaultLogger
      * @covers \Fastwf\Core\Router\RouterService
      * @covers \Fastwf\Core\Router\Components\RouterShutdown
+     * @covers \Fastwf\Core\Router\Formatter\RouteGenerator
+     * @covers \Fastwf\Core\Router\Formatter\PathFormatter
+     * @covers \Fastwf\Core\Router\Formatter\PartialPathFormatter
      */
     public function testOnConfigurationLoaded() {
         $engine = $this->getMockBuilder(SimpleEngine::class)
@@ -179,6 +192,10 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Segment
      * @covers \Fastwf\Core\Utils\Logging\DefaultLogger
      * @covers \Fastwf\Core\Router\RouterService
+     * @covers \Fastwf\Core\Router\Components\RouterShutdown
+     * @covers \Fastwf\Core\Router\Formatter\RouteGenerator
+     * @covers \Fastwf\Core\Router\Formatter\PathFormatter
+     * @covers \Fastwf\Core\Router\Formatter\PartialPathFormatter
      */
     public function testSettingLoadingSystem() {
         $engine = $this->getMockBuilder(SimpleEngine::class)
@@ -216,6 +233,10 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Engine\Output\ApacheHttpOutput
      * @covers \Fastwf\Core\Utils\Logging\DefaultLogger
      * @covers \Fastwf\Core\Router\RouterService
+     * @covers \Fastwf\Core\Router\Components\RouterShutdown
+     * @covers \Fastwf\Core\Router\Formatter\RouteGenerator
+     * @covers \Fastwf\Core\Router\Formatter\PathFormatter
+     * @covers \Fastwf\Core\Router\Formatter\PartialPathFormatter
      */
     public function testInternalError() {
         $_SERVER['REQUEST_URI'] = '/fail';
@@ -253,6 +274,9 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Utils\Logging\DefaultLogger
      * @covers \Fastwf\Core\Router\RouterService
      * @covers \Fastwf\Core\Router\Components\RouterShutdown
+     * @covers \Fastwf\Core\Router\Formatter\RouteGenerator
+     * @covers \Fastwf\Core\Router\Formatter\PathFormatter
+     * @covers \Fastwf\Core\Router\Formatter\PartialPathFormatter
      */
     public function testSuccessResponse() {
         $_SERVER['REQUEST_URI'] = '/success';
@@ -289,6 +313,10 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Engine\Output\ApacheHttpOutput
      * @covers \Fastwf\Core\Utils\Logging\DefaultLogger
      * @covers \Fastwf\Core\Router\RouterService
+     * @covers \Fastwf\Core\Router\Components\RouterShutdown
+     * @covers \Fastwf\Core\Router\Formatter\RouteGenerator
+     * @covers \Fastwf\Core\Router\Formatter\PathFormatter
+     * @covers \Fastwf\Core\Router\Formatter\PartialPathFormatter
      */
     public function testNotFoundResponse() {
         $_SERVER['REQUEST_URI'] = '/not-found';
@@ -383,6 +411,10 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Engine\Output\ApacheHttpOutput
      * @covers \Fastwf\Core\Utils\Logging\DefaultLogger
      * @covers \Fastwf\Core\Router\RouterService
+     * @covers \Fastwf\Core\Router\Components\RouterShutdown
+     * @covers \Fastwf\Core\Router\Formatter\RouteGenerator
+     * @covers \Fastwf\Core\Router\Formatter\PathFormatter
+     * @covers \Fastwf\Core\Router\Formatter\PartialPathFormatter
      */
     public function testExceptionHandler() {
         $_SERVER['REQUEST_URI'] = '/fail-old-style';
@@ -417,6 +449,9 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Utils\Logging\DefaultLogger
      * @covers \Fastwf\Core\Router\RouterService
      * @covers \Fastwf\Core\Router\Components\RouterShutdown
+     * @covers \Fastwf\Core\Router\Formatter\RouteGenerator
+     * @covers \Fastwf\Core\Router\Formatter\PathFormatter
+     * @covers \Fastwf\Core\Router\Formatter\PartialPathFormatter
      */
     public function testEngineSpecialVarsNoConfiguration() {
         // Set the document root in 'tests' folder
@@ -473,6 +508,9 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Utils\Logging\DefaultLogger
      * @covers \Fastwf\Core\Router\RouterService
      * @covers \Fastwf\Core\Router\Components\RouterShutdown
+     * @covers \Fastwf\Core\Router\Formatter\RouteGenerator
+     * @covers \Fastwf\Core\Router\Formatter\PathFormatter
+     * @covers \Fastwf\Core\Router\Formatter\PartialPathFormatter
      */
     public function testEngineSpecialVarsWithConfiguration() {
         $_ENV['SERVER_ROOTPATH'] = __DIR__ . '/.root';
