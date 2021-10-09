@@ -17,6 +17,8 @@ class RouterServiceTest extends TestCase
 
     protected function setup(): void
     {
+        $_SERVER['DOCUMENT_ROOT'] = __DIR__ . '/..';
+
         $this->context = $this->getMockBuilder(SimpleEngine::class)
             ->setConstructorArgs([__DIR__ . '/../configuration.ini'])
             ->onlyMethods(['sendResponse', 'handleRequest'])
