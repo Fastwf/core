@@ -21,6 +21,11 @@ class PartialPathFormatter
     private $name;
     private $path;
 
+    /**
+     * Constructor
+     *
+     * @param \Fastwf\Core\Router\Formatter\IBaseRoute $baseRoute
+     */
     public function __construct($baseRoute)
     {
         $this->name = $baseRoute->getName();

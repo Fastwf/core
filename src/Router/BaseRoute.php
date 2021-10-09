@@ -2,11 +2,12 @@
 
 namespace Fastwf\Core\Router;
 
+use Fastwf\Core\Engine\Run\IMatcher;
+use Fastwf\Core\Router\Formatter\IBaseRoute;
 use Fastwf\Core\Utils\ArrayUtil;
 use Fastwf\Core\Utils\AsyncProperty;
-use Fastwf\Core\Engine\Run\IMatcher;
 
-abstract class BaseRoute implements IMatcher {
+abstract class BaseRoute implements IBaseRoute, IMatcher {
 
     protected $name;
     protected $path;
@@ -54,18 +55,14 @@ abstract class BaseRoute implements IMatcher {
     public abstract function match($path, $method);
 
     /**
-     * Get the name of the route when it's set
-     *
-     * @return string
+     * {@inheritDoc}
      */
     public function getName() {
         return $this->name;
     }
 
     /**
-     * Get the path associated to this route.
-     *
-     * @return string
+     * {@inheritDoc}
      */
     public function getPath() {
         return $this->path;
