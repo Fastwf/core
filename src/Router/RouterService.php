@@ -100,7 +100,7 @@ class RouterService extends Service {
     {
         $configuration = $this->context->getConfiguration();
 
-        if ($configuration->get('server.modeProduction', false))
+        if ($configuration->getBoolean('server.modeProduction', false))
         {
             \file_put_contents(
                 $this->getRouteGeneratorPath(),

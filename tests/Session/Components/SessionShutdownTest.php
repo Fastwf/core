@@ -1,21 +1,21 @@
 <?php
 
-namespace Fastwf\Tests\Router\Components;
+namespace Fastwf\Core\Session\Components;
 
 use PHPUnit\Framework\TestCase;
 use Fastwf\Tests\Engine\SimpleEngine;
-use Fastwf\Core\Router\RouterService;
-use Fastwf\Core\Router\Components\RouterShutdown;
+use Fastwf\Core\Session\SessionService;
+use Fastwf\Core\Session\Components\SessionShutdown;
 
-class RouterShutdownTest extends TestCase
+class SessionShutdownTest extends TestCase
 {
-
+    
     /**
      * @covers Fastwf\Core\Engine\Engine
      * @covers Fastwf\Core\Engine\ServiceProvider
      * @covers Fastwf\Core\Utils\ArrayProxy
      * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Router\Components\RouterShutdown
+     * @covers Fastwf\Core\Session\Components\SessionShutdown
      */
     public function testEnd()
     {
@@ -24,14 +24,14 @@ class RouterShutdownTest extends TestCase
             ->onlyMethods([])
             ->getMock();
         
-        $service = $this->createMock(RouterService::class);
+        $service = $this->createMock(SessionService::class);
         $service->expects($this->once())
-            ->method('dumpRouteGenerator');
+            ->method('closeSession');
 
-        $context->registerService(RouterService::class, $service);
+        $context->registerService(SessionService::class, $service);
 
         // Call end
-        (new RouterShutdown())->end($context, null, null);
+        (new SessionShutdown())->end($context, null, null);
     }
 
 }

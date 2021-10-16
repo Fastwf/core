@@ -3,6 +3,7 @@
 namespace Fastwf\Core\Engine;
 
 use Fastwf\Core\Configuration;
+use Fastwf\Core\Engine\ServiceProvider;
 use Fastwf\Core\Engine\Output\ApacheHttpOutput;
 use Fastwf\Core\Engine\Run\IRunnerEngine;
 use Fastwf\Core\Engine\Run\Runner;
@@ -13,6 +14,9 @@ use Fastwf\Core\Http\Frame\HttpResponse;
 use Fastwf\Core\Router\Mount;
 use Fastwf\Core\Router\RouterService;
 use Fastwf\Core\Router\Components\RouterShutdown;
+use Fastwf\Core\Session\SessionService;
+use Fastwf\Core\Session\PhpSessionManager;
+use Fastwf\Core\Session\Components\SessionShutdown;
 use Fastwf\Core\Settings\ExceptionSettings;
 use Fastwf\Core\Settings\GuardSettings;
 use Fastwf\Core\Settings\InputPipeSettings;
@@ -39,6 +43,7 @@ abstract class Engine implements Context, IRunnerEngine {
     protected $rootPath;
     protected $varPath;
     protected $cachePath;
+    protected $request;
 
     protected $metadata;
 
@@ -50,7 +55,7 @@ abstract class Engine implements Context, IRunnerEngine {
     protected $outputInterceptors = [];
     protected $exceptionHandlers = [];
 
-    protected $services = [];
+    protected $serviceProvider;
 
     public function __construct($configurationPath = null) {
         // By default the application is loaded from /public/ folder and the configuration is set at root of the project
@@ -64,6 +69,8 @@ abstract class Engine implements Context, IRunnerEngine {
         }
 
         $this->metadata = new ArrayProxy();
+
+        $this->serviceProvider = new ServiceProvider($this);
 
         // Prepare the property to be cached
         $this->rootPath = new AsyncProperty(function () {
@@ -177,16 +184,18 @@ abstract class Engine implements Context, IRunnerEngine {
      */
     private function registerEngineServices() {
         // Register the default root logger
-        $this->registerService('Logger', new DefaultLogger(
+        $this->serviceProvider->registerService('Logger', new DefaultLogger(
             $this->config->get('server.logFile', 'php://stderr')
         ));
         // Register the RouterService
-        $this->registerService(
+        $this->serviceProvider->registerService(
             RouterService::class,
             function () {
                 return new RouterService($this, $this->routes, $this->config->get('server.baseUrl', ''));
             }
         );
+        // Add default PhpSessionManager implementation as SessionService
+        $this->serviceProvider->setServiceImplementation(SessionService::class, PhpSessionManager::class);
     }
 
     /**
@@ -197,6 +206,7 @@ abstract class Engine implements Context, IRunnerEngine {
     private function registerEngineComponents() {
         // Engine output interceptors
         \array_unshift($this->outputInterceptors, new RouterShutdown());
+        \array_unshift($this->outputInterceptors, new SessionShutdown());
     }
 
     /**
@@ -214,10 +224,10 @@ abstract class Engine implements Context, IRunnerEngine {
             $match = $this->getService(RouterService::class)->findRoute($path, $method);
 
             // Factory the http request and produce the http response
-            $request = new HttpRequest($path, $method);
+            $this->request = new HttpRequest($path, $method);
 
             $httpResponse = (new Runner($this))->run(
-                $request,
+                $this->request,
                 $match
             );
         } catch (HttpException $httpException) {
@@ -343,13 +353,16 @@ abstract class Engine implements Context, IRunnerEngine {
     /**
      * {@inheritDoc}
      */
-    public function getService($class) {
-        if (!\array_key_exists($class, $this->services)) {
-            // Create the instance of the service using Service class constructor
-            $this->services[$class] = new AsyncProperty(new $class($this));
-        }
+    public function getRequest() {
+        return $this->request;
+    }
 
-        return $this->services[$class]->get();
+    /**
+     * {@inheritDoc}
+     */
+    public function getService($class) {
+        return $this->serviceProvider
+            ->getService($class);
     }
 
     /**
@@ -357,7 +370,12 @@ abstract class Engine implements Context, IRunnerEngine {
      */
     public function registerService($class, $instance) {
         // The previous class is overriden by the new $instance parameter
-        $this->services[$class] = new AsyncProperty($instance);
+        if (\is_string($instance)) {
+            // Register a service implementation class for $class service interface
+            $this->serviceProvider->setServiceImplementation($class, $instance);
+        } else {
+            $this->serviceProvider->registerService($class, $instance);
+        }
     }
 
     /**

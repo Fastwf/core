@@ -1,46 +1,32 @@
 <?php
 
-namespace Fastwf\Tests\Router;
+namespace Fastwf\Tests\Session;
 
 use PHPUnit\Framework\TestCase;
-
-use Fastwf\Core\Router\Route;
-use Fastwf\Core\Router\RouterService;
 use Fastwf\Tests\Engine\SimpleEngine;
+use Fastwf\Core\Session\PhpSessionManager;
 
-class RouterServiceTest extends TestCase
+class PhpSessionManagerTest extends TestCase
 {
 
-    private $router;
-    private $context;
-    private $service;
+    private $engine;
 
     protected function setup(): void
     {
-        $_SERVER['DOCUMENT_ROOT'] = __DIR__ . '/..';
-
-        $this->context = $this->getMockBuilder(SimpleEngine::class)
+        $this->engine = $this->getMockBuilder(SimpleEngine::class)
             ->setConstructorArgs([__DIR__ . '/../configuration.ini'])
-            ->onlyMethods(['sendResponse', 'handleRequest'])
+            ->onlyMethods(['handleRequest', 'sendResponse'])
             ->getMock();
-
-        $this->router = [
-            new Route([
-                'path' => 'hello-world/{name}',
-                'methods' => ['GET'],
-                'handler' => null,
-                'name' => 'hello',
-            ])
-        ];
-        $this->service = new RouterService($this->context, $this->router, '');
-    } 
+        $this->engine->run();
+    }
 
     /**
      * @covers Fastwf\Core\Components\RequestHandler
      * @covers Fastwf\Core\Configuration
      * @covers Fastwf\Core\Engine\Engine
-     * @covers Fastwf\Core\Engine\ServiceProvider
      * @covers Fastwf\Core\Engine\Run\Runner
+     * @covers Fastwf\Core\Engine\Service
+     * @covers Fastwf\Core\Engine\ServiceProvider
      * @covers Fastwf\Core\Http\Frame\Headers
      * @covers Fastwf\Core\Http\Frame\HttpRequest
      * @covers Fastwf\Core\Http\Frame\HttpResponse
@@ -50,7 +36,6 @@ class RouterServiceTest extends TestCase
      * @covers Fastwf\Core\Router\BaseRoute
      * @covers Fastwf\Core\Router\Components\RouterShutdown
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
-     * @covers Fastwf\Core\Router\Formatter\PathFormatter
      * @covers Fastwf\Core\Router\Formatter\RouteGenerator
      * @covers Fastwf\Core\Router\Mount
      * @covers Fastwf\Core\Router\Parser\RouteParser
@@ -58,28 +43,28 @@ class RouterServiceTest extends TestCase
      * @covers Fastwf\Core\Router\Route
      * @covers Fastwf\Core\Router\RouterService
      * @covers Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Session\PhpSessionManager
+     * @covers Fastwf\Core\Session\Session
+     * @covers Fastwf\Core\Session\SessionManager
      * @covers Fastwf\Core\Utils\ArrayProxy
      * @covers Fastwf\Core\Utils\ArrayUtil
      * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Utils\Logging\DefaultLogger
-     * @covers Fastwf\Core\Utils\StringUtil
      */
-    public function testUrlFor()
+    public function testNonLockedSession()
     {
-        $this->context->run();
+        $service = $this->engine->getService(PhpSessionManager::class);
 
-        $this->assertEquals(
-            '/hello-world/foo',
-            $this->service->urlFor('hello', ['hello/name' => 'foo']),
-        );
+        $this->assertNotNull($service->getSession());
     }
 
     /**
      * @covers Fastwf\Core\Components\RequestHandler
      * @covers Fastwf\Core\Configuration
      * @covers Fastwf\Core\Engine\Engine
-     * @covers Fastwf\Core\Engine\ServiceProvider
      * @covers Fastwf\Core\Engine\Run\Runner
+     * @covers Fastwf\Core\Engine\Service
+     * @covers Fastwf\Core\Engine\ServiceProvider
      * @covers Fastwf\Core\Http\Frame\Headers
      * @covers Fastwf\Core\Http\Frame\HttpRequest
      * @covers Fastwf\Core\Http\Frame\HttpResponse
@@ -89,7 +74,6 @@ class RouterServiceTest extends TestCase
      * @covers Fastwf\Core\Router\BaseRoute
      * @covers Fastwf\Core\Router\Components\RouterShutdown
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
-     * @covers Fastwf\Core\Router\Formatter\PathFormatter
      * @covers Fastwf\Core\Router\Formatter\RouteGenerator
      * @covers Fastwf\Core\Router\Mount
      * @covers Fastwf\Core\Router\Parser\RouteParser
@@ -97,28 +81,32 @@ class RouterServiceTest extends TestCase
      * @covers Fastwf\Core\Router\Route
      * @covers Fastwf\Core\Router\RouterService
      * @covers Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Session\PhpSessionManager
+     * @covers Fastwf\Core\Session\Session
+     * @covers Fastwf\Core\Session\SessionManager
      * @covers Fastwf\Core\Utils\ArrayProxy
      * @covers Fastwf\Core\Utils\ArrayUtil
      * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Utils\Logging\DefaultLogger
-     * @covers Fastwf\Core\Utils\StringUtil
      */
-    public function testDumpRouteGeneratorNoFile()
+    public function testLockedSession()
     {
-        $_ENV['SERVER_MODEPRODUCTION'] = 'no';
-        $this->context->run();
+        $service = $this->engine->getService(PhpSessionManager::class);
 
-        $this->service->dumpRouteGenerator();
+        $session = $service->getLockedSession();
+        // Close the session to release the lock
+        $service->closeSession();
 
-        $this->assertFalse(\file_exists($this->getCachedPath()));
+        $this->assertNotNull($session);
     }
 
     /**
      * @covers Fastwf\Core\Components\RequestHandler
      * @covers Fastwf\Core\Configuration
      * @covers Fastwf\Core\Engine\Engine
-     * @covers Fastwf\Core\Engine\ServiceProvider
      * @covers Fastwf\Core\Engine\Run\Runner
+     * @covers Fastwf\Core\Engine\Service
+     * @covers Fastwf\Core\Engine\ServiceProvider
      * @covers Fastwf\Core\Http\Frame\Headers
      * @covers Fastwf\Core\Http\Frame\HttpRequest
      * @covers Fastwf\Core\Http\Frame\HttpResponse
@@ -128,7 +116,6 @@ class RouterServiceTest extends TestCase
      * @covers Fastwf\Core\Router\BaseRoute
      * @covers Fastwf\Core\Router\Components\RouterShutdown
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
-     * @covers Fastwf\Core\Router\Formatter\PathFormatter
      * @covers Fastwf\Core\Router\Formatter\RouteGenerator
      * @covers Fastwf\Core\Router\Mount
      * @covers Fastwf\Core\Router\Parser\RouteParser
@@ -136,28 +123,28 @@ class RouterServiceTest extends TestCase
      * @covers Fastwf\Core\Router\Route
      * @covers Fastwf\Core\Router\RouterService
      * @covers Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Session\PhpSessionManager
+     * @covers Fastwf\Core\Session\Session
+     * @covers Fastwf\Core\Session\SessionManager
      * @covers Fastwf\Core\Utils\ArrayProxy
      * @covers Fastwf\Core\Utils\ArrayUtil
      * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Utils\Logging\DefaultLogger
-     * @covers Fastwf\Core\Utils\StringUtil
      */
-    public function testDumpRouteGeneratorFile()
+    public function testGetSessionId()
     {
-        $_ENV['SERVER_MODEPRODUCTION'] = 'yes';
-        $this->context->run();
+        $service = $this->engine->getService(PhpSessionManager::class);
 
-        $this->service->dumpRouteGenerator();
-
-        $this->assertTrue(\file_exists($this->getCachedPath()));
+        $this->assertNotEquals('', $service->getSessionId());
     }
 
     /**
      * @covers Fastwf\Core\Components\RequestHandler
      * @covers Fastwf\Core\Configuration
      * @covers Fastwf\Core\Engine\Engine
-     * @covers Fastwf\Core\Engine\ServiceProvider
      * @covers Fastwf\Core\Engine\Run\Runner
+     * @covers Fastwf\Core\Engine\Service
+     * @covers Fastwf\Core\Engine\ServiceProvider
      * @covers Fastwf\Core\Http\Frame\Headers
      * @covers Fastwf\Core\Http\Frame\HttpRequest
      * @covers Fastwf\Core\Http\Frame\HttpResponse
@@ -167,7 +154,6 @@ class RouterServiceTest extends TestCase
      * @covers Fastwf\Core\Router\BaseRoute
      * @covers Fastwf\Core\Router\Components\RouterShutdown
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
-     * @covers Fastwf\Core\Router\Formatter\PathFormatter
      * @covers Fastwf\Core\Router\Formatter\RouteGenerator
      * @covers Fastwf\Core\Router\Mount
      * @covers Fastwf\Core\Router\Parser\RouteParser
@@ -175,61 +161,28 @@ class RouterServiceTest extends TestCase
      * @covers Fastwf\Core\Router\Route
      * @covers Fastwf\Core\Router\RouterService
      * @covers Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Session\PhpSessionManager
+     * @covers Fastwf\Core\Session\Session
+     * @covers Fastwf\Core\Session\SessionManager
      * @covers Fastwf\Core\Utils\ArrayProxy
      * @covers Fastwf\Core\Utils\ArrayUtil
      * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Utils\Logging\DefaultLogger
-     * @covers Fastwf\Core\Utils\StringUtil
      */
-    public function testRestoreRouteGenerator()
+    public function testCloseSession()
     {
-        $_ENV['SERVER_MODEPRODUCTION'] = 'yes';
-        $this->context->run();
+        $service = $this->engine->getService(PhpSessionManager::class);
 
-        // call urlFor to cache the route generator
-        $this->service->urlFor('hello', ['hello/name' => 'foo']);
+        $session = $service->getSession();
 
-        // Create the cache file
-        $this->service->dumpRouteGenerator();
+        $session->set('user_id', 'test');
 
-        $cachePath = $this->getCachedPath();
-        $cachedData = \file_get_contents($cachePath);
-        $cachedState = \unserialize($cachedData);
+        // Modification will be detected and the $_SESSION recreated
+        $service->closeSession();
 
-        // Build another service to create a new RouteGenerator instance from the cached file
-        $service = new RouterService($this->context, $this->router, '');
-        $routerGenerator = $service->restoreRouteGenerator();
-
-        // Verify that the restored state is equals to the dumped state
-        $this->assertEquals(
-            $cachedState,
-            $routerGenerator->dumpState()
-        );
-
-        // Corrupt the cached file to create an instance of RouteGenerator from empty state
-        \file_put_contents($cachePath, "data not compatible with the serialized data");
-
-        // Build another service to create a new RouteGenerator instance from the cached file corrupted
-        $otherGenerator = (new RouterService($this->context, $this->router, ''))->restoreRouteGenerator();
-
-        // Verify that the restored state is not equals to the initial dumped state
-        $this->assertNotEquals(
-            $cachedState,
-            $otherGenerator->dumpState()
-        );
-    }
-
-    protected function tearDown(): void {
-        $cachePath = $this->getCachedPath();
-        if (\file_exists($cachePath)) {
-            \unlink($cachePath);
-        }
-    }
-
-    private function getCachedPath() {
-        return $this->context->getCachePath('fastwf.core')
-            . DIRECTORY_SEPARATOR
-            . RouterService::ROUTE_STATE_NAME;
+        // Verify that $_SESSION 'user_id' is set
+        $this->assertTrue(isset($_SESSION['user_id']));
+        $this->assertEquals('test', $_SESSION['user_id']);
     }
 
 }

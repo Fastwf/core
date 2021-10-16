@@ -69,4 +69,8 @@ class SimpleEngine implements IRunnerEngine {
         // ignore
     }
 
+    public function getRequest() {
+        return null;
+    }
+
 }

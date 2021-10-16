@@ -3,6 +3,7 @@
 
 # PHP
 vendor/
+var/
 
 # Build
 /build/
