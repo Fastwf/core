@@ -217,7 +217,9 @@ abstract class Engine implements Context, IRunnerEngine {
     private function handleRequest() {
         // Match the path with loaded routes
         try {
-            $path = \rawurldecode($this->server->get('REQUEST_URI'));
+            $path = \rawurldecode(
+                \explode('?', $this->server->get('REQUEST_URI'))[0]
+            );
             $method = \strtoupper($this->server->get('REQUEST_METHOD'));
 
             // Start the request life cycle on found route
