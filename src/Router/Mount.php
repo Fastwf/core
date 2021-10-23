@@ -82,7 +82,7 @@ class Mount extends BaseRoute {
     /**
      * Access to the registered routes.
      *
-     * @return 
+     * @return \ArrayIterator an iterator of routes
      */
     public function getRouteIterator() {
         return new \ArrayIterator($this->routes->get());
@@ -90,6 +90,9 @@ class Mount extends BaseRoute {
 
     // Implementation
 
+    /**
+     * {@inheritDoc}
+     */
     public function match($path, $method) {
         $parameters = [];
         
