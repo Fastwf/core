@@ -2,6 +2,9 @@
 
 namespace Fastwf\Core\Engine\Run;
 
+use Fastwf\Core\Exceptions\ValueError;
+use Fastwf\Core\Components\RequestHandler;
+
 /**
  * Runner class to process the request and create the response.
  * 
@@ -52,8 +55,7 @@ class Runner {
             $request->name = $route->getName();
             $request->parameters = $match['parameters'];
 
-            $response = $route->getHandler($this->engine)
-                ->handle($request);
+            $response = $this->handle($route, $request);
 
             // Extract out pipes and delegate post response transformation
             $response = $this->runStep($match, 'getOutputPipes', 'out', [$this->engine, $request, $response]);
@@ -69,6 +71,15 @@ class Runner {
         return $response;
     }
 
+    /**
+     * Try to execute the method on application component using args.
+     *
+     * @param array $match the matching array
+     * @param string $matcherMethod method that allows to obtain the components
+     * @param string $method the method name of the component
+     * @param array $args the argument to pass to the component method
+     * @return mixed the result of the component call
+     */
     private function runStep($match, $matcherMethod, $method, $args) {
         $components = \array_merge(
             $this->engine->{$matcherMethod}(),
@@ -87,6 +98,31 @@ class Runner {
         }
 
         return $result;
+    }
+
+    /**
+     * Handle the request using the route.
+     *
+     * @param Fastwf\Core\Router\Route $route
+     * @param Fastwf\Core\Http\Frame\HttpRequest $request
+     * @return Fastwf\Core\Http\Frame\HttpStreamResponse the response generated
+     * @throws Fastwf\Core\Exceptions\ValueError when it's not possible to handle the request
+     */
+    private function handle($route, $request) {
+        $handler = $route->getHandler($this->engine);
+
+        if ($handler instanceof RequestHandler) {
+            // It is a subclass of RequestHandler
+            $response = $handler->handle($request);
+        } else if (\class_exists($handler)) {
+            // Call the constructor and handle 
+            $response = (new $handler($this->engine))->handle($request);
+        } else {
+            // Unexpected handler
+            throw new ValueError("Cannot handle the request with '$handler'");
+        }
+
+        return $response;
     }
 
     /**

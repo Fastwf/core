@@ -18,12 +18,12 @@ class Route extends BaseRoute {
 
     /**
      * Route constructor
-     *
-     * {@inheritDoc}
      * 
      * Parameters:
      * - "methods": [required] the array of authorized methods
      * - "handler": [required] the request handler attached to the route
+     * 
+     * @see Fastwf\Core\Router\BaseRoute for other parameters
      */
     public function __construct($params) {
         parent::__construct($params);
