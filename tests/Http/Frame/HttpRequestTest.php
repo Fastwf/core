@@ -120,4 +120,16 @@ class HttpRequestTest extends TestCase {
         $req->notFound;
     }
 
+    /**
+     * @covers Fastwf\Core\Utils\ArrayProxy
+     * @covers Fastwf\Core\Http\Frame\Headers
+     * @covers Fastwf\Core\Http\Frame\HttpRequest
+     */
+    public function testIsset() {
+        $req = new HttpRequest("/", "GET");
+
+        $this->assertTrue(isset($req->form));
+        $this->assertFalse(isset($req->notFound));
+    }
+
 }
