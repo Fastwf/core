@@ -89,6 +89,48 @@ class PhpSessionManagerTest extends TestCase
      * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Utils\Logging\DefaultLogger
      */
+    public function testNonLockedSessionRefreshedOrNot()
+    {
+        $service = $this->engine->getService(PhpSessionManager::class);
+
+        $session = $service->getSession();
+
+        // Verify that the same object is returned when query the session multiple times
+        $this->assertEquals($session, $service->getSession(true));
+        $this->assertEquals($session, $service->getSession());
+    }
+
+    /**
+     * @covers Fastwf\Core\Components\RequestHandler
+     * @covers Fastwf\Core\Configuration
+     * @covers Fastwf\Core\Engine\Engine
+     * @covers Fastwf\Core\Engine\Run\Runner
+     * @covers Fastwf\Core\Engine\Service
+     * @covers Fastwf\Core\Engine\ServiceProvider
+     * @covers Fastwf\Core\Http\Frame\Headers
+     * @covers Fastwf\Core\Http\Frame\HttpRequest
+     * @covers Fastwf\Core\Http\Frame\HttpResponse
+     * @covers Fastwf\Core\Http\Frame\HttpStreamResponse
+     * @covers Fastwf\Core\Http\HttpException
+     * @covers Fastwf\Core\Http\NotFoundException
+     * @covers Fastwf\Core\Router\BaseRoute
+     * @covers Fastwf\Core\Router\Components\RouterShutdown
+     * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
+     * @covers Fastwf\Core\Router\Formatter\RouteGenerator
+     * @covers Fastwf\Core\Router\Mount
+     * @covers Fastwf\Core\Router\Parser\RouteParser
+     * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
+     * @covers Fastwf\Core\Router\Route
+     * @covers Fastwf\Core\Router\RouterService
+     * @covers Fastwf\Core\Router\Segment
+     * @covers Fastwf\Core\Session\PhpSessionManager
+     * @covers Fastwf\Core\Session\Session
+     * @covers Fastwf\Core\Session\SessionManager
+     * @covers Fastwf\Core\Utils\ArrayProxy
+     * @covers Fastwf\Core\Utils\ArrayUtil
+     * @covers Fastwf\Core\Utils\AsyncProperty
+     * @covers Fastwf\Core\Utils\Logging\DefaultLogger
+     */
     public function testLockedSession()
     {
         $service = $this->engine->getService(PhpSessionManager::class);

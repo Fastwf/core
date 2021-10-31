@@ -4,6 +4,9 @@ namespace Fastwf\Core\Session;
 
 use Fastwf\Core\Utils\ArrayProxy;
 
+/**
+ * Session object that allows to hold data in session.
+ */
 class Session extends ArrayProxy
 {
 
@@ -22,9 +25,6 @@ class Session extends ArrayProxy
 
     /// OVERRIDE METHODS
 
-    /**
-     * {@inheritDoc}
-     */
     public function update($array = [])
     {
         parent::update($array);
@@ -33,9 +33,6 @@ class Session extends ArrayProxy
         $this->modifications = \array_replace($this->modifications, $array);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function set($key, $value)
     {
         parent::set($key, $value);
@@ -44,9 +41,6 @@ class Session extends ArrayProxy
         $this->modifications[$key] = $value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function remove($key)
     {
         parent::remove($key);
@@ -57,6 +51,11 @@ class Session extends ArrayProxy
 
     /// EXTENSIONS
 
+    /**
+     * Allows to clear all data in the array.
+     *
+     * @param array $array the array reference.
+     */
     private function clearArray(&$array)
     {
         foreach(\array_keys($array) as $key)
@@ -109,6 +108,16 @@ class Session extends ArrayProxy
         {
             $array[$key] = $value;
         }
+    }
+
+    /**
+     * Allows to refresh the internal array by replacing with the array in parameter.
+     *
+     * @param array $array the reference to the new array.
+     */
+    public function refresh(&$array)
+    {
+        $this->array = $array;
     }
 
 }

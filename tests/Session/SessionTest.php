@@ -128,4 +128,21 @@ class SessionTest extends TestCase
         );
     }
 
+    /**
+     * @covers Fastwf\Core\Session\Session
+     * @covers Fastwf\Core\Utils\ArrayProxy
+     */
+    public function testRefresh()
+    {
+        $data = ['foo' => 'bar'];
+
+        $session = new Session($data);
+        $session->set('bar', 'foo');
+
+        $data = ['foo' => 'bar2'];
+        $session->refresh($data);
+
+        $this->assertEquals('bar2', $session->get('foo'));
+    }
+
 }

@@ -78,62 +78,72 @@ class PhpSessionManager extends SessionManager
     /**
      * Open the session by using the session options.
      *
-     * @param boolean $lock true when the session must be opened without close
+     * @param boolean $lock true when the session must be opened without close.
+     * @param boolean $refresh true to refresh the content of non locked session.
      * @return void
      */
-    protected function startSession($lock)
+    protected function startSession($lock, $refresh)
     {
         // When it's already open, the process can be stopped
         if (!$this->isOpened) {
             $options = $this->getSessionOptions();
 
+            $mustStart = true;
             if ($lock)
             {
                 // Mark the session opened
                 $this->isOpened = true;
             }
-            else
+            else if ($refresh || $this->session === null)
             {
                 $options['read_and_close'] = true;
             }
+            else
+            {
+                $mustStart = false;
+            }
 
-            // Start the session and load the session variable
-            \session_start($options);
-            $this->isStarted = true;
+            if ($mustStart)
+            {
+                // When the session must be locked or refreshed, call \session_start with right options.
 
-            $this->session = new Session($_SESSION);
+                // Start the session and load the session variable
+                \session_start($options);
+                $this->isStarted = true;
+
+                // Create or refresh the session object
+                if ($this->session === null)
+                {
+                    $this->session = new Session($_SESSION);
+                }
+                else
+                {
+                    $this->session->refresh($_SESSION);
+                }
+            }
         }
     }
 
     /// PUBLIC API
 
-    /**
-     * {@inheritDoc}
-     */
     public function getSessionId()
     {
         // The PHP session_start built-in function must be called to obtain the session id
-        $this->startSession(false);
+        $this->startSession(false, false);
 
         return \session_id();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getSession()
+    public function getSession($refresh=false)
     {
-        $this->startSession(false);
+        $this->startSession(false, $refresh);
 
         return $this->session;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getLockedSession()
     {
-        $this->startSession(true);
+        $this->startSession(true, false);
 
         return $this->session;
     }
@@ -153,6 +163,8 @@ class PhpSessionManager extends SessionManager
                 \session_write_close();
 
                 $this->isOpened = false;
+
+                $this->session = null;
             }
             else if ($this->session->isModified())
             {

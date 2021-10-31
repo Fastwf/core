@@ -13,9 +13,10 @@ interface SessionService
      * 
      * The data is loaded but the session data is not locked.
      *
+     * @param boolean $refresh true when data must be refreshed (false by default).
      * @return Fastwf\Core\Session\Session the session object wrapper
      */
-    public function getSession();
+    public function getSession($refresh=false);
 
     /**
      * Access to a locked session object container.
