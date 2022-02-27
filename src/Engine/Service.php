@@ -2,6 +2,8 @@
 
 namespace Fastwf\Core\Engine;
 
+use Fastwf\Core\Engine\Context;
+
 /**
  * Base service class that allows application service to access to the engine context.
  */
@@ -10,7 +12,7 @@ abstract class Service {
     /**
      * The engine context executed
      *
-     * @var Fastwf\Core\Engine\Context
+     * @var Context
      */
     protected $context;
 

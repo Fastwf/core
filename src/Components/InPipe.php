@@ -2,6 +2,9 @@
 
 namespace Fastwf\Core\Components;
 
+use Fastwf\Core\Engine\Context;
+use Fastwf\Core\Http\Frame\HttpRequest;
+
 /**
  * Interface used after the guard control and before calling the request handler.
  * 
@@ -11,9 +14,9 @@ interface InPipe {
     /**
      * Perform action before request handler execution.
      *
-     * @param Fastwf\Core\Engine\Context $context the request context
-     * @param mixed $request the client http request
-     * @return void
+     * @param Context $context the request context.
+     * @param HttpRequest $request the client http request.
+     * @return HttpRequest the same request or a transformed request.
      */
     public function in($context, $request);
 }

@@ -111,6 +111,23 @@ class SessionTest extends TestCase
      * @covers Fastwf\Core\Session\Session
      * @covers Fastwf\Core\Utils\ArrayProxy
      */
+    public function testApplyModificationDeleted()
+    {
+        $data = ['foo' => 'bar'];
+
+        $session = new Session($data);
+        $session->remove('foo');
+
+        $otherData = ['foo' => 'bar'];
+        $session->applyModifications($otherData);
+
+        $this->assertEquals([], $otherData);
+    }
+
+    /**
+     * @covers Fastwf\Core\Session\Session
+     * @covers Fastwf\Core\Utils\ArrayProxy
+     */
     public function testApplyModificationClear()
     {
         $data = ['foo' => 'bar'];

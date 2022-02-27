@@ -641,7 +641,7 @@ class EngineTest extends TestCase {
         foreach ($paths as $path) {
             if (\file_exists($path)) {
                 \rmdir($path);
-            }            
+            }
         }
     }
 

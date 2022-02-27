@@ -2,7 +2,10 @@
 
 namespace Fastwf\Core\Components;
 
+use Fastwf\Core\Engine\Context;
+use Fastwf\Core\Http\Frame\HttpRequest;
 use Fastwf\Core\Http\Frame\HttpResponse;
+use Fastwf\Core\Http\Frame\HttpStreamResponse;
 
 /**
  * Application component that allows to handle the incoming client request.
@@ -14,7 +17,7 @@ abstract class RequestHandler {
     /**
      * The engine context.
      *
-     * @var Fastwf\Core\Engine\Context
+     * @var Context
      */
     protected $context;
 
@@ -25,8 +28,8 @@ abstract class RequestHandler {
     /**
      * Handle the request and return the response object to send to the client.
      *
-     * @param Fastwf\Core\Http\Frame\HttpRequest $request the incoming the http request.
-     * @return mixed the http reponse.
+     * @param HttpRequest $request the incoming the http request.
+     * @return HttpStreamResponse the http reponse.
      */
     public abstract function handle($request);
 
@@ -54,7 +57,7 @@ abstract class RequestHandler {
      * @param integer $status the http response code (by default 200)
      * @param array $headers the headers to provide to the response (when "Content-Type" is not provided, the response 
      *                       contains "text/html; charset=utf-8").
-     * @return Fastwf\Core\Http\Frame\HttpStreamResponse an html document response.
+     * @return HttpStreamResponse an html document response.
      */
     protected function html($body, $status = 200, $headers = []) {
         return new HttpResponse(
@@ -71,7 +74,7 @@ abstract class RequestHandler {
      * @param integer $status the http response code (by default 200)
      * @param array $headers the headers to provide to the response (when "Content-Type" is not provided, the response 
      *                       contains "application/json; charset=utf-8").
-     * @return Fastwf\Core\Http\Frame\HttpStreamResponse a json document response.
+     * @return HttpStreamResponse a json document response.
      */
     protected function json($body, $status = 200, $headers = []) {
         return new HttpResponse(
@@ -87,7 +90,7 @@ abstract class RequestHandler {
      * @param string $url the url where redirect the user
      * @param integer $status the http response code (by default 302).
      * @param array $headers the headers to provide to the response ("Location" will be replaced).
-     * @return Fastwf\Core\Http\Frame\HttpStreamResponse a redirection response.
+     * @return HttpStreamResponse a redirection response.
      */
     protected function redirect($url, $status = 302, $headers = []) {
         $headers['Location'] = $url;

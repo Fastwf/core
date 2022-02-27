@@ -8,10 +8,8 @@ use Fastwf\Core\Engine\Output\ApacheHttpOutput;
 use Fastwf\Core\Engine\Run\IRunnerEngine;
 use Fastwf\Core\Engine\Run\Runner;
 use Fastwf\Core\Http\HttpException;
-use Fastwf\Core\Http\NotFoundException;
 use Fastwf\Core\Http\Frame\HttpRequest;
 use Fastwf\Core\Http\Frame\HttpResponse;
-use Fastwf\Core\Router\Mount;
 use Fastwf\Core\Router\RouterService;
 use Fastwf\Core\Router\Components\RouterShutdown;
 use Fastwf\Core\Session\SessionService;
@@ -36,6 +34,11 @@ abstract class Engine implements Context, IRunnerEngine {
 
     private $configurationPath;
 
+    /**
+     * The array of settings set on application engine
+     *
+     * @var array<object>
+     */
     private $settings;
     
     protected $server;

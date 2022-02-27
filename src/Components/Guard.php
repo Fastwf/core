@@ -2,6 +2,10 @@
 
 namespace Fastwf\Core\Components;
 
+use Fastwf\Core\Engine\Context;
+use Fastwf\Core\Http\HttpException;
+use Fastwf\Core\Http\Frame\HttpRequest;
+
 /**
  * The guard interface.
  * 
@@ -12,9 +16,9 @@ interface Guard {
     /**
      * Control the request context to allow or deny resource access. 
      *
-     * @param Fastwf\Core\Engine\Context $context the request context
-     * @param mixed $request the client http request
-     * @throws Fastwf\Http\HttpException exception that prevent request handler execution 
+     * @param Context $context the request context
+     * @param HttpRequest $request the client http request
+     * @throws HttpException exception that prevent request handler execution 
      */
     public function control($context, $request);
 

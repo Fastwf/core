@@ -2,6 +2,8 @@
 
 namespace Fastwf\Core\Engine;
 
+use Fastwf\Core\Http\Frame\HttpRequest;
+
 /**
  * Context interface that allows to expose more Engine API.
  */
@@ -10,8 +12,10 @@ interface Context extends IEngine {
     /**
      * The method return a single service instance corresponding to the class in parameter.
      *
-     * @param string $class the class name to get instance
-     * @return mixed The service instanciated
+     * @param string|class-string<T> $class the class name to get instance
+     * @return T|object The service instanciated
+     * 
+     * @template T
      */
     public function getService($class);
 
@@ -23,8 +27,10 @@ interface Context extends IEngine {
      * 
      * This can be usefull when the service must be instanciated in a specific way instead of default.
      *
-     * @param string $class the class name associated to the instance
-     * @param mixed $instance the service factory or the service istance to save.
+     * @param string|class-string<T> $class the class name associated to the instance
+     * @param T|object $instance the service factory or the service istance to save.
+     * 
+     * @template T
      */
     public function registerService($class, $instance);
 
@@ -33,7 +39,7 @@ interface Context extends IEngine {
      * 
      * Can be null while the request is not processed.
      *
-     * @return Fastwf\Core\Http\Frame\HttpRequest|null the request
+     * @return HttpRequest|null the request
      */
     public function getRequest();
 

@@ -13,7 +13,19 @@ class Session extends ArrayProxy
     protected $modified = false;
     
     protected $cleared = false;
+
+    /**
+     * The array of modifications to apply on final session array.
+     *
+     * @var array<string, mixed>
+     */
     protected $modifications = [];
+    /**
+     * The array of keys to remove on final session array.
+     *
+     * @var array<string, true>
+     */
+    protected $deletions = [];
 
     public function __construct(&$array = [], $isSuperGlobal = false)
     {
@@ -31,6 +43,10 @@ class Session extends ArrayProxy
 
         $this->modified = true;
         $this->modifications = \array_replace($this->modifications, $array);
+        // No keys are deleted, just add or replace keys, so remove them inside $this->deletions
+        foreach (\array_keys($array) as $key) {
+            unset($this->deletions[$key]);
+        }
     }
 
     public function set($key, $value)
@@ -39,6 +55,7 @@ class Session extends ArrayProxy
 
         $this->modified = true;
         $this->modifications[$key] = $value;
+        unset($this->deletions[$key]);
     }
 
     public function remove($key)
@@ -47,6 +64,7 @@ class Session extends ArrayProxy
 
         $this->modified = true;
         unset($this->modifications[$key]);
+        $this->deletions[$key] = true;
     }
 
     /// EXTENSIONS
@@ -77,6 +95,7 @@ class Session extends ArrayProxy
 
         $this->cleared = true;
         $this->modifications = [];
+        $this->deletions = [];
     }
 
     /**
@@ -104,9 +123,15 @@ class Session extends ArrayProxy
         }
 
         // Update the array from modifications observed
+        // Add or update keys modified
         foreach ($this->modifications as $key => $value)
         {
             $array[$key] = $value;
+        }
+        // Remove keys deleted
+        foreach (\array_keys($this->deletions) as $key)
+        {
+            unset($array[$key]);
         }
     }
 

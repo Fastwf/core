@@ -2,6 +2,10 @@
 
 namespace Fastwf\Core\Components;
 
+use Fastwf\Core\Engine\Context;
+use Fastwf\Core\Http\Frame\HttpRequest;
+use Fastwf\Core\Http\Frame\HttpStreamResponse;
+
 /**
  * Interface used after the request handler and before calling the out interceptor.
  * 
@@ -11,10 +15,10 @@ interface OutPipe {
     /**
      * Perform action after request handler execution.
      *
-     * @param Fastwf\Core\Engine\Context $context the request context
-     * @param mixed $request the client http request
-     * @param mixed $response the http response
-     * @return mixed the response transformed or the response in parameter
+     * @param Context $context the request context
+     * @param HttpRequest $request the client http request
+     * @param HttpStreamResponse $response the http response
+     * @return HttpStreamResponse the response transformed or the response in parameter
      */
     public function out($context, $request, $response);
 }
