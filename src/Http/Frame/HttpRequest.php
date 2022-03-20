@@ -2,23 +2,23 @@
 
 namespace Fastwf\Core\Http\Frame;
 
-use Fastwf\Core\Utils\ArrayProxy;
+use Fastwf\Api\Utils\ArrayProxy;
 use Fastwf\Core\Http\Frame\Headers;
-use Fastwf\Core\Utils\Files\UploadedFile;
 use Fastwf\Core\Exceptions\AttributeError;
+use Fastwf\Api\Utils\Files\UploadedFileUtil;
 
 /**
  * The object representation of the http request.
  * 
  * @property-read string $path The path corresponding to the REQUEST_URI.
  * @property-read string $method The request method corresponding to the REQUEST_METHOD.
- * @property-read Fastwf\Core\Utils\ArrayProxy $query the array of query parameters ($_GET)
- * @property-read Fastwf\Core\Utils\ArrayProxy $form the array that contains the parsed form data ($_POST).
+ * @property-read ArrayProxy $query the array of query parameters ($_GET)
+ * @property-read ArrayProxy $form the array that contains the parsed form data ($_POST).
  * @property-read string $body the sequence read from body request.
  * @property-read array $json the json as array association extracted from body request.
  * @property-read resource $stream the stream of the body request.
- * @property-read Fastwf\Core\Http\Frame\Headers $headers the request headers.
- * @property-read Fastwf\Core\Utils\ArrayProxy $cookie the request cookies.
+ * @property-read Headers $headers the request headers.
+ * @property-read ArrayProxy $cookie the request cookies.
  */
 class HttpRequest {
 
@@ -165,11 +165,11 @@ class HttpRequest {
     /**
      * Allows to obtain an array proxy of $_FILES array with simplified access system.
      *
-     * @return Fastwf\Core\Utils\ArrayProxy the array proxy of uploaded files
+     * @return ArrayProxy the array proxy of uploaded files
      */
     protected function getFiles() {
         if ($this->_files === null) {
-            $this->_files = new ArrayProxy(UploadedFile::fromSuperGlobal($_FILES));
+            $this->_files = new ArrayProxy(UploadedFileUtil::fromSuperGlobal($_FILES));
         }
 
         return $this->_files;

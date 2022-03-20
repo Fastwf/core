@@ -2,8 +2,12 @@
 
 namespace Fastwf\Core\Engine\Run;
 
-use Fastwf\Core\Exceptions\ValueError;
+use Fastwf\Core\Router\Route;
+use Fastwf\Api\Exceptions\ValueError;
+use Fastwf\Core\Http\Frame\HttpRequest;
+use Fastwf\Core\Engine\Run\IRunnerEngine;
 use Fastwf\Core\Components\RequestHandler;
+use Fastwf\Core\Http\Frame\HttpStreamResponse;
 
 /**
  * Runner class to process the request and create the response.
@@ -21,7 +25,7 @@ class Runner {
     /**
      * The engine that launched the runner.
      *
-     * @var Fastwf\Core\Engine\IRunnerEngine
+     * @var IRunnerEngine
      */
     protected $engine;
 
@@ -34,7 +38,7 @@ class Runner {
      *
      * @param mixed $request
      * @param array $match the route to run.
-     * @return Fastwf\Core\Http\Frame\HttpStreamResponse the response produced by request handler.
+     * @return HttpStreamResponse the response produced by request handler.
      */
     public function run($request, $match) {
         $response = null;
@@ -103,10 +107,10 @@ class Runner {
     /**
      * Handle the request using the route.
      *
-     * @param Fastwf\Core\Router\Route $route
-     * @param Fastwf\Core\Http\Frame\HttpRequest $request
-     * @return Fastwf\Core\Http\Frame\HttpStreamResponse the response generated
-     * @throws Fastwf\Core\Exceptions\ValueError when it's not possible to handle the request
+     * @param Route $route
+     * @param HttpRequest $request
+     * @return HttpStreamResponse the response generated
+     * @throws ValueError when it's not possible to handle the request
      */
     private function handle($route, $request) {
         $handler = $route->getHandler($this->engine);
@@ -130,9 +134,9 @@ class Runner {
      *
      * @param \Throwable $exception
      * @param array $match the match array
-     * @param Fastwf\Core\Http\Frame\HttpRequest $request the incomming request
-     * @param Fastwf\Core\Http\Frame\HttpStreamResponse $response the response generated during request processing
-     * @return Fastwf\Core\Http\Frame\HttpStreamResponse the response in replacement
+     * @param HttpRequest $request the incomming request
+     * @param HttpStreamResponse $response the response generated during request processing
+     * @return HttpStreamResponse the response in replacement
      * @throws \Throwable when exception handlers cannot treat the exception
      */
     private function handleException($exception, $match, $request, $response)

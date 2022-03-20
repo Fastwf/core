@@ -12,7 +12,6 @@ class HttpExceptionTest extends TestCase {
      * @covers Fastwf\Core\Http\HttpException
      * @covers Fastwf\Core\Http\Frame\HttpStreamResponse
      * @covers Fastwf\Core\Http\Frame\HttpResponse
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     public function testConstructResponse() {
         $res = new HttpResponse(404, [], "Not found");
@@ -26,7 +25,6 @@ class HttpExceptionTest extends TestCase {
      * @covers Fastwf\Core\Http\HttpException
      * @covers Fastwf\Core\Http\Frame\HttpStreamResponse
      * @covers Fastwf\Core\Http\Frame\HttpResponse
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     public function testConstructArgs() {
         $exception = new HttpException("Not found", ['status' => 400, 'errorMessage' => 'Bad request']);

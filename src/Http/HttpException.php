@@ -9,7 +9,7 @@ class HttpException extends \Exception {
     /**
      * The http response to send to the client.
      *
-     * @var Fastwf\Core\Http\Frame\HttpResponse
+     * @var HttpResponse
      */
     private $response;
 
@@ -32,7 +32,7 @@ class HttpException extends \Exception {
     /**
      * Get the HttpResponse corresponding to the current exception.
      *
-     * @return Fastwf\Core\Http\Frame\HttpResponse
+     * @return HttpResponse
      */
     public function getResponse() {
         return $this->response;

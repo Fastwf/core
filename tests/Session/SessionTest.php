@@ -10,7 +10,6 @@ class SessionTest extends TestCase
 
     /**
      * @covers Fastwf\Core\Session\Session
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     public function testUpdate()
     {
@@ -24,7 +23,6 @@ class SessionTest extends TestCase
 
     /**
      * @covers Fastwf\Core\Session\Session
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     public function testSet()
     {
@@ -39,7 +37,6 @@ class SessionTest extends TestCase
 
     /**
      * @covers Fastwf\Core\Session\Session
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     public function testRemove()
     {
@@ -53,7 +50,6 @@ class SessionTest extends TestCase
 
     /**
      * @covers Fastwf\Core\Session\Session
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     public function testClear()
     {
@@ -68,7 +64,6 @@ class SessionTest extends TestCase
 
     /**
      * @covers Fastwf\Core\Session\Session
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     public function testIsModified()
     {
@@ -85,7 +80,6 @@ class SessionTest extends TestCase
 
     /**
      * @covers Fastwf\Core\Session\Session
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     public function testApplyModification()
     {
@@ -109,7 +103,6 @@ class SessionTest extends TestCase
 
     /**
      * @covers Fastwf\Core\Session\Session
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     public function testApplyModificationDeleted()
     {
@@ -126,7 +119,6 @@ class SessionTest extends TestCase
 
     /**
      * @covers Fastwf\Core\Session\Session
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     public function testApplyModificationClear()
     {
@@ -147,7 +139,6 @@ class SessionTest extends TestCase
 
     /**
      * @covers Fastwf\Core\Session\Session
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     public function testRefresh()
     {

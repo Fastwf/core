@@ -3,6 +3,12 @@
     "description": "Core module of fast web framework",
     "type": "library",
     "license": "MIT License",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Fastwf/api"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Fastwf\\Core\\": "src/"
@@ -23,6 +29,7 @@
         "phpunit/phpunit": "^9"
     },
     "require": {
-        "psr/log": "^1.1"
+        "psr/log": "^1.1",
+        "fastwf/api": "dev-master"
     }
 }

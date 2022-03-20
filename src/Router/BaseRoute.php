@@ -2,10 +2,10 @@
 
 namespace Fastwf\Core\Router;
 
+use Fastwf\Api\Utils\ArrayUtil;
+use Fastwf\Api\Utils\AsyncProperty;
 use Fastwf\Core\Engine\Run\IMatcher;
 use Fastwf\Core\Router\Formatter\IBaseRoute;
-use Fastwf\Core\Utils\ArrayUtil;
-use Fastwf\Core\Utils\AsyncProperty;
 
 abstract class BaseRoute implements IBaseRoute, IMatcher {
 

@@ -4,7 +4,7 @@ namespace Fastwf\Tests\Http\Frame;
 
 use PHPUnit\Framework\TestCase;
 
-use Fastwf\Core\Exceptions\IOException;
+use Fastwf\Api\Exceptions\IOException;
 use Fastwf\Core\Exceptions\AttributeError;
 use Fastwf\Core\Http\Frame\HttpStreamResponse;
 
@@ -17,7 +17,6 @@ class HttpStreamResponseTest extends TestCase {
     const OUT_PATH = __DIR__ . '/out.local.txt';
 
     /**
-     * @covers Fastwf\Core\Utils\ArrayProxy
      * @covers Fastwf\Core\Http\Frame\HttpStreamResponse
      */
     public function testAttributes() {
@@ -28,7 +27,6 @@ class HttpStreamResponseTest extends TestCase {
     }
 
     /**
-     * @covers Fastwf\Core\Utils\ArrayProxy
      * @covers Fastwf\Core\Http\Frame\HttpStreamResponse
      * @covers Fastwf\Core\Exceptions\AttributeError
      */
@@ -40,7 +38,6 @@ class HttpStreamResponseTest extends TestCase {
     }
 
     /**
-     * @covers Fastwf\Core\Utils\ArrayProxy
      * @covers Fastwf\Core\Http\Frame\HttpStreamResponse
      * @covers Fastwf\Core\Exceptions\AttributeError
      */
@@ -65,7 +62,6 @@ class HttpStreamResponseTest extends TestCase {
     }
 
     /**
-     * @covers Fastwf\Core\Utils\ArrayProxy
      * @covers Fastwf\Core\Http\Frame\HttpStreamResponse
      * @covers Fastwf\Core\Exceptions\AttributeError
      */

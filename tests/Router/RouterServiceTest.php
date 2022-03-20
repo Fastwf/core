@@ -58,11 +58,7 @@ class RouterServiceTest extends TestCase
      * @covers Fastwf\Core\Router\Route
      * @covers Fastwf\Core\Router\RouterService
      * @covers Fastwf\Core\Router\Segment
-     * @covers Fastwf\Core\Utils\ArrayProxy
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Utils\Logging\DefaultLogger
-     * @covers Fastwf\Core\Utils\StringUtil
      */
     public function testUrlFor()
     {
@@ -97,11 +93,7 @@ class RouterServiceTest extends TestCase
      * @covers Fastwf\Core\Router\Route
      * @covers Fastwf\Core\Router\RouterService
      * @covers Fastwf\Core\Router\Segment
-     * @covers Fastwf\Core\Utils\ArrayProxy
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Utils\Logging\DefaultLogger
-     * @covers Fastwf\Core\Utils\StringUtil
      */
     public function testDumpRouteGeneratorNoFile()
     {
@@ -136,11 +128,7 @@ class RouterServiceTest extends TestCase
      * @covers Fastwf\Core\Router\Route
      * @covers Fastwf\Core\Router\RouterService
      * @covers Fastwf\Core\Router\Segment
-     * @covers Fastwf\Core\Utils\ArrayProxy
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Utils\Logging\DefaultLogger
-     * @covers Fastwf\Core\Utils\StringUtil
      */
     public function testDumpRouteGeneratorFile()
     {
@@ -175,11 +163,7 @@ class RouterServiceTest extends TestCase
      * @covers Fastwf\Core\Router\Route
      * @covers Fastwf\Core\Router\RouterService
      * @covers Fastwf\Core\Router\Segment
-     * @covers Fastwf\Core\Utils\ArrayProxy
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Utils\Logging\DefaultLogger
-     * @covers Fastwf\Core\Utils\StringUtil
      */
     public function testRestoreRouteGenerator()
     {

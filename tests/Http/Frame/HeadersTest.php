@@ -10,7 +10,6 @@ class HeadersTest extends TestCase {
 
     /**
      * @covers Fastwf\Core\Http\Frame\Headers
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     function testUpdate() {
         $headers = new Headers();
@@ -24,7 +23,6 @@ class HeadersTest extends TestCase {
 
     /**
      * @covers Fastwf\Core\Http\Frame\Headers
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     function testHas() {
         $headers = new Headers(['Content-Type' => 'application/json']);
@@ -34,7 +32,6 @@ class HeadersTest extends TestCase {
 
     /**
      * @covers Fastwf\Core\Http\Frame\Headers
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     function testRemove() {
         $headers = new Headers(['Content-Type' => 'application/json']);
@@ -46,7 +43,6 @@ class HeadersTest extends TestCase {
 
     /**
      * @covers Fastwf\Core\Http\Frame\Headers
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     function testSet() {
         $headers = new Headers();

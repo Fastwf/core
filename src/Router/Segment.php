@@ -2,7 +2,7 @@
 
 namespace Fastwf\Core\Router;
 
-use Fastwf\Core\Utils\UuidUtil;
+use Fastwf\Api\Utils\UuidUtil;
 use Fastwf\Core\Router\Exception\ParameterTypeException;
 use Fastwf\Core\Router\Exception\ParameterConversionException;
 

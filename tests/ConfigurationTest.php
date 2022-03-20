@@ -5,14 +5,13 @@ namespace Fastwf\Tests;
 use Fastwf\Core\Configuration;
 
 use PHPUnit\Framework\TestCase;
-use Fastwf\Core\Exceptions\IOException;
-use Fastwf\Core\Exceptions\ValueError;
+use Fastwf\Api\Exceptions\ValueError;
+use Fastwf\Api\Exceptions\IOException;
 
 class ConfigurationTest extends TestCase {
 
     /**
      * @covers Fastwf\Core\Configuration
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     public function testIOException() {
         $this->expectException(IOException::class);
@@ -22,7 +21,6 @@ class ConfigurationTest extends TestCase {
 
     /**
      * @covers Fastwf\Core\Configuration
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     public function testAloneConfigurationFile() {
         $configuration = new Configuration(__DIR__ . '/../resources/config-alone.ini');
@@ -32,7 +30,6 @@ class ConfigurationTest extends TestCase {
 
     /**
      * @covers Fastwf\Core\Configuration
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     public function testOverrideConfigurationFile() {
         $_ENV['APP_DEFAULT_LANG'] = 'fr';

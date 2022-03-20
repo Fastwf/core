@@ -4,8 +4,109 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cad277b890afec9aaf2b75c6ec4babb4",
+    "content-hash": "de14a54fdfec089920194bddbe64801f",
     "packages": [
+        {
+            "name": "fastwf/api",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Fastwf/api.git",
+                "reference": "54eeccb16909d57bedc484dc8a2adeda25c945ed"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Fastwf/api/zipball/54eeccb16909d57bedc484dc8a2adeda25c945ed",
+                "reference": "54eeccb16909d57bedc484dc8a2adeda25c945ed",
+                "shasum": ""
+            },
+            "require": {
+                "psr/http-message": "^1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Fastwf\\Api\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Fastwf\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David BELBEZE",
+                    "email": "david.belbeze@gmail.com"
+                }
+            ],
+            "description": "API declaration and utility class used in Fast Web Framework context.",
+            "support": {
+                "source": "https://github.com/Fastwf/api/tree/master",
+                "issues": "https://github.com/Fastwf/api/issues"
+            },
+            "time": "2022-03-20T09:58:03+00:00"
+        },
+        {
+            "name": "psr/http-message",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-message.git",
+                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-message/zipball/f6561bf28d520154e4b0ec72be95418abe6d9363",
+                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Http\\Message\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for HTTP messages",
+            "homepage": "https://github.com/php-fig/http-message",
+            "keywords": [
+                "http",
+                "http-message",
+                "psr",
+                "psr-7",
+                "request",
+                "response"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/http-message/tree/master"
+            },
+            "time": "2016-08-06T14:39:51+00:00"
+        },
         {
             "name": "psr/log",
             "version": "1.1.4",
@@ -2152,7 +2253,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "fastwf/api": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

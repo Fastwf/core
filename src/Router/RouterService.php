@@ -2,11 +2,11 @@
 
 namespace Fastwf\Core\Router;
 
-use Fastwf\Core\Engine\Service;
-use Fastwf\Core\Http\NotFoundException;
 use Fastwf\Core\Router\Mount;
+use Fastwf\Core\Engine\Service;
+use Fastwf\Api\Utils\AsyncProperty;
+use Fastwf\Core\Http\NotFoundException;
 use Fastwf\Core\Router\Formatter\RouteGenerator;
-use Fastwf\Core\Utils\AsyncProperty;
 
 /**
  * RouterService that allows to manage router.

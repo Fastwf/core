@@ -2,8 +2,8 @@
 
 namespace Fastwf\Core\Router;
 
-use Fastwf\Core\Utils\ArrayUtil;
-use Fastwf\Core\Utils\AsyncProperty;
+use Fastwf\Api\Utils\ArrayUtil;
+use Fastwf\Api\Utils\AsyncProperty;
 use Fastwf\Core\Router\BaseRoute;
 use Fastwf\Core\Router\Exception\MountException;
 use Fastwf\Core\Router\Parser\RouteParser;
@@ -34,8 +34,8 @@ class Mount extends BaseRoute {
     /**
      * Verify that the path match the start of the mount path specification.
      *
-     * @param Fastwf\Core\Router\Parser\SpecificationRouteParser $mountParser the segment specification
-     * @param Fastwf\Core\Router\Parser\RouteParser $pathParser the route parser
+     * @param SpecificationRouteParser $mountParser the segment specification
+     * @param RouteParser $pathParser the route parser
      * @param array $parameters the array that contains the parameters
      * @param boolean $stop the boolean to set when the result must return before
      * @return array|null null or match

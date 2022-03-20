@@ -40,14 +40,14 @@ class RouteParser implements \Iterator {
         return $this->segmentIndex;
     }
 
-    public function next() {
+    public function next(): void {
         // Search for the next "/" char or the end of the sequence
         if ($this->isValid = $this->index < $this->length) {
             $this->nextSegment();
         }
     }
 
-    public function rewind() {
+    public function rewind(): void {
         $this->index = 0;
 
         $this->isValid = $this->index < $this->length;
@@ -58,7 +58,7 @@ class RouteParser implements \Iterator {
         $this->nextSegment();
     }
 
-    public function valid() {
+    public function valid(): bool {
         return $this->isValid;
     }
 

@@ -13,6 +13,7 @@ class PhpSessionManagerTest extends TestCase
 
     protected function setup(): void
     {
+        /** @var SimpleEngine */
         $this->engine = $this->getMockBuilder(SimpleEngine::class)
             ->setConstructorArgs([__DIR__ . '/../configuration.ini'])
             ->onlyMethods(['handleRequest', 'sendResponse'])
@@ -46,9 +47,6 @@ class PhpSessionManagerTest extends TestCase
      * @covers Fastwf\Core\Session\PhpSessionManager
      * @covers Fastwf\Core\Session\Session
      * @covers Fastwf\Core\Session\SessionManager
-     * @covers Fastwf\Core\Utils\ArrayProxy
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Utils\Logging\DefaultLogger
      */
     public function testNonLockedSession()
@@ -84,9 +82,6 @@ class PhpSessionManagerTest extends TestCase
      * @covers Fastwf\Core\Session\PhpSessionManager
      * @covers Fastwf\Core\Session\Session
      * @covers Fastwf\Core\Session\SessionManager
-     * @covers Fastwf\Core\Utils\ArrayProxy
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Utils\Logging\DefaultLogger
      */
     public function testNonLockedSessionRefreshedOrNot()
@@ -126,9 +121,6 @@ class PhpSessionManagerTest extends TestCase
      * @covers Fastwf\Core\Session\PhpSessionManager
      * @covers Fastwf\Core\Session\Session
      * @covers Fastwf\Core\Session\SessionManager
-     * @covers Fastwf\Core\Utils\ArrayProxy
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Utils\Logging\DefaultLogger
      */
     public function testLockedSession()
@@ -168,9 +160,6 @@ class PhpSessionManagerTest extends TestCase
      * @covers Fastwf\Core\Session\PhpSessionManager
      * @covers Fastwf\Core\Session\Session
      * @covers Fastwf\Core\Session\SessionManager
-     * @covers Fastwf\Core\Utils\ArrayProxy
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Utils\Logging\DefaultLogger
      */
     public function testGetSessionId()
@@ -206,9 +195,6 @@ class PhpSessionManagerTest extends TestCase
      * @covers Fastwf\Core\Session\PhpSessionManager
      * @covers Fastwf\Core\Session\Session
      * @covers Fastwf\Core\Session\SessionManager
-     * @covers Fastwf\Core\Utils\ArrayProxy
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Utils\Logging\DefaultLogger
      */
     public function testCloseSession()

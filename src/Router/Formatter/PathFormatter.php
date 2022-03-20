@@ -2,7 +2,7 @@
 
 namespace Fastwf\Core\Router\Formatter;
 
-use Fastwf\Core\Utils\StringUtil;
+use Fastwf\Api\Utils\StringUtil;
 
 /**
  * Helper class that format an absolute url path.

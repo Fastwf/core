@@ -2,11 +2,13 @@
 
 namespace Fastwf\Core\Router;
 
+use Fastwf\Api\Utils\ArrayUtil;
+use Fastwf\Core\Engine\Context;
 use Fastwf\Core\Router\BaseRoute;
+use Fastwf\Api\Utils\AsyncProperty;
+use Fastwf\Core\Components\RequestHandler;
 use Fastwf\Core\Router\Parser\RouteParser;
 use Fastwf\Core\Router\Parser\SpecificationRouteParser;
-use Fastwf\Core\Utils\ArrayUtil;
-use Fastwf\Core\Utils\AsyncProperty;
 
 /**
  * Class that help to perform route match and parameter extraction.
@@ -23,7 +25,7 @@ class Route extends BaseRoute {
      * - "methods": [required] the array of authorized methods
      * - "handler": [required] the request handler attached to the route
      * 
-     * @see Fastwf\Core\Router\BaseRoute for other parameters
+     * {@see BaseRoute} for other parameters
      */
     public function __construct($params) {
         parent::__construct($params);
@@ -89,8 +91,8 @@ class Route extends BaseRoute {
     /**
      * Get the handler associated to the route.
      *
-     * @param Fastwf\Core\Engine\Context $context the engine context
-     * @return \Fastwf\Core\Components\RequestHandler the request handler
+     * @param Context $context the engine context
+     * @return RequestHandler the request handler
      */
     public function getHandler($context) {
         return $this->handler->get($context);

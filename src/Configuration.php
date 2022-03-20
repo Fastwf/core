@@ -2,9 +2,9 @@
 
 namespace Fastwf\Core;
 
-use Fastwf\Core\Exceptions\IOException;
-use Fastwf\Core\Exceptions\ValueError;
-use Fastwf\Core\Utils\ArrayProxy;
+use Fastwf\Api\Utils\ArrayProxy;
+use Fastwf\Api\Exceptions\ValueError;
+use Fastwf\Api\Exceptions\IOException;
 
 /**
  * Configuration class that allows to load application configuration from ini file.

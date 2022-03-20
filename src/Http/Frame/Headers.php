@@ -2,7 +2,7 @@
 
 namespace Fastwf\Core\Http\Frame;
 
-use Fastwf\Core\Utils\ArrayProxy;
+use Fastwf\Api\Utils\ArrayProxy;
 
 /**
  * Array proxy used to access to headers.

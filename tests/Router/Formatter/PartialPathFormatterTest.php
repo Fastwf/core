@@ -4,7 +4,7 @@ namespace Fastwf\Tests\Router\Formatter;
 
 use Fastwf\Core\Router\Route;
 use PHPUnit\Framework\TestCase;
-use Fastwf\Core\Exceptions\KeyError;
+use Fastwf\Api\Exceptions\KeyError;
 use Fastwf\Core\Router\Exception\FormatException;
 use Fastwf\Core\Router\Formatter\PartialPathFormatter;
 
@@ -28,9 +28,6 @@ class PartialPathFormatterTest extends TestCase
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\StringUtil
      */
     public function testFormatEmptySegment()
     {
@@ -46,9 +43,6 @@ class PartialPathFormatterTest extends TestCase
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\StringUtil
      */
     public function testFormatSegment()
     {
@@ -64,9 +58,6 @@ class PartialPathFormatterTest extends TestCase
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\StringUtil
      */
     public function testFormatParameterNoInterpolation()
     {
@@ -82,9 +73,6 @@ class PartialPathFormatterTest extends TestCase
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\StringUtil
      */
     public function testFormatParameter()
     {
@@ -100,9 +88,6 @@ class PartialPathFormatterTest extends TestCase
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\StringUtil
      */
     public function testFormatParameterNoString()
     {
@@ -118,9 +103,6 @@ class PartialPathFormatterTest extends TestCase
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\StringUtil
      */
     public function testFormatParameterPath()
     {
@@ -136,9 +118,6 @@ class PartialPathFormatterTest extends TestCase
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\StringUtil
      */
     public function testFormatParameterNamespace()
     {
@@ -154,9 +133,6 @@ class PartialPathFormatterTest extends TestCase
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\StringUtil
      */
     public function testFormatWildcard()
     {
@@ -172,9 +148,6 @@ class PartialPathFormatterTest extends TestCase
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\StringUtil
      */
     public function testFormatMissingParameter()
     {

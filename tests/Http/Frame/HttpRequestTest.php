@@ -11,7 +11,6 @@ use Fastwf\Core\Exceptions\AttributeError;
 class HttpRequestTest extends TestCase {
 
     /**
-     * @covers Fastwf\Core\Utils\ArrayProxy
      * @covers Fastwf\Core\Http\Frame\Headers
      * @covers Fastwf\Core\Http\Frame\HttpRequest
      */
@@ -25,8 +24,6 @@ class HttpRequestTest extends TestCase {
     }
 
     /**
-     * @covers Fastwf\Core\Utils\ArrayProxy
-     * @covers Fastwf\Core\Utils\Files\UploadedFile
      * @covers Fastwf\Core\Http\Frame\Headers
      * @covers Fastwf\Core\Http\Frame\HttpRequest
      */
@@ -37,7 +34,6 @@ class HttpRequestTest extends TestCase {
     }
 
     /**
-     * @covers Fastwf\Core\Utils\ArrayProxy
      * @covers Fastwf\Core\Http\Frame\Headers
      * @covers Fastwf\Core\Http\Frame\HttpRequest
      */
@@ -50,7 +46,6 @@ class HttpRequestTest extends TestCase {
     }
 
     /**
-     * @covers Fastwf\Core\Utils\ArrayProxy
      * @covers Fastwf\Core\Http\Frame\Headers
      * @covers Fastwf\Core\Http\Frame\HttpRequest
      */
@@ -62,7 +57,6 @@ class HttpRequestTest extends TestCase {
     }
 
     /**
-     * @covers Fastwf\Core\Utils\ArrayProxy
      * @covers Fastwf\Core\Http\Frame\Headers
      * @covers Fastwf\Core\Http\Frame\HttpRequest
      */
@@ -77,7 +71,6 @@ class HttpRequestTest extends TestCase {
     }
 
     /**
-     * @covers Fastwf\Core\Utils\ArrayProxy
      * @covers Fastwf\Core\Http\Frame\Headers
      * @covers Fastwf\Core\Http\Frame\HttpRequest
      */
@@ -93,7 +86,6 @@ class HttpRequestTest extends TestCase {
     }
 
     /**
-     * @covers Fastwf\Core\Utils\ArrayProxy
      * @covers Fastwf\Core\Http\Frame\Headers
      * @covers Fastwf\Core\Http\Frame\HttpRequest
      */
@@ -108,7 +100,6 @@ class HttpRequestTest extends TestCase {
     }
 
     /**
-     * @covers Fastwf\Core\Utils\ArrayProxy
      * @covers Fastwf\Core\Http\Frame\Headers
      * @covers Fastwf\Core\Http\Frame\HttpRequest
      * @covers Fastwf\Core\Exceptions\AttributeError
@@ -121,7 +112,6 @@ class HttpRequestTest extends TestCase {
     }
 
     /**
-     * @covers Fastwf\Core\Utils\ArrayProxy
      * @covers Fastwf\Core\Http\Frame\Headers
      * @covers Fastwf\Core\Http\Frame\HttpRequest
      */

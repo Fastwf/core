@@ -19,7 +19,7 @@ class SpecificationRouteParser extends RouteParser {
 	}
     }
 
-    public function next() {
+    public function next(): void {
         // Stop the iteration when a path segment is discovered
         //  That allows to return the same segment to accumulate the path as parameter
         if ($this->specificationSegment === null || !$this->specificationSegment->isPath()) {

@@ -4,8 +4,7 @@ namespace Fastwf\Core\Router\Formatter;
 
 use Fastwf\Core\Router\Mount;
 use Fastwf\Core\Router\Route;
-use Fastwf\Core\Utils\StringUtil;
-use Fastwf\Core\Exceptions\KeyError;
+use Fastwf\Api\Exceptions\KeyError;
 use Fastwf\Core\Router\Formatter\PathFormatter;
 use Fastwf\Core\Router\Exception\FormatException;
 use Fastwf\Core\Router\Formatter\PartialPathFormatter;
@@ -77,7 +76,7 @@ class RouteGenerator
      * Cache the path formatter associated to the given name.
      *
      * @param string $name
-     * @param Fastwf\Core\Router\Formatter\PathFormatter $pathFormatter
+     * @param PathFormatter $pathFormatter
      */
     private function cachePathFormatter($name, $pathFormatter)
     {
@@ -96,7 +95,7 @@ class RouteGenerator
      * Handle the current item of the route iterator and try to find the path formatter.
      *
      * @param string $name the route name
-     * @param Fastwf\Core\Router\Formatter\PathFormatter $pathFormatter the out path formatter
+     * @param PathFormatter $pathFormatter the out path formatter
      * @return void
      */
     private function handleCurrentItem($name, &$pathFormatter)
@@ -140,7 +139,7 @@ class RouteGenerator
      * Allows to search and return the path formatter associated to the given route name.
      *
      * @param string $name the route name (must be unique)
-     * @return Fastwf\Core\Router\Formatter\PathFormatter the path formatter to use to generate the route
+     * @return PathFormatter the path formatter to use to generate the route
      */
     private function getPathFormatter($name)
     {
@@ -184,12 +183,12 @@ class RouteGenerator
      * Search and generate the path associated to the route name.
      *
      * @param string $name the name of the route.
-     * @param string $parameters the parameters to inject as path parameter
-     * @param string $query the query parameter to add to the url.
+     * @param array $parameters the parameters to inject as path parameter
+     * @param array $query the query parameter to add to the url.
      * @param string $fragment the fragment to set to the url.
      * @return sring the path url encoded
-     * @throws Fastwf\Core\Exceptions\KeyError when more than one route with the same name is discovered
-     * @throws Fastwf\Core\Router\Exception\FormatException when formatting operation failed
+     * @throws KeyError when more than one route with the same name is discovered
+     * @throws FormatException when formatting operation failed
      */
     public function generate($name, $parameters = null, $query = null, $fragment = null)
     {

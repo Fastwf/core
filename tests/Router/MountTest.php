@@ -18,8 +18,6 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Router\Segment
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\ArrayUtil
      */
     public function testSynchronousRoutes() {
         $mount = new Mount([
@@ -43,8 +41,6 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Router\Segment
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\ArrayUtil
      */
     public function testAsynchronousRoutes() {
         $mount = new Mount([
@@ -70,8 +66,6 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Router\Segment
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\ArrayUtil
      */
     public function testNoRouteMatch() {
         $mount = new Mount([
@@ -98,8 +92,6 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Router\Segment
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\ArrayUtil
      */
     public function testMountNotMatch() {
         $mount = new Mount([
@@ -124,8 +116,6 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Router\Segment
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\ArrayUtil
      * @covers Fastwf\Core\Router\Exception\MountException
      */
     public function testMountWildcardFailed() {
@@ -153,8 +143,6 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Router\Segment
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\ArrayUtil
      * @covers Fastwf\Core\Router\Exception\MountException
      */
     public function testMountPathFailed() {
@@ -182,8 +170,6 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Router\Segment
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\ArrayUtil
      */
     public function testMountMatchParameters() {
         $mount = new Mount([
@@ -212,8 +198,6 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Router\Segment
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\ArrayUtil
      */
     public function testMountMatchParametersNoMountName() {
         $mount = new Mount([
@@ -241,8 +225,6 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Router\Segment
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\ArrayUtil
      */
     public function testMountOnEmpty() {
         $mount = new Mount([
@@ -268,8 +250,6 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Router\Segment
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\ArrayUtil
      */
     public function testMatchWithMountPath() {
         $mount = new Mount([
@@ -295,8 +275,6 @@ class MountTest extends TestCase {
      * @covers Fastwf\Core\Router\Segment
      * @covers Fastwf\Core\Router\Parser\RouteParser
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\ArrayUtil
      */
     public function testGetRouteIterator() {
         $mount = new Mount([

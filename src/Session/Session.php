@@ -2,7 +2,7 @@
 
 namespace Fastwf\Core\Session;
 
-use Fastwf\Core\Utils\ArrayProxy;
+use Fastwf\Api\Utils\ArrayProxy;
 
 /**
  * Session object that allows to hold data in session.

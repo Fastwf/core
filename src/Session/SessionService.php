@@ -2,6 +2,8 @@
 
 namespace Fastwf\Core\Session;
 
+use Fastwf\Core\Session\Session;
+
 /**
  * Session service interface.
  */
@@ -14,7 +16,7 @@ interface SessionService
      * The data is loaded but the session data is not locked.
      *
      * @param boolean $refresh true when data must be refreshed (false by default).
-     * @return Fastwf\Core\Session\Session the session object wrapper
+     * @return Session the session object wrapper
      */
     public function getSession($refresh=false);
 
@@ -24,7 +26,7 @@ interface SessionService
      * The session data is preserved while closeSession() method is not called.
      * This method allows to prevent concurrent requests to update sensible session data.
      *
-     * @return Fastwf\Core\Session\Session the session object wrapper
+     * @return Session the session object wrapper
      */
     public function getLockedSession();
 

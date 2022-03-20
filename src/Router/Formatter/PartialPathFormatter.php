@@ -2,9 +2,11 @@
 
 namespace Fastwf\Core\Router\Formatter;
 
+use Fastwf\Core\Router\Segment;
+use Fastwf\Api\Utils\StringUtil;
 use Fastwf\Core\Router\BaseRoute;
-use Fastwf\Core\Utils\StringUtil;
-use Fastwf\Core\Exceptions\KeyError;
+use Fastwf\Api\Exceptions\KeyError;
+use Fastwf\Core\Router\Formatter\IBaseRoute;
 use Fastwf\Core\Router\Exception\FormatException;
 use Fastwf\Core\Router\Parser\SpecificationRouteParser;
 
@@ -24,7 +26,7 @@ class PartialPathFormatter
     /**
      * Constructor
      *
-     * @param \Fastwf\Core\Router\Formatter\IBaseRoute $baseRoute
+     * @param IBaseRoute $baseRoute
      */
     public function __construct($baseRoute)
     {
@@ -37,7 +39,7 @@ class PartialPathFormatter
      * 
      * Use null $parameters only when the segment must be debugged.
      *
-     * @param Fastwf\Core\Router\Segment $segment
+     * @param Segment $segment
      * @param array|null $parameters the array of parameters to inject or null to prevent injection
      * @param bool $isPath the out variable that is set to true when the segment is a path parameter
      * @return string the url encoded segment
@@ -69,7 +71,7 @@ class PartialPathFormatter
     /**
      * Format the segment like a parameter segment.
      *
-     * @param Fastwf\Core\Router\Segment $segment the segment specification
+     * @param Segment $segment the segment specification
      * @param array $parameters the parameter that can be injected
      * @param bool $isPath the out variable that is set to true when the segment is a path parameter
      * @return string the segment parameter formatted with paramter injection

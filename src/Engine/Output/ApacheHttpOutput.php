@@ -2,12 +2,12 @@
 
 namespace Fastwf\Core\Engine\Output;
 
-use Fastwf\Core\Engine\Output\IHttpOutput;
+use Fastwf\Api\Engine\Output\HttpOutputInterface;
 
 /**
- * IHttpOutput implementation to use for php as http server (apache mod_php, php fpm, ...).
+ * HttpOutputInterface implementation to use for php as http server (apache mod_php, php fpm, ...).
  */
-class ApacheHttpOutput implements IHttpOutput {
+class ApacheHttpOutput implements HttpOutputInterface {
 
     /**
      * The stream open in write mode.

@@ -25,9 +25,6 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Mount
      * @covers \Fastwf\Core\Router\Route
      * @covers \Fastwf\Core\Router\Parser\RouteParser
-     * @covers \Fastwf\Core\Utils\ArrayProxy
-     * @covers \Fastwf\Core\Utils\ArrayUtil
-     * @covers \Fastwf\Core\Utils\AsyncProperty
      * @covers \Fastwf\Core\Components\RequestHandler
      * @covers \Fastwf\Core\Engine\Run\Runner
      * @covers \Fastwf\Core\Http\Frame\Headers
@@ -42,6 +39,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Formatter\PartialPathFormatter
      */
     public function testConfiguration() {
+        /** @var SimpleEngine */
         $engine = $this->getMockBuilder(SimpleEngine::class)
             ->setConstructorArgs([self::TEST_CONF])
             ->onlyMethods(['handleRequest', 'sendResponse'])
@@ -64,9 +62,6 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Mount
      * @covers \Fastwf\Core\Router\Route
      * @covers \Fastwf\Core\Router\Parser\RouteParser
-     * @covers \Fastwf\Core\Utils\ArrayProxy
-     * @covers \Fastwf\Core\Utils\ArrayUtil
-     * @covers \Fastwf\Core\Utils\AsyncProperty
      * @covers \Fastwf\Core\Components\RequestHandler
      * @covers \Fastwf\Core\Engine\Run\Runner
      * @covers \Fastwf\Core\Http\Frame\Headers
@@ -81,6 +76,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Formatter\PartialPathFormatter
      */
     public function testServer() {
+        /** @var SimpleEngine */
         $engine = $this->getMockBuilder(SimpleEngine::class)
             ->setConstructorArgs([self::TEST_CONF])
             ->onlyMethods(['handleRequest', 'sendResponse'])
@@ -103,9 +99,6 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Mount
      * @covers \Fastwf\Core\Router\Route
      * @covers \Fastwf\Core\Router\Parser\RouteParser
-     * @covers \Fastwf\Core\Utils\ArrayProxy
-     * @covers \Fastwf\Core\Utils\ArrayUtil
-     * @covers \Fastwf\Core\Utils\AsyncProperty
      * @covers \Fastwf\Core\Components\RequestHandler
      * @covers \Fastwf\Core\Engine\Run\Runner
      * @covers \Fastwf\Core\Http\Frame\Headers
@@ -120,6 +113,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Formatter\PartialPathFormatter
      */
     public function testRequest() {
+        /** @var SimpleEngine */
         $engine = $this->getMockBuilder(SimpleEngine::class)
             ->setConstructorArgs([self::TEST_CONF])
             ->onlyMethods(['handleRequest', 'sendResponse'])
@@ -149,9 +143,6 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Formatter\PathFormatter
      * @covers \Fastwf\Core\Router\Formatter\PartialPathFormatter
      * @covers \Fastwf\Core\Router\Segment
-     * @covers \Fastwf\Core\Utils\ArrayProxy
-     * @covers \Fastwf\Core\Utils\ArrayUtil
-     * @covers \Fastwf\Core\Utils\AsyncProperty
      * @covers \Fastwf\Core\Components\RequestHandler
      * @covers \Fastwf\Core\Engine\Run\Runner
      * @covers \Fastwf\Core\Http\Frame\Headers
@@ -161,6 +152,7 @@ class EngineTest extends TestCase {
     public function testConfigurationAuto() {
         $_SERVER['DOCUMENT_ROOT'] = __DIR__;
 
+        /** @var SimpleEngine */
         $engine = $this->getMockBuilder(SimpleEngine::class)
             ->onlyMethods(['handleRequest', 'sendResponse'])
             ->getMock();
@@ -184,9 +176,6 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Mount
      * @covers \Fastwf\Core\Router\Route
      * @covers \Fastwf\Core\Router\Parser\RouteParser
-     * @covers \Fastwf\Core\Utils\ArrayProxy
-     * @covers \Fastwf\Core\Utils\ArrayUtil
-     * @covers \Fastwf\Core\Utils\AsyncProperty
      * @covers \Fastwf\Core\Components\RequestHandler
      * @covers \Fastwf\Core\Engine\Run\Runner
      * @covers \Fastwf\Core\Http\Frame\Headers
@@ -201,6 +190,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Formatter\PartialPathFormatter
      */
     public function testOnConfigurationLoaded() {
+        /** @var SimpleEngine */
         $engine = $this->getMockBuilder(SimpleEngine::class)
             ->setConstructorArgs([self::TEST_CONF])
             ->onlyMethods(['handleRequest', 'sendResponse'])
@@ -225,9 +215,6 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Mount
      * @covers \Fastwf\Core\Router\Route
      * @covers \Fastwf\Core\Router\Parser\RouteParser
-     * @covers \Fastwf\Core\Utils\ArrayProxy
-     * @covers \Fastwf\Core\Utils\ArrayUtil
-     * @covers \Fastwf\Core\Utils\AsyncProperty
      * @covers \Fastwf\Core\Components\RequestHandler
      * @covers \Fastwf\Core\Engine\Run\Runner
      * @covers \Fastwf\Core\Http\Frame\Headers
@@ -242,6 +229,7 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Formatter\PartialPathFormatter
      */
     public function testSettingLoadingSystem() {
+        /** @var SimpleEngine */
         $engine = $this->getMockBuilder(SimpleEngine::class)
             ->setConstructorArgs([self::TEST_CONF])
             ->onlyMethods(['handleRequest', 'sendResponse'])
@@ -266,9 +254,6 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Mount
      * @covers \Fastwf\Core\Router\Route
      * @covers \Fastwf\Core\Router\Parser\RouteParser
-     * @covers \Fastwf\Core\Utils\ArrayProxy
-     * @covers \Fastwf\Core\Utils\ArrayUtil
-     * @covers \Fastwf\Core\Utils\AsyncProperty
      * @covers \Fastwf\Core\Components\RequestHandler
      * @covers \Fastwf\Core\Engine\Run\Runner
      * @covers \Fastwf\Core\Http\Frame\Headers
@@ -307,9 +292,6 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Mount
      * @covers \Fastwf\Core\Router\Route
      * @covers \Fastwf\Core\Router\Parser\RouteParser
-     * @covers \Fastwf\Core\Utils\ArrayProxy
-     * @covers \Fastwf\Core\Utils\ArrayUtil
-     * @covers \Fastwf\Core\Utils\AsyncProperty
      * @covers \Fastwf\Core\Components\RequestHandler
      * @covers \Fastwf\Core\Engine\Run\Runner
      * @covers \Fastwf\Core\Http\Frame\Headers
@@ -355,9 +337,6 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Mount
      * @covers \Fastwf\Core\Router\Route
      * @covers \Fastwf\Core\Router\Parser\RouteParser
-     * @covers \Fastwf\Core\Utils\ArrayProxy
-     * @covers \Fastwf\Core\Utils\ArrayUtil
-     * @covers \Fastwf\Core\Utils\AsyncProperty
      * @covers \Fastwf\Core\Components\RequestHandler
      * @covers \Fastwf\Core\Engine\Run\Runner
      * @covers \Fastwf\Core\Http\Frame\Headers
@@ -386,8 +365,6 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Engine\Engine
      * @covers \Fastwf\Core\Engine\ServiceProvider
      * @covers \Fastwf\Core\Engine\Service
-     * @covers \Fastwf\Core\Utils\ArrayProxy
-     * @covers \Fastwf\Core\Utils\AsyncProperty
      */
     public function testGetService() {
         $engine = new SimpleEngine(self::TEST_CONF);
@@ -403,8 +380,6 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Engine\Engine
      * @covers \Fastwf\Core\Engine\ServiceProvider
      * @covers \Fastwf\Core\Engine\Service
-     * @covers \Fastwf\Core\Utils\ArrayProxy
-     * @covers \Fastwf\Core\Utils\AsyncProperty
      */
     public function testRegisterService() {
         $engine = new SimpleEngine(self::TEST_CONF);
@@ -421,8 +396,6 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Engine\Engine
      * @covers \Fastwf\Core\Engine\ServiceProvider
      * @covers \Fastwf\Core\Engine\Service
-     * @covers \Fastwf\Core\Utils\ArrayProxy
-     * @covers \Fastwf\Core\Utils\AsyncProperty
      */
     public function testRegisterServiceImplementation() {
         $engine = new SimpleEngine(self::TEST_CONF);
@@ -439,8 +412,6 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Engine\Engine
      * @covers \Fastwf\Core\Engine\ServiceProvider
      * @covers \Fastwf\Core\Engine\Service
-     * @covers \Fastwf\Core\Utils\ArrayProxy
-     * @covers \Fastwf\Core\Utils\AsyncProperty
      */
     public function testRegisterServiceFactory() {
         $engine = new SimpleEngine(self::TEST_CONF);
@@ -475,9 +446,6 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Mount
      * @covers \Fastwf\Core\Router\Route
      * @covers \Fastwf\Core\Router\Parser\RouteParser
-     * @covers \Fastwf\Core\Utils\ArrayProxy
-     * @covers \Fastwf\Core\Utils\ArrayUtil
-     * @covers \Fastwf\Core\Utils\AsyncProperty
      * @covers \Fastwf\Core\Components\RequestHandler
      * @covers \Fastwf\Core\Engine\Run\Runner
      * @covers \Fastwf\Core\Http\Frame\Headers
@@ -514,9 +482,6 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Mount
      * @covers \Fastwf\Core\Router\Route
      * @covers \Fastwf\Core\Router\Parser\RouteParser
-     * @covers \Fastwf\Core\Utils\ArrayProxy
-     * @covers \Fastwf\Core\Utils\ArrayUtil
-     * @covers \Fastwf\Core\Utils\AsyncProperty
      * @covers \Fastwf\Core\Components\RequestHandler
      * @covers \Fastwf\Core\Engine\Run\Runner
      * @covers \Fastwf\Core\Http\Frame\Headers
@@ -534,6 +499,7 @@ class EngineTest extends TestCase {
         // Set the document root in 'tests' folder
         $_SERVER['DOCUMENT_ROOT'] = __DIR__ . '/..';
 
+        /** @var SimpleEngine */
         $engine = $this->getMockBuilder(SimpleEngine::class)
             ->setConstructorArgs([self::TEST_CONF])
             ->onlyMethods(['handleRequest', 'sendResponse'])
@@ -564,6 +530,7 @@ class EngineTest extends TestCase {
 
     /**
      * @covers \Fastwf\Core\Engine\Engine
+     * @covers \Fastwf\Core\Engine\Service
      * @covers \Fastwf\Core\Engine\ServiceProvider
      * @covers \Fastwf\Core\Configuration
      * @covers \Fastwf\Core\Http\Frame\HttpResponse
@@ -574,9 +541,6 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Mount
      * @covers \Fastwf\Core\Router\Route
      * @covers \Fastwf\Core\Router\Parser\RouteParser
-     * @covers \Fastwf\Core\Utils\ArrayProxy
-     * @covers \Fastwf\Core\Utils\ArrayUtil
-     * @covers \Fastwf\Core\Utils\AsyncProperty
      * @covers \Fastwf\Core\Components\RequestHandler
      * @covers \Fastwf\Core\Engine\Run\Runner
      * @covers \Fastwf\Core\Http\Frame\Headers
@@ -589,6 +553,9 @@ class EngineTest extends TestCase {
      * @covers \Fastwf\Core\Router\Formatter\RouteGenerator
      * @covers \Fastwf\Core\Router\Formatter\PathFormatter
      * @covers \Fastwf\Core\Router\Formatter\PartialPathFormatter
+     * @covers \Fastwf\Core\Session\Components\SessionShutdown
+     * @covers \Fastwf\Core\Session\PhpSessionManager
+     * @covers \Fastwf\Core\Session\SessionManager
      */
     public function testEngineSpecialVarsWithConfiguration() {
         $_ENV['SERVER_ROOTPATH'] = __DIR__ . '/.root';
@@ -601,6 +568,7 @@ class EngineTest extends TestCase {
             }
         }
 
+        /** @var SimpleEngine */
         $engine = $this->getMockBuilder(SimpleEngine::class)
             ->setConstructorArgs([__DIR__ . '/../configuration.test.ini'])
             ->onlyMethods(['handleRequest', 'sendResponse'])

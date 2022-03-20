@@ -11,7 +11,6 @@ class HttpResponseTest extends TestCase {
     const OUT_PATH = __DIR__ . '/out.local.txt';
 
     /**
-     * @covers Fastwf\Core\Utils\ArrayProxy
      * @covers Fastwf\Core\Http\Frame\HttpStreamResponse
      * @covers Fastwf\Core\Http\Frame\HttpResponse
      * @covers Fastwf\Core\Exceptions\AttributeError

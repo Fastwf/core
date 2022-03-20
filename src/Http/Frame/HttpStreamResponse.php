@@ -2,9 +2,10 @@
 
 namespace Fastwf\Core\Http\Frame;
 
-use Fastwf\Core\Utils\ArrayProxy;
-use Fastwf\Core\Exceptions\IOException;
+use Fastwf\Api\Utils\ArrayProxy;
+use Fastwf\Api\Exceptions\IOException;
 use Fastwf\Core\Exceptions\AttributeError;
+use Fastwf\Api\Engine\Output\HttpOutputInterface;
 
 /**
  * Http Response that support streaming.
@@ -13,7 +14,7 @@ use Fastwf\Core\Exceptions\AttributeError;
  * This class is usefull when it's necessary to handle chunck from an input stream.
  * 
  * @property-read int $status the response status.
- * @property-read Fastwf\Core\Utils\ArrayProxy $headers the http response headers to send to the client.
+ * @property-read ArrayProxy $headers the http response headers to send to the client.
  */
 class HttpStreamResponse {
 
@@ -26,7 +27,7 @@ class HttpStreamResponse {
     /**
      * The http response headers to send to the client.
      *
-     * @var Fastwf\Core\Utils\ArrayProxy
+     * @var ArrayProxy
      */
     private $_headers;
 
@@ -59,7 +60,7 @@ class HttpStreamResponse {
     /**
      * Allows to send the response to the client.
      *
-     * @param \Fastwf\Core\Engine\Output\IHttpOutput $httpOutput the resource where write the response.
+     * @param HttpOutputInterface $httpOutput the resource where write the response.
      */
     public function send($httpOutput) {
         // Set the http response code
@@ -75,7 +76,7 @@ class HttpStreamResponse {
     /**
      * Write all headers from the array proxy containing headers.
      * 
-     * @param \Fastwf\Core\Engine\Output\IHttpOutput $httpOutput the resource where write the response.
+     * @param HttpOutputInterface $httpOutput the resource where write the response.
      */
     protected function sendHeaders($httpOutput) {
         foreach ($this->_headers->keys() as $header) {

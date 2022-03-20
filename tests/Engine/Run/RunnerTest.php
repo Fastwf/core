@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 use Fastwf\Core\Engine\Run\Runner;
 
-use Fastwf\Core\Exceptions\ValueError;
 use Fastwf\Core\Http\Frame\HttpRequest;
 use Fastwf\Tests\Components\SimpleGuard;
 use Fastwf\Tests\Components\SimpleInPipe;
@@ -33,9 +32,6 @@ class RunnerTest extends TestCase {
      * @covers Fastwf\Core\Router\BaseRoute
      * @covers Fastwf\Core\Router\Mount
      * @covers Fastwf\Core\Router\Route
-     * @covers Fastwf\Core\Utils\ArrayProxy
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Components\RequestHandler
      * @covers Fastwf\Core\Http\Frame\Headers
      */
@@ -83,9 +79,6 @@ class RunnerTest extends TestCase {
      * @covers Fastwf\Core\Router\BaseRoute
      * @covers Fastwf\Core\Router\Mount
      * @covers Fastwf\Core\Router\Route
-     * @covers Fastwf\Core\Utils\ArrayProxy
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Components\RequestHandler
      * @covers Fastwf\Core\Http\Frame\Headers
      */
@@ -119,12 +112,8 @@ class RunnerTest extends TestCase {
      * @covers Fastwf\Core\Router\BaseRoute
      * @covers Fastwf\Core\Router\Mount
      * @covers Fastwf\Core\Router\Route
-     * @covers Fastwf\Core\Utils\ArrayProxy
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Components\RequestHandler
      * @covers Fastwf\Core\Http\Frame\Headers
-     * @covers Fastwf\Core\Exceptions\ValueError
      * @covers Fastwf\Core\Http\Frame\HttpResponse
      * @covers Fastwf\Core\Http\Frame\HttpStreamResponse
      */
@@ -164,9 +153,6 @@ class RunnerTest extends TestCase {
      * @covers Fastwf\Core\Router\BaseRoute
      * @covers Fastwf\Core\Router\Mount
      * @covers Fastwf\Core\Router\Route
-     * @covers Fastwf\Core\Utils\ArrayProxy
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Components\RequestHandler
      * @covers Fastwf\Core\Http\Frame\Headers
      * @covers Fastwf\Core\Http\Frame\HttpResponse

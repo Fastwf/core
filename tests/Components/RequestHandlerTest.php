@@ -25,7 +25,6 @@ class RequestHandlerTest extends TestCase {
      * @covers Fastwf\Core\Components\RequestHandler
      * @covers Fastwf\Core\Http\Frame\HttpResponse
      * @covers Fastwf\Core\Http\Frame\HttpStreamResponse
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     public function testHtml() {
         $handler = new HtmlHandler(null);
@@ -38,7 +37,6 @@ class RequestHandlerTest extends TestCase {
      * @covers Fastwf\Core\Components\RequestHandler
      * @covers Fastwf\Core\Http\Frame\HttpResponse
      * @covers Fastwf\Core\Http\Frame\HttpStreamResponse
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     public function testJson() {
         $handler = new JsonHandler(null);
@@ -51,7 +49,6 @@ class RequestHandlerTest extends TestCase {
      * @covers Fastwf\Core\Components\RequestHandler
      * @covers Fastwf\Core\Http\Frame\HttpResponse
      * @covers Fastwf\Core\Http\Frame\HttpStreamResponse
-     * @covers Fastwf\Core\Utils\ArrayProxy
      */
     public function testRedirect() {
         $handler = new RedirectHandler(null);

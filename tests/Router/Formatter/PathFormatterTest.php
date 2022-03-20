@@ -18,9 +18,6 @@ class PathFormatterTest extends TestCase
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
      * @covers Fastwf\Core\Router\Formatter\PathFormatter
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\StringUtil
      */
     public function testFormat()
     {
@@ -46,9 +43,6 @@ class PathFormatterTest extends TestCase
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
      * @covers Fastwf\Core\Router\Formatter\PathFormatter
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\StringUtil
      */
     public function testFormatWithEmptySegment()
     {

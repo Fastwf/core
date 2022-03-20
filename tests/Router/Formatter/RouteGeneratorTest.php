@@ -4,7 +4,7 @@ namespace Fastwf\Tests\Router\Formatter;
 
 use Fastwf\Core\Router\Mount;
 use PHPUnit\Framework\TestCase;
-use Fastwf\Core\Exceptions\KeyError;
+use Fastwf\Api\Exceptions\KeyError;
 use Fastwf\Core\Router\Formatter\PathFormatter;
 use Fastwf\Core\Router\Formatter\RouteGenerator;
 use Fastwf\Core\Router\Exception\FormatException;
@@ -62,9 +62,6 @@ class RouteGeneratorTest extends TestCase
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
      * @covers Fastwf\Core\Router\Formatter\PathFormatter
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\StringUtil
      * @covers Fastwf\Core\Router\Formatter\RouteGenerator
      */
     public function testGeneratePath()
@@ -86,9 +83,6 @@ class RouteGeneratorTest extends TestCase
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
      * @covers Fastwf\Core\Router\Formatter\PathFormatter
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\StringUtil
      * @covers Fastwf\Core\Router\Formatter\RouteGenerator
      */
     public function testGenerateRoute()
@@ -110,9 +104,6 @@ class RouteGeneratorTest extends TestCase
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
      * @covers Fastwf\Core\Router\Formatter\PathFormatter
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\StringUtil
      * @covers Fastwf\Core\Router\Formatter\RouteGenerator
      */
     public function testGenerateIndex()
@@ -139,9 +130,6 @@ class RouteGeneratorTest extends TestCase
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
      * @covers Fastwf\Core\Router\Formatter\PathFormatter
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\StringUtil
      * @covers Fastwf\Core\Router\Formatter\RouteGenerator
      */
     public function testGenerateRouteUsingCache()
@@ -168,9 +156,6 @@ class RouteGeneratorTest extends TestCase
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
      * @covers Fastwf\Core\Router\Formatter\PathFormatter
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\StringUtil
      * @covers Fastwf\Core\Router\Formatter\RouteGenerator
      */
     public function testGenerateNoRouteFormatException()
@@ -190,9 +175,6 @@ class RouteGeneratorTest extends TestCase
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
      * @covers Fastwf\Core\Router\Formatter\PathFormatter
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\StringUtil
      * @covers Fastwf\Core\Router\Formatter\RouteGenerator
      */
     public function testGenerateCacheFailed()
@@ -219,9 +201,6 @@ class RouteGeneratorTest extends TestCase
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
      * @covers Fastwf\Core\Router\Formatter\PathFormatter
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\StringUtil
      * @covers Fastwf\Core\Router\Formatter\RouteGenerator
      */
     public function testDumpState()
@@ -271,9 +250,6 @@ class RouteGeneratorTest extends TestCase
      * @covers Fastwf\Core\Router\Parser\SpecificationRouteParser
      * @covers Fastwf\Core\Router\Formatter\PartialPathFormatter
      * @covers Fastwf\Core\Router\Formatter\PathFormatter
-     * @covers Fastwf\Core\Utils\ArrayUtil
-     * @covers Fastwf\Core\Utils\AsyncProperty
-     * @covers Fastwf\Core\Utils\StringUtil
      * @covers Fastwf\Core\Router\Formatter\RouteGenerator
      */
     public function testConstructorUsingState()

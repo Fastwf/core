@@ -13,17 +13,17 @@ class SessionShutdownTest extends TestCase
     /**
      * @covers Fastwf\Core\Engine\Engine
      * @covers Fastwf\Core\Engine\ServiceProvider
-     * @covers Fastwf\Core\Utils\ArrayProxy
-     * @covers Fastwf\Core\Utils\AsyncProperty
      * @covers Fastwf\Core\Session\Components\SessionShutdown
      */
     public function testEnd()
     {
+        /** @var SimpleEngine */
         $context = $this->getMockBuilder(SimpleEngine::class)
             ->setConstructorArgs([__DIR__ . '/../../configuration.ini'])
             ->onlyMethods([])
             ->getMock();
         
+        /** @var MockObject */
         $service = $this->createMock(SessionService::class);
         $service->expects($this->once())
             ->method('closeSession');

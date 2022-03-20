@@ -2,7 +2,7 @@
 
 namespace Fastwf\Core\Engine;
 
-use Fastwf\Core\Utils\AsyncProperty;
+use Fastwf\Api\Utils\AsyncProperty;
 
 /**
  * Provider responsible of services.
