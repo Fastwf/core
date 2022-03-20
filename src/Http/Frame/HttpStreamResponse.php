@@ -6,17 +6,15 @@ use Fastwf\Api\Utils\ArrayProxy;
 use Fastwf\Api\Exceptions\IOException;
 use Fastwf\Core\Exceptions\AttributeError;
 use Fastwf\Api\Engine\Output\HttpOutputInterface;
+use Fastwf\Api\Http\Frame\HttpResponseInterface;
 
 /**
  * Http Response that support streaming.
  * 
  * A response class that allows to develop it's stream logic.
  * This class is usefull when it's necessary to handle chunck from an input stream.
- * 
- * @property-read int $status the response status.
- * @property-read ArrayProxy $headers the http response headers to send to the client.
  */
-class HttpStreamResponse {
+class HttpStreamResponse implements HttpResponseInterface {
 
     /**
      * The http response code

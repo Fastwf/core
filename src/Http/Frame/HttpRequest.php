@@ -2,6 +2,7 @@
 
 namespace Fastwf\Core\Http\Frame;
 
+use Fastwf\Api\Http\Frame\HttpRequestInterface;
 use Fastwf\Api\Utils\ArrayProxy;
 use Fastwf\Core\Http\Frame\Headers;
 use Fastwf\Core\Exceptions\AttributeError;
@@ -9,31 +10,8 @@ use Fastwf\Api\Utils\Files\UploadedFileUtil;
 
 /**
  * The object representation of the http request.
- * 
- * @property-read string $path The path corresponding to the REQUEST_URI.
- * @property-read string $method The request method corresponding to the REQUEST_METHOD.
- * @property-read ArrayProxy $query the array of query parameters ($_GET)
- * @property-read ArrayProxy $form the array that contains the parsed form data ($_POST).
- * @property-read string $body the sequence read from body request.
- * @property-read array $json the json as array association extracted from body request.
- * @property-read resource $stream the stream of the body request.
- * @property-read Headers $headers the request headers.
- * @property-read ArrayProxy $cookie the request cookies.
  */
-class HttpRequest {
-
-    const BUFFER = 2**16;
-
-    protected const QUERY = 'query';
-    protected const FORM = 'form';
-    protected const STREAM = 'stream';
-    protected const BODY = 'body';
-    protected const JSON = 'json';
-    protected const FILES = 'files';
-    protected const PATH = 'path';
-    protected const METHOD = 'method';
-    protected const HEADERS = 'headers';
-    protected const COOKIE = 'cookie';
+class HttpRequest implements HttpRequestInterface {
 
     private $_files = null;
     

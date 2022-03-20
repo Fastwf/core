@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Fastwf/api.git",
-                "reference": "54eeccb16909d57bedc484dc8a2adeda25c945ed"
+                "reference": "c81f22326fe9bcd54f2118077b7fa5c76da6dde4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Fastwf/api/zipball/54eeccb16909d57bedc484dc8a2adeda25c945ed",
-                "reference": "54eeccb16909d57bedc484dc8a2adeda25c945ed",
+                "url": "https://api.github.com/repos/Fastwf/api/zipball/c81f22326fe9bcd54f2118077b7fa5c76da6dde4",
+                "reference": "c81f22326fe9bcd54f2118077b7fa5c76da6dde4",
                 "shasum": ""
             },
             "require": {
@@ -52,7 +52,7 @@
                 "source": "https://github.com/Fastwf/api/tree/master",
                 "issues": "https://github.com/Fastwf/api/issues"
             },
-            "time": "2022-03-20T09:58:03+00:00"
+            "time": "2022-03-20T10:10:03+00:00"
         },
         {
             "name": "psr/http-message",
